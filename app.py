@@ -18,7 +18,6 @@ def get_db_connection():
     return conn
 
 # Rota principal (index)
-# Rota principal (index)
 @app.route('/')
 def index():
     if 'user_id' not in session:
