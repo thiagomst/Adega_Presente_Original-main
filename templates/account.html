@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar conta | github.com/andersonleandrog</title>
+
+  <!--CSS-->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style1.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/media.css') }}" />
+
+  <!-- JS & jQuery -->
+  <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="container">
+    <div class="banner">
+      <img src="/static/img/login.png" alt="Imagem de Login" class="banner-img">
+      <p class="banner-texto">
+        Seja bem vindo, acesse e aproveite todo o conteúdo,
+        <br />somos uma equipe de profissionais empenhados em <br />trazer o
+        melhor conteúdo direcionado a você, usuário.
+      </p>
+    </div>
+
+    <div class="box-login">
+      <h1>Junte-se a nós,<br />Crie hoje a sua conta!</h1>
+
+      <div class="box-account">
+        <h2>Informe seus dados</h2>
+        <!-- Formulário para criação de conta -->
+        <form method="POST" action="{{ url_for('account') }}">
+          <input type="text" name="username" id="username" placeholder="Nome de usuário" required />
+          <input type="password" name="password" id="password" placeholder="Senha" required />
+          <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirmar senha" required />
+
+          <div class="check">
+            <input type="checkbox" name="termo" id="termo" style="width: 13px; height: 13px" required />
+            <label for="termo" style="color: #3d3d3d">
+              Li e aceito os termos
+            </label>
+          </div>
+
+          <button type="submit">Criar conta</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Link para voltar ao login -->
+  <a href="{{ url_for('login') }}">
+    <div id="bubble">
+      <img src="/static/img/user.png" alt="icone-usuário" title="fazer-login" />
+    </div>
+  </a>
+
+  <script>
+    // Validação de senha no frontend
+    document
+      .querySelector("form")
+      .addEventListener("submit", function (event) {
+        const password = document.getElementById("password").value;
+        const confirmPassword =
+          document.getElementById("confirm_password").value;
+
+        if (password !== confirmPassword) {
+          alert("As senhas não coincidem!");
+          event.preventDefault(); // Impede o envio do formulário
+        }
+      });
+
+    // Modal de termos
+    $("#termo").click(() => {
+      const div = $("<div>").attr(
+        "style",
+        `
+            position: absolute;
+            width: 65%;
+            height: 420px;
+            border-radius: 10px;
+            background: #fff; 
+            color: #3d3d3d;
+            -webkit-box-shadow: 0px 0px 6px -1px #000000; 
+            box-shadow: 0px 0px 6px -1px #000000;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+          `
+      );
+
+      $(div).addClass("termo");
+
+      $(div).append(
+        `Eu entendo e aceito os termos impostos pela plataforma...`
+      );
+
+      $(div).append(
+        $("<button>Ok</button>").click(() => {
+          div.hide();
+        })
+      );
+
+      $("body").append(div);
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="ADEGA PRESENTE - Celebrando Cada Momento.">
+    <meta name="keywords"
+        content="vinhos, adega, vinhos premium, comprar vinhos, vinhos online, ADEGA PRESENTE, enologia, harmonização de vinhos, Brasília, Plano Piloto, Brasil, DF.">
+    <meta name="author" content="ADEGA PRESENTE">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ADEGA PRESENTE</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elegant-icons.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nice-select.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slicknav.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<a href="https://api.whatsapp.com/send?phone=5561996127475&text=Estamos%20aqui%20para%20ajudar!%20Como%20podemos%20ser%20úteis%20hoje?"
+    id="waurlsite" class="bt-whatsApp" target="_blank"
+    style="right:25px; position:fixed;width:60px;height:60px;bottom:40px;z-index:100;">
+    <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxzdmcgdmlld0JveD0iMjYxOSA1MDYgMTIwIDEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogIzI3ZDA0NTsKICAgICAgfQoKICAgICAgLmNscy0yLCAuY2xzLTUgewogICAgICAgIGZpbGw6IG5vbmU7CiAgICAgIH0KCiAgICAgIC5jbHMtMiB7CiAgICAgICAgc3Ryb2tlOiAjZmZmOwogICAgICAgIHN0cm9rZS13aWR0aDogNXB4OwogICAgICB9CgogICAgICAuY2xzLTMgewogICAgICAgIGZpbGw6ICNmZmY7CiAgICAgIH0KCiAgICAgIC5jbHMtNCB7CiAgICAgICAgc3Ryb2tlOiBub25lOwogICAgICB9CiAgICA8L3N0eWxlPjwvZGVmcz48ZyBkYXRhLW5hbWU9Ikdyb3VwIDM2IiBpZD0iR3JvdXBfMzYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzMDAgNzMpIj48Y2lyY2xlIGNsYXNzPSJjbHMtMSIgY3g9IjYwIiBjeT0iNjAiIGRhdGEtbmFtZT0iRWxsaXBzZSAxOCIgaWQ9IkVsbGlwc2VfMTgiIHI9IjYwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMTkgNDMzKSIvPjxnIGRhdGEtbmFtZT0iR3JvdXAgMzUiIGlkPSJHcm91cF8zNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjU0IDM4NikiPjxnIGRhdGEtbmFtZT0iR3JvdXAgMzQiIGlkPSJHcm91cF8zNCI+PGcgY2xhc3M9ImNscy0yIiBkYXRhLW5hbWU9IkVsbGlwc2UgMTkiIGlkPSJFbGxpcHNlXzE5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NCA3NSkiPjxjaXJjbGUgY2xhc3M9ImNscy00IiBjeD0iMzEuNSIgY3k9IjMxLjUiIHI9IjMxLjUiLz48Y2lyY2xlIGNsYXNzPSJjbHMtNSIgY3g9IjMxLjUiIGN5PSIzMS41IiByPSIyOSIvPjwvZz48cGF0aCBjbGFzcz0iY2xzLTMiIGQ9Ik0xNDI0LDE5MWwtNC42LDE2LjMsMTYuOS00LjcuOS01LjItMTEsMy41LDIuOS0xMC41WiIgZGF0YS1uYW1lPSJQYXRoIDEyNiIgaWQ9IlBhdGhfMTI2IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTMyNSAtNjgpIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMTI2Niw5MGMwLS4xLDMuNS0xMS43LDMuNS0xMS43bDguNCw3LjlaIiBkYXRhLW5hbWU9IlBhdGggMTI3IiBpZD0iUGF0aF8xMjciIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMTY1IDQzKSIvPjwvZz48cGF0aCBjbGFzcz0iY2xzLTMiIGQ9Ik0xNDM5LjMsMTYwLjZhOS40LDkuNCwwLDAsMC0zLjksNi4xYy0uNSwzLjksMS45LDcuOSwxLjksNy45YTUwLjg3Niw1MC44NzYsMCwwLDAsOC42LDkuOCwzMC4xODEsMzAuMTgxLDAsMCwwLDkuNiw1LjEsMTEuMzc4LDExLjM3OCwwLDAsMCw2LjQuNiw5LjE2Nyw5LjE2NywwLDAsMCw0LjgtMy4yLDkuODUxLDkuODUxLDAsMCwwLC42LTIuMiw1Ljg2OCw1Ljg2OCwwLDAsMCwwLTJjLS4xLS43LTcuMy00LTgtMy44cy0xLjMsMS41LTIuMSwyLjYtMS4xLDEuNi0xLjksMS42LTQuMy0xLjQtNy42LTQuNGExNS44NzUsMTUuODc1LDAsMCwxLTQuMy02cy42LS43LDEuNC0xLjhhNS42NjQsNS42NjQsMCwwLDAsMS4zLTIuNGMwLS41LTIuOC03LjYtMy41LTcuOUExMS44NTIsMTEuODUyLDAsMCwwLDE0MzkuMywxNjAuNloiIGRhdGEtbmFtZT0iUGF0aCAxMjgiIGlkPSJQYXRoXzEyOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEzMjYuMzMyIC02OC40NjcpIi8+PC9nPjwvZz48L3N2Zz4="
+        alt="" width="60px">
+</a>
+<span id="alertWapp"
+    style="right:30px; visibility: hidden; position:fixed;	width:17px;	height:17px;bottom:90px; background:red;z-index:101; font-size:11px;color:#f00707;text-align:center;border-radius: 50px; font-weight:bold;line-height: normal; ">
+    1 </span>
+<div id="msg1"
+    style="right: 90px; visibility: hidden; background: #fff;color: #000;position: fixed;width: 100px;bottom: 55px;font-size: 12px;line-height: 13px;padding: 3px; border-radius: 10px; border:1px solid #e2e2e2; box-shadow: 2px 2px 3px #999;z-index:100; ">
+    Para compras ou mais informações, chame!</div>
+<script
+    type="text/javascript">function showIt2() { document.getElementById("msg1").style.visibility = "visible"; } setTimeout("showIt2()", 5000); function hiddenIt() { document.getElementById("msg1").style.visibility = "hidden"; } setTimeout("hiddenIt()", 15000); function showIt3() { document.getElementById("msg1").style.visibility = "visible"; } setTimeout("showIt3()", 25000); msg1.onclick = function () { document.getElementById('msg1').style.visibility = "hidden"; }; function alertW() { document.getElementById("alertWapp").style.visibility = "visible"; } setTimeout("alertW()", 15000); </script>
+<!-- END Widget WhastApp -->
+<script type="text/javascript">
+    function showIt2() { document.getElementById("msg1").style.visibility = "visible"; }
+    setTimeout("showIt2()", 5000);
+    function hiddenIt() { document.getElementById("msg1").style.visibility = "hidden"; }
+    setTimeout("hiddenIt()", 15000);
+    function showIt3() { document.getElementById("msg1").style.visibility = "visible"; }
+    setTimeout("showIt3()", 25000);
+    msg1.onclick = function () { document.getElementById('msg1').style.visibility = "hidden"; };
+    function alertW() { document.getElementById("alertWapp").style.visibility = "visible"; }
+    setTimeout("alertW()", 15000);
+</script>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Menu -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__option">
+            <div class="offcanvas__links">
+                <a href="https://wa.me/556196127475" target="_blank" class="social-icon"><i
+                        class="fab fa-whatsapp"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=61559981980043" target="_blank" class="social-icon"><i
+                        class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/adegapresente/" target="_blank" class="social-icon"><i
+                        class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@adegapresente" target="_blank" class="social-icon"><i
+                        class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+        <div class="offcanvas__nav__option">
+            <div class="price"></div>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__text">
+            <p>ADEGA PRESENTE - Celebrando com Coração.</p>
+        </div>
+    </div>
+    <!-- Fim do Menu -->
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                        <a href="{{ url_for('index') }}">
+                            <img src="{{ url_for('static', filename='img/logo1.png') }}" alt="Logo" width="150"
+                                height="150">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li><a href="{{ url_for('index') }}">Página Inicial</a></li>
+                            <li class="active"><a href="{{ url_for('sobre') }}">Sobre Nós</a></li>
+                            <li><a href="{{ url_for('vinho_rose') }}">Produtos</a></li>
+                            <li><a href="{{ url_for('contato') }}">Contato</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="canvas__open"><i class="fa fa-bars"></i></div>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Sobre Nós</h4>
+                        <div class="breadcrumb__links">
+                            <a href="{{ url_for('index') }}">Home</a>
+                            <span>Sobre Nós</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- About Section Begin -->
+    <section class="about spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="about__pic">
+                        <h2>
+                            <center><b>SOBRE ADEGA PRESENTE</b></center>
+                        </h2>
+                        <p style="text-align: justify;">
+                            <b>Olá!!! Seja muito bem-vind@!!!</b><br>
+                            Somos apaixonados pela vida e, foi de nossa alegria de celebrar a vida que nasceu a ideia de
+                            oferecer uma opção para tornar o ato de ‘presentear’ uma experiência inesquecível.<br>
+                            O nome “Adega Presente” veio da ideia de “presentear” e “ser presente”. “Presentear” porque
+                            é um ato de partilha e comunhão; e, “ser presente” porque nada substitui a energia, alegria
+                            e afeto de um abraço.<br>
+                            Nosso principal objetivo é oferecer bebidas alcoólicas e acessórios, excelentes e criativos
+                            que, preferencialmente, sejam produzidos de forma sustentável e socialmente responsável.
+                            Buscamos desenvolver uma parceria de longo prazo com nossos clientes, colaboradores e
+                            fornecedores. Além disso, através de ações sociais, buscaremos retribuir à comunidade um
+                            pouco os benefícios que usufruímos.<br>
+                            Gratidão por sua visita!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="about__item">
+                        <h4>Missão</h4>
+                        <p style="text-align: justify;">
+                            Criar vínculos fortes e duradouros com fornecedores e clientes, oferecendo produtos e
+                            serviços excelentes e criativos para tornar cada presente uma celebração da vida, agindo
+                            sempre com responsabilidade social e ambiental.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="about__item">
+                        <h4></h4>
+                        <p style="text-align: justify;"></p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="about__item">
+                        <h4>Valores</h4>
+                        <p style="text-align: justify;">
+                            Respeito;<br>
+                            Humanidade;<br>
+                            Excelência;<br>
+                            Alegria responsável;<br>
+                            Gratidão.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- About Section End -->
+
+    <!-- Testimonial Section Begin -->
+    <section class="testimonial">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 p-0">
+                    <div class="testimonial__text">
+                        <h2>Fornecedores</h2>
+                        <p style="text-align: justify;">
+                            Mais que fornecedores (produtores, distribuidores e importadores), buscamos parceiros de
+                            valores e projetos de vida, que ofereçam produtos criativos, de excelente qualidade e que
+                            atuem com responsabilidade social e ambiental.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 p-0">
+                    <div class="testimonial__pic set-bg"
+                        data-setbg="{{ url_for('static', filename='img/about/testimonial-pic.jpg') }}"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Testimonial Section End -->
+
+    <!-- Client Section Begin -->
+    <section class="clients spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2>Parceiros fundamentais para nosso sucesso:</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-6">
+                    <a href="https://www.vinicolaenos.com.br/" class="client__item">
+                        <img src="{{ url_for('static', filename='img/clients/client-1.png') }}" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-4 col-6">
+                    <a href="https://www.instagram.com/ercoara/" class="client__item">
+                        <img src="{{ url_for('static', filename='img/clients/client-2.png') }}" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-4 col-6">
+                    <a href="https://www.luizargenta.com.br/site/" class="client__item">
+                        <img src="{{ url_for('static', filename='img/clients/client-3.png') }}" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-4 col-6">
+                    <a href="https://www.wine-co.com.br/" class="client__item">
+                        <img src="{{ url_for('static', filename='img/clients/client-4.png') }}" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Client Section End -->
+
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="#">
+                                <img src="{{ url_for('static', filename='img/footer-logo.png') }}" alt="">
+                            </a>
+                            <p>CNPJ: 17.269.787/0001-94</p>
+                        </div>
+                        <p>
+                            Olá!!! Seja muito bem-vind@!!! Foi de nossa alegria em celebrar a vida que nasceu a ideia de
+                            oferecer uma opção para tornar o ato de ‘presentear’ um momento inesquecível.
+                        </p>
+                        <a href="#">
+                            <img src="{{ url_for('static', filename='img/payment.png') }}" alt="">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Produtos</h6>
+                        <ul>
+                            <li><a href="{{ url_for('espumantes') }}">Espumantes</a></li>
+                            <li><a href="{{ url_for('vinho_branco') }}">Vinho Branco</a></li>
+                            <li><a href="{{ url_for('vinho_rose') }}">Vinho Rose e Laranja</a></li>
+                            <li><a href="{{ url_for('vinho_tinto') }}">Vinho Tinto</a></li>
+                            <li><a href="{{ url_for('embalagens') }}">Embalagens</a></li>
+                            <li><a href="{{ url_for('novidades') }}">Novidades</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Adega</h6>
+                        <ul>
+                            <li><a href="{{ url_for('sobre') }}">Sobre Nós</a></li>
+                            <li><a href="https://drive.google.com/drive/folders/14PDcnfqLvOx29E7UX5KuvZYn4GIrLh24"
+                                    target="_blank">Catálogos de Preços</a></li>
+                            <li><a href="https://linktr.ee/adegapresente" target="_blank">Catálogos de Produtos</a></li>
+                            <li><a href="https://api.whatsapp.com/send/?phone=556196127475&text&type=phone_number&app_absent=0"
+                                    target="_blank">Comprar Agora</a></li>
+                            <li><a href="https://www.instagram.com/p/C54Gw1kO5C6/?img_index=1"
+                                    target="_blank">Entrega</a></li>
+                            <li><a href="{{ url_for('contato') }}">Contato</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <a href="https://wa.me/556196127475" target="_blank" class="social-icon"><i
+                                class="fab fa-whatsapp"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61559981980043" target="_blank"
+                            class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/adegapresente/" target="_blank" class="social-icon"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@adegapresente" target="_blank" class="social-icon"><i
+                                class="fab fa-tiktok"></i></a>
+                        <p><br>É proibida a venda de bebidas alcoólicas para menores de 18 anos. Beber menos é beber
+                            melhor.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="footer__copyright__text">
+                        <p>Copyright ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>
+                            Todos os direitos reservados
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Js Plugins -->
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.nice-select.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.nicescroll.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.countdown.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.slicknav.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mixitup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compra Finalizada</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/adega.css') }}"
+    />
+  </head>
+  <body>
+    <h1>Compra Finalizada</h1>
+    <p>Obrigado por comprar conosco!</p>
+    <a href="{{ url_for('index') }}">Voltar à Página Inicial</a>
+  </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Limpa o contador de itens ao finalizar a compra
+      localStorage.removeItem("contadorCarrinho");
+      document.getElementById("contador-carrinho").innerText = 0;
+    });
+  </script>
+</html>

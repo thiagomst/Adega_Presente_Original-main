@@ -1,0 +1,324 @@
+/* Estilos gerais */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #672e69;
+  margin: 0;
+  padding: 0;
+}
+
+.bg {
+  background-color: #672e69;
+}
+
+/* Cabeçalho */
+h1 {
+  text-align: center;
+  color: #cac6c6;
+  margin-top: 80px;
+}
+
+/* Container do carrinho */
+.carrinho-container {
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.carrinho-container:hover {
+  transform: scale(1.02);
+}
+
+/* Lista de itens do carrinho */
+.carrinho-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.carrinho-item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding: 15px 0;
+  transition: background-color 0.3s;
+}
+
+.carrinho-item:hover {
+  background-color: #f9f9f9;
+}
+
+.carrinho-item:last-child {
+  border-bottom: none;
+}
+
+/* Imagem do produto */
+.carrinho-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 15px;
+  border: 1px solid #ddd;
+}
+
+/* Detalhes do produto */
+.carrinho-item-detalhes {
+  flex-grow: 1;
+}
+
+.carrinho-item-nome {
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+  margin: 0;
+}
+
+.carrinho-item-preco {
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0;
+}
+
+/* Botões de ação */
+.carrinho-item-acoes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Botões de quantidade */
+.botao-quantidade {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.botao-quantidade:hover {
+  background-color: #ddd;
+  transform: scale(1.1);
+}
+
+.botao-quantidade i {
+  color: #333;
+}
+
+/* Quantidade do produto */
+.quantidade {
+  font-size: 16px;
+  margin: 0 8px;
+  font-weight: bold;
+}
+
+/* Botão de remover */
+.botao-remover {
+  background-color: #ff4d4d;
+  border: none;
+  border-radius: 50%;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.botao-remover:hover {
+  background-color: #cc0000;
+  transform: scale(1.1);
+}
+
+.botao-remover i {
+  color: #fff;
+}
+
+/* Total do carrinho */
+.carrinho-total {
+  text-align: right;
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.carrinho-total span {
+  font-weight: bold;
+  color: #3483fa;
+}
+
+/* Botão de finalizar compra */
+.botao-finalizar {
+  display: block;
+  width: 100%;
+  max-width: 250px;
+  margin: 20px auto;
+  background-color: #00a650;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s;
+  font-weight: bold;
+}
+
+.botao-finalizar:hover {
+  background-color: #008f46;
+  transform: scale(1.05);
+}
+
+/* Link de continuar comprando */
+.continuar-comprando {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  color: #3483fa;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.continuar-comprando:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Reset básico
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
+  margin: 0;
+  padding: 0;
+} */
+
+/* Navegação */
+nav {
+  display: flex;
+  justify-content: space-between; /* Alinha os itens à esquerda e à direita */
+  align-items: center;
+  background-color: #007bff;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.nav-direita {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-right: 20px; /* Ajuste conforme necessário */
+}
+
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.menu li {
+  display: inline;
+}
+
+.menu a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Container para o carrinho e o botão "Sair" */
+.nav-direita {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto; /* Empurra o container para o canto direito */
+}
+
+/* Estilo do carrinho e botão "Sair" */
+.carrinho,
+.botao-sair {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 10px;
+  transition: background-color 0.3s;
+}
+
+.carrinho:hover,
+.botao-sair:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.botao-sair {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 10px;
+  margin-left: auto; /* Traz o botão para mais perto */
+  max-width: 120px; /* Evita que o botão fique grande demais */
+}
+
+#contador-carrinho {
+  font-weight: bold;
+  color: yellow;
+}
+
+/* Estilo do conteúdo */
+.conteudo {
+  margin-top: 80px;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Rodapé */
+footer {
+  text-align: center;
+  padding: 10px;
+  background-color: #333;
+  color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .carrinho-container {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .carrinho-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .carrinho-item img {
+    margin-bottom: 10px;
+  }
+
+  .carrinho-item-acoes {
+    justify-content: center;
+  }
+
+  .botao-finalizar {
+    width: 90%;
+  }
+}

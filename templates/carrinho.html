@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrinho de Compras</title>
+  <!-- Css Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/elegant-icons.css') }}" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/nice-select.css') }}" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/slicknav.min.css') }}" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+
+<body class="bg">
+  <header class="header">
+
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3 col-md-3">
+          <div class="header__logo">
+            <a href="{{ url_for('index') }}">
+              <img src="{{ url_for('static', filename='img/logo1.png') }}" alt="Descrição da imagem" width="110"
+                height="110">
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6">
+          <nav class="header__menu mobile-menu">
+            <ul>
+              <li><a href="{{ url_for('index') }}">Página Inicial</a></li>
+              <li><a href="{{ url_for('sobre') }}">Sobre Nós</a></li>
+              <li><a href="{{ url_for('vinhos') }}">Produtos</a></li>
+              <li><a href="{{ url_for('contato') }}">Contato</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <!-- Adicionando a classe col-lg-3 para alinhar corretamente -->
+        <div class="col-lg-3 col-md-3">
+          <div class="nav-direita">
+            <a href="{{ url_for('ver_carrinho') }}" class="carrinho">
+              🛒 Carrinho (<span id="contador-carrinho">0</span>)
+            </a>
+            <a href="{{ url_for('logout') }}" class="botao-sair">Sair</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Campo de CEP e botão para calcular frete -->
+      <div class="cep-container">
+        <label for="cep">Calcular Frete:</label>
+        <div class="cep-field">
+          <input type="text" id="cep" name="cep" placeholder="Digite seu CEP" maxlength="8" />
+          <button onclick="calcularFrete()">
+            <i class="fas fa-truck"></i> Calcular
+          </button>
+        </div>
+        <div id="frete-container">
+          <span>Frete:</span>
+          <span id="valor-frete">R$ 0.00</span>
+        </div>
+      </div>
+
+      <div class="canvas__open"><i class="fa fa-bars"></i></div>
+    </div>
+  </header>
+
+  <h1>Carrinho de Compras</h1>
+
+  <div class="carrinho-container">
+    <ul class="carrinho-lista">
+      {% for item in carrinho %}
+      <li class="carrinho-item" data-id="{{ item['id'] }}" data-preco="{{ item['preco'] }}">
+        <!-- Imagem do produto -->
+        <img src="{{ url_for('static', filename='img/garrafas-de-vinho-porto.jpg') }}" alt="{{ item['nome'] }}" />
+        <div class="carrinho-item-detalhes">
+          <p class="carrinho-item-nome">{{ item['nome'] }}</p>
+          <p class="carrinho-item-preco">
+            R$ {{ "%.2f"|format(item['preco']) }}
+          </p>
+        </div>
+        <div class="carrinho-item-acoes">
+          <!-- Botão de diminuir quantidade -->
+          <button class="botao-quantidade" onclick="diminuirQuantidade({{ item['id'] }})">
+            <i class="fas fa-minus"></i>
+          </button>
+          <!-- Quantidade do produto -->
+          <span class="quantidade" id="quantidade-{{ item['id'] }}">{{ item['quantidade'] }}</span>
+          <!-- Botão de aumentar quantidade -->
+          <button class="botao-quantidade" onclick="aumentarQuantidade({{ item['id'] }})">
+            <i class="fas fa-plus"></i>
+          </button>
+          <!-- Ícone de lixeira para remover -->
+          <button class="botao-remover" onclick="removerItem({{ item['id'] }})">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="carrinho-total">
+      Total: <span id="total-carrinho">R$ {{ total | round(2) }}</span>
+    </div>
+
+    <button class="botao-finalizar">Finalizar Compra</button>
+    <a href="{{ url_for('index') }}" class="continuar-comprando">Continuar Comprando</a>
+  </div>
+
+  <!-- JavaScript para manipular a quantidade e remover itens -->
+  <script>
+    // Função para enviar uma requisição ao backend
+    async function enviarRequisicao(url, dados) {
+      try {
+        const resposta = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dados),
+        });
+        return await resposta.json();
+      } catch (erro) {
+        console.error("Erro na requisição:", erro);
+        return { status: "error", message: "Erro na requisição." };
+      }
+    }
+
+    // Função para recalcular o total
+    function atualizarTotal() {
+      const itens = document.querySelectorAll(".carrinho-item");
+      let total = 0;
+
+      itens.forEach((item) => {
+        const preco = parseFloat(item.getAttribute("data-preco"));
+        const quantidade = parseInt(
+          item.querySelector(".quantidade").textContent
+        );
+        total += preco * quantidade;
+      });
+
+      // Atualiza o total na página
+      const totalElemento = document.getElementById("total-carrinho");
+      totalElemento.textContent = `R$ ${total.toFixed(2).replace(".", ",")}`;
+    }
+
+    // Função para diminuir a quantidade
+    async function diminuirQuantidade(itemId) {
+      const quantidadeElemento = document.getElementById(
+        `quantidade-${itemId}`
+      );
+      let quantidade = parseInt(quantidadeElemento.textContent);
+      if (quantidade > 1) {
+        quantidade--;
+        quantidadeElemento.textContent = quantidade;
+
+        // Atualiza a quantidade no backend
+        const resposta = await enviarRequisicao(
+          `/atualizar_quantidade/${itemId}`,
+          { quantidade: quantidade }
+        );
+        if (resposta.status === "success") {
+          console.log(resposta.message);
+        } else {
+          console.error(resposta.message);
+        }
+
+        atualizarTotal(); // Recalcula o total
+      }
+    }
+
+    // Função para aumentar a quantidade
+    async function aumentarQuantidade(itemId) {
+      const quantidadeElemento = document.getElementById(
+        `quantidade-${itemId}`
+      );
+      let quantidade = parseInt(quantidadeElemento.textContent);
+      quantidade++;
+      quantidadeElemento.textContent = quantidade;
+
+      // Atualiza a quantidade no backend
+      const resposta = await enviarRequisicao(
+        `/atualizar_quantidade/${itemId}`,
+        { quantidade: quantidade }
+      );
+      if (resposta.status === "success") {
+        console.log(resposta.message);
+      } else {
+        console.error(resposta.message);
+      }
+
+      atualizarTotal(); // Recalcula o total
+    }
+
+    // Função para remover um item
+    async function removerItem(itemId) {
+      if (confirm("Tem certeza que deseja remover este item?")) {
+        const resposta = await enviarRequisicao(
+          `/remover_item/${itemId}`,
+          {}
+        );
+
+        if (resposta.status === "success") {
+          const itemElemento = document.querySelector(
+            `[data-id="${itemId}"]`
+          );
+          if (itemElemento) {
+            itemElemento.remove(); // Remove o item da lista
+          }
+          atualizarTotal(); // Recalcula o total
+          alert("Item removido com sucesso!");
+        } else {
+          alert(resposta.message);
+        }
+
+        atualizarContadorCarrinho(); // Atualiza o contador de itens
+      }
+    }
+
+    // Função para atualizar o contador do carrinho
+    function atualizarContadorCarrinho() {
+      const carrinho = {{ carrinho | tojson | safe
+    }};  // Use a variável do template
+    const contadorCarrinho = document.getElementById('contador-carrinho');
+
+    if (carrinho && Array.isArray(carrinho)) {
+      const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
+      contadorCarrinho.textContent = totalItens;
+    } else {
+      contadorCarrinho.textContent = 0;
+    }
+      }
+
+    // Chame a função ao carregar a página
+    window.onload = function () {
+      atualizarContadorCarrinho();
+      atualizarTotal();
+    };
+  </script>
+
+  <!-- Incluir o footer -->
+  {% include 'footer.html' %}
+
+  <!-- Js Plugins -->
+  <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery.nice-select.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery.nicescroll.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery.countdown.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery.slicknav.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/mixitup.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/carrinho.js') }}"></script>
+
+  <!-- Font Awesome (CDN) -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+
+</html>

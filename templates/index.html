@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<!-- Finalizado -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="ADEGA PRESENTE - Celebrando Cada Momento.">
+    <meta name="keywords"
+        content="vinhos, adega, vinhos premium, comprar vinhos, vinhos online, ADEGA PRESENTE, enologia, harmonização de vinhos, Brasília, Plano Piloto, Brasil, DF.">
+    <meta name="author" content="ADEGA PRESENTE">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ADEGA PRESENTE</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elegant-icons.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nice-select.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slicknav.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Inclua jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Inclua Owl Carousel CSS -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+    <!-- Inclua Owl Carousel JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+
+
+    <style>
+
+        /* Posiciona o alerta no centro da navegação */
+.flash-messages {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(16, 180, 1, 0.8);
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Estilo do botão para fechar */
+.flash-close {
+  background-color: #fff;
+  color: #333;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Efeito de fade-out */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+        /* Estilo básico para o popup */
+        #ageCheckPopup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+
+
+        }
+
+        #ageCheckContent {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        #ageCheckButtons button {
+            margin: 10px;
+
+
+        }
+
+        #ageYes {
+            background: #aa1c21;
+            color: #e2e2e2;
+
+        }
+    </style>
+
+    <style>
+        /* Estilo para o container do conteúdo */
+        .info-container {
+            display: flex;
+            align-items: center;
+            padding: 0px;
+            background-color: #ffffff;
+            /* Cor de fundo clara */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        /* Estilo para a imagem */
+        .info-image {
+            width: 40%;
+            /* A imagem ocupa 40% do container */
+            margin-right: 20px;
+            /* Espaço entre imagem e texto */
+            border-radius: 8px;
+        }
+
+        /* Estilo para o texto */
+        .info-text {
+            flex: 1;
+            /* O texto ocupa o restante do espaço */
+        }
+
+        .info-text h2 {
+            margin-top: 0;
+            color: #333;
+            /* Cor do título */
+        }
+
+        .info-text p {
+            color: #0a0a0a;
+            /* Cor do texto */
+            margin-bottom: 20px;
+        }
+
+        /* Estilo para o botão */
+        .info-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #aa1c21;
+            /* Cor de fundo do botão */
+            color: #ffffff;
+            /* Cor do texto */
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .info-button:hover {
+            background-color: #0e0e0e;
+            /* Cor do botão ao passar o mouse */
+        }
+    </style>
+    <style>
+        /* Estilo para o banner principal */
+        .main-banner {
+            background: url('https://via.placeholder.com/1200x400') no-repeat center center;
+            background-size: cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .main-banner h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(247, 247, 247, 0.6);
+        }
+
+        /* Estilo para a faixa vermelha */
+        .discount-banner {
+            background-color: #aa1c21;
+            /* Vermelho */
+            color: #ff0404;
+            /* Texto branco */
+            padding: 4px;
+            /* Padding padrão */
+            text-align: center;
+        }
+
+        .discount-banner h2 {
+            font-size: 1.5rem;
+            color: #ffffff;
+        }
+
+        .discount-banner p {
+            color: #ffffff;
+        }
+
+        .discount-button {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #717171;
+            /* Fundo branco */
+            color: #ffffff;
+            /* Texto vermelho */
+            border: 2px solid #fff;
+            /* Borda branca */
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .discount-button:hover {
+            background-color: #0e0e0e;
+            /* Fundo cinza claro ao passar o mouse */
+            border-color: #1a1a1a;
+            /* Borda cinza claro */
+        }
+
+        /* Ajustes para dispositivos móveis */
+        @media (max-width: 768px) {
+
+            /* Altere o valor conforme necessário */
+            .discount-banner {
+                padding: 5px;
+                /* Reduzir o padding em dispositivos móveis */
+                margin: 5px;
+                /* Reduzir a margem, se necessário */
+            }
+
+            .discount-banner h2 {
+                font-size: 1.2rem;
+                /* Diminuir o tamanho da fonte no celular */
+            }
+
+            .discount-button {
+                font-size: 14px;
+                /* Diminuir o tamanho do botão */
+            }
+        }
+
+
+        /* Estilo para o container do conteúdo */
+        .info-container {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: #f5f5f5;
+            /* Cor de fundo clara */
+            border: 1px solid #ddd;
+            /* Borda sutil */
+            border-radius: 8px;
+            /* Bordas arredondadas */
+            max-width: 800px;
+            margin: 20px auto;
+            /* Margem centralizada */
+        }
+
+        /* Estilo para a imagem */
+        .info-image {
+            width: 40%;
+            /* A imagem ocupa 40% do container */
+            margin-right: 20px;
+            /* Espaço entre imagem e texto */
+            border-radius: 8px;
+        }
+
+        /* Estilo para o texto */
+        .info-text {
+            flex: 1;
+            /* O texto ocupa o restante do espaço */
+            color: #ffffff;
+        }
+
+        .info-text h2 {
+            margin-top: 0;
+            color: #ffffff;
+            /* Cor do título */
+        }
+
+        .info-text p {
+            color: #fefefe;
+            /* Cor do texto */
+            margin-bottom: 20px;
+        }
+
+        /* Estilo para o botão */
+        .info-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            /* Cor de fundo do botão */
+            color: #fff;
+            /* Cor do texto */
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .info-button:hover {
+            background-color: #0056b3;
+            /* Cor do botão ao passar o mouse */
+        }
+    </style>
+
+    <style>
+        a.custom-link {
+            color: #e51919;
+            /* Mantém a cor do texto padrão */
+            text-decoration: none;
+            /* Remove o sublinhado */
+        }
+
+        a.custom-link:hover {
+            text-decoration: underline;
+            /* Substitua se desejar um efeito de destaque ao passar o mouse */
+        }
+    </style>
+
+
+</head>
+<!-- Botão WhatsAP-->
+<!-- START Widget WhastApp hospedagemwordpresspro -->
+<a href="https://api.whatsapp.com/send?phone=5561996127475&text=Estamos%20aqui%20para%20ajudar!%20Como%20podemos%20ser%20úteis%20hoje?"
+    id="waurlsite" class="bt-whatsApp" target="_blank"
+    style="right:25px; position:fixed;width:60px;height:60px;bottom:40px;z-index:100;">
+    <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxzdmcgdmlld0JveD0iMjYxOSA1MDYgMTIwIDEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogIzI3ZDA0NTsKICAgICAgfQoKICAgICAgLmNscy0yLCAuY2xzLTUgewogICAgICAgIGZpbGw6IG5vbmU7CiAgICAgIH0KCiAgICAgIC5jbHMtMiB7CiAgICAgICAgc3Ryb2tlOiAjZmZmOwogICAgICAgIHN0cm9rZS13aWR0aDogNXB4OwogICAgICB9CgogICAgICAuY2xzLTMgewogICAgICAgIGZpbGw6ICNmZmY7CiAgICAgIH0KCiAgICAgIC5jbHMtNCB7CiAgICAgICAgc3Ryb2tlOiBub25lOwogICAgICB9CiAgICA8L3N0eWxlPjwvZGVmcz48ZyBkYXRhLW5hbWU9Ikdyb3VwIDM2IiBpZD0iR3JvdXBfMzYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzMDAgNzMpIj48Y2lyY2xlIGNsYXNzPSJjbHMtMSIgY3g9IjYwIiBjeT0iNjAiIGRhdGEtbmFtZT0iRWxsaXBzZSAxOCIgaWQ9IkVsbGlwc2VfMTgiIHI9IjYwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMTkgNDMzKSIvPjxnIGRhdGEtbmFtZT0iR3JvdXAgMzUiIGlkPSJHcm91cF8zNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjU0IDM4NikiPjxnIGRhdGEtbmFtZT0iR3JvdXAgMzQiIGlkPSJHcm91cF8zNCI+PGcgY2xhc3M9ImNscy0yIiBkYXRhLW5hbWU9IkVsbGlwc2UgMTkiIGlkPSJFbGxpcHNlXzE5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NCA3NSkiPjxjaXJjbGUgY2xhc3M9ImNscy00IiBjeD0iMzEuNSIgY3k9IjMxLjUiIHI9IjMxLjUiLz48Y2lyY2xlIGNsYXNzPSJjbHMtNSIgY3g9IjMxLjUiIGN5PSIzMS41IiByPSIyOSIvPjwvZz48cGF0aCBjbGFzcz0iY2xzLTMiIGQ9Ik0xNDI0LDE5MWwtNC42LDE2LjMsMTYuOS00LjcuOS01LjItMTEsMy41LDIuOS0xMC41WiIgZGF0YS1uYW1lPSJQYXRoIDEyNiIgaWQ9IlBhdGhfMTI2IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTMyNSAtNjgpIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMTI2Niw5MGMwLS4xLDMuNS0xMS43LDMuNS0xMS43bDguNCw3LjlaIiBkYXRhLW5hbWU9IlBhdGggMTI3IiBpZD0iUGF0aF8xMjciIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMTY1IDQzKSIvPjwvZz48cGF0aCBjbGFzcz0iY2xzLTMiIGQ9Ik0xNDM5LjMsMTYwLjZhOS40LDkuNCwwLDAsMC0zLjksNi4xYy0uNSwzLjksMS45LDcuOSwxLjksNy45YTUwLjg3Niw1MC44NzYsMCwwLDAsOC42LDkuOCwzMC4xODEsMzAuMTgxLDAsMCwwLDkuNiw1LjEsMTEuMzc4LDExLjM3OCwwLDAsMCw2LjQuNiw5LjE2Nyw5LjE2NywwLDAsMCw0LjgtMy4yLDkuODUxLDkuODUxLDAsMCwwLC42LTIuMiw1Ljg2OCw1Ljg2OCwwLDAsMCwwLTJjLS4xLS43LTcuMy00LTgtMy44cy0xLjMsMS41LTIuMSwyLjYtMS4xLDEuNi0xLjksMS42LTQuMy0xLjQtNy42LTQuNGExNS44NzUsMTUuODc1LDAsMCwxLTQuMy02cy42LS43LDEuNC0xLjhhNS42NjQsNS42NjQsMCwwLDAsMS4zLTIuNGMwLS41LTIuOC03LjYtMy41LTcuOUExMS44NTIsMTEuODUyLDAsMCwwLDE0MzkuMywxNjAuNloiIGRhdGEtbmFtZT0iUGF0aCAxMjgiIGlkPSJQYXRoXzEyOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEzMjYuMzMyIC02OC40NjcpIi8+PC9nPjwvZz48L3N2Zz4="
+        alt="" width="60px">
+</a>
+<span id="alertWapp"
+    style="right:30px; visibility: hidden; position:fixed;	width:17px;	height:17px;bottom:90px; background:red;z-index:101; font-size:11px;color:#f00707;text-align:center;border-radius: 50px; font-weight:bold;line-height: normal; ">
+    1 </span>
+<div id="msg1"
+    style="right: 90px; visibility: hidden; background: #fff;color: #000;position: fixed;width: 100px;bottom: 55px;font-size: 12px;line-height: 13px;padding: 3px; border-radius: 10px; border:1px solid #e2e2e2; box-shadow: 2px 2px 3px #999;z-index:100; ">
+    Para compras ou mais informações, chame!</div>
+<script
+    type="text/javascript">function showIt2() { document.getElementById("msg1").style.visibility = "visible"; } setTimeout("showIt2()", 5000); function hiddenIt() { document.getElementById("msg1").style.visibility = "hidden"; } setTimeout("hiddenIt()", 15000); function showIt3() { document.getElementById("msg1").style.visibility = "visible"; } setTimeout("showIt3()", 25000); msg1.onclick = function () { document.getElementById('msg1').style.visibility = "hidden"; }; function alertW() { document.getElementById("alertWapp").style.visibility = "visible"; } setTimeout("alertW()", 15000); </script>
+<!-- END Widget WhastApp -->
+
+
+<body>
+
+
+
+
+    <!-- POPUP maior de 18 anos -->
+    <div id="ageCheckPopup" style="display: none;">
+        <div id="ageCheckContent">
+            <h4>ADEGA PRESENTE</h4>
+            <h6>Celebre cada momento!</h6>
+            <h4>Você tem mais de 18 anos?</h4>
+            <div id="ageCheckButtons">
+                <button id="ageYes">SIM</button>
+                <button id="ageNo">NÃO</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para mostrar o popup
+        function showAgeCheckPopup() {
+            document.getElementById('ageCheckPopup').style.display = 'flex';
+        }
+
+        // Função para esconder o popup e redirecionar
+        function handleAgeConfirmation(isAdult) {
+            var popup = document.getElementById('ageCheckPopup');
+            if (isAdult) {
+                popup.style.display = 'none';
+                // Armazena a confirmação no sessionStorage
+                sessionStorage.setItem('ageConfirmed', 'true');
+            } else {
+                // Redireciona ou realiza outra ação caso o usuário não seja maior de idade
+                window.location.href = '#'; // Mude para a URL que você deseja
+            }
+        }
+
+        // Evento de clique nos botões
+        document.getElementById('ageYes').addEventListener('click', function () {
+            handleAgeConfirmation(true);
+        });
+
+        document.getElementById('ageNo').addEventListener('click', function () {
+            handleAgeConfirmation(false);
+        });
+
+        // Mostra o popup quando a página carrega
+        window.onload = function () {
+            // Verifica se o usuário já confirmou a idade
+            if (!sessionStorage.getItem('ageConfirmed')) {
+                showAgeCheckPopup();
+            }
+        };
+    </script>
+
+
+    <!--  Menu  -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__option">
+            <div class="offcanvas__links">
+                <a href="https://wa.me/556196127475" target="_blank" class="social-icon"><i
+                        class="fab fa-whatsapp"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=61559981980043" target="_blank" class="social-icon"><i
+                        class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/adegapresente/" target="_blank" class="social-icon"><i
+                        class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@adegapresente" target="_blank" class="social-icon"><i
+                        class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+        <div class="offcanvas__nav__option">
+            <div class="price"></div>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__text">
+            <p>ADEGA PRESENTE - Celebrando com Coração. </p>
+        </div>
+    </div>
+    <!--  fim do Menu  -->
+
+    <!--Início da seção de cabeçalho-->
+    <header class="header">
+        </div>
+        </div>
+        <div class="col-lg-6 col-md-5 text-right">
+
+        </div>
+        </div>
+        </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                        <a href="{{ url_for('index') }}">
+                            <img src="{{ url_for('static', filename='img/logo1.png') }}" alt="Descrição da imagem"
+                                width="110" height="110">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li><a href="{{ url_for('index') }}">Página Inicial</a></li>
+                            <li><a href="{{ url_for('sobre') }}">Sobre Nós</a></li>
+                            <li><a href="{{ url_for('vinhos') }}">Produtos</a></li>
+                            <li><a href="{{ url_for('contato') }}">Contato</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- Adicionando a classe col-lg-3 para alinhar corretamente -->
+                <div class="nav-direita">
+                    <a href="{{ url_for('ver_carrinho') }}" class="carrinho">
+                      🛒 Carrinho (<span id="contador-carrinho">0</span>)
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="botao-sair">Sair</a>
+                  </div>
+            
+                  <div class="flash-messages">
+                    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+                    messages %} {% for category, message in messages %}
+                    <div class="flash {{ category }}">
+                      {{ message }}
+                      <button class="flash-close" onclick="fecharMensagem(this)">OK</button>
+                    </div>
+                    {% endfor %} {% endif %} {% endwith %}
+                  </div>
+            </div>
+
+
+
+
+
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
+
+        </div>
+
+    </header>
+    <!-- Header  End -->
+
+    <!-- slide -->
+    <div class="hero__slider owl-carousel">
+        {% for imagem in imagens %}
+        <div class="slide">
+            <img src="{{ url_for('serve_image', filename='img/hero/' + imagem) }}" alt="Banner">
+        </div>
+        {% endfor %}
+    </div>
+
+
+
+    <!-- Botões personalizados -->
+    <button class="custom-prev"><i class="fas fa-chevron-left"></i></button>
+    <button class="custom-next"><i class="fas fa-chevron-right"></i></button>
+
+
+    <script src="script.js"></script>
+    <!--slide fim -->
+
+    </br>
+
+
+
+
+
+    <!-- Faixa vermelha com política de desconto -->
+    <div class="discount-banner">
+        <h2>Desconto Presente Progressivo</h2>
+        <p>Descontos cumulativos para todos os rótulos disponíveis, exceto aqueles em promoção.</br></p>
+        <h5>
+            <ul style="color: white;">
+                <li>✔ 1 (uma) garrafa, preço do site;</li>
+                <li>✔ Até 2 (duas) garrafas, 5% desconto ou cashback de 10% na próxima compra;</li>
+                <li>✔ 3 (três) ou mais garrafas, 10% de desconto ou cashback de 15% na próxima compra.</li>
+            </ul>
+        </h5>
+    </div>
+    </div>
+    </br>
+    </br>
+    <h3>
+        <center><b>Saiba mais sobre produtos e preços clicando abaixo:</b></a></center>
+    </h3>
+
+    <nav class="menu-categorias">
+        <a href="{{ url_for('espumantes') }}" class="categoria">Espumantes</a>
+        <a href="{{ url_for('vinhos') }}" class="categoria">Vinho Branco</a>
+        <a href="{{ url_for('vinho_rose') }}" class="categoria">Vinho Rose e Laranja</a>
+        <a href="{{ url_for('vinho_tinto') }}" class="categoria">Vinho Tinto</a>
+        <a href="{{ url_for('embalagens') }}" class="categoria">Embalagens Artesanais</a>
+        <a href="{{ url_for('novidades') }}" class="categoria">Novidades</a>
+    </nav>
+
+
+
+
+    <!-- Banner Section Begin 
+    <section class="banner spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 offset-lg-4">
+                    <div class="banner__item">
+                        <div class="banner__item__pic">
+                            <img src="img/banner/banner-1.jpg" alt="">
+                        </div>
+                        <div class="banner__item__text">
+                            <h5><b>Abraço Malbec Gran Reserva 2018</b>
+                            </h5>
+                            <a href="https://api.whatsapp.com/send/?phone=556196127475&text&type=phone_number&app_absent=0">Comprar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="banner__item banner__item--middle">
+                        <div class="banner__item__pic">
+                            <img src="img/banner/banner-2.jpg" alt="">
+                        </div>
+                        <div class="banner__item__text">
+                            <h5><b>Luiz Argenta Gewurztraminer </b></h5>
+                            <a href="https://api.whatsapp.com/send/?phone=556196127475&text&type=phone_number&app_absent=0">Comprar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="banner__item banner__item--last">
+                        <div class="banner__item__pic">
+                            <img src="img/banner/banner-3.jpg" alt="">
+                        </div>
+                        <div class="banner__item__text">
+                            <h5><b> Rosé Brasileiro Syrah Canindé Ercoara</b></h5>
+                            <a href="https://api.whatsapp.com/send/?phone=556196127475&text&type=phone_number&app_absent=0">Comprar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    Banner Section End -->
+
+
+
+    <!-- Product Section Begin -->
+    <section class="product spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+
+
+
+                    </ul>
+                </div>
+            </div>
+
+            <h4>
+                <center> Para compras ou mais informações, chame pelo <a
+                        href="https://api.whatsapp.com/send/?phone=556196127475&text&type=phone_number&app_absent=0"
+                        class="custom-link" target="_blank"><b>WhatsApp</b></a>
+                    </br>
+                    </br>
+
+                    <!-- Vinhos  página inicial-->
+                    <div class="row product__filter">
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                            <div class="product__item">
+                                <a href="espumantes.html" class="product__item__pic set-bg">
+                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg"></div>
+                                </a>
+                                <div class="product__item__text">
+                                    <center>
+                                        <h6>Espumante Brut Branco - Vinícola Luiz Argenta, Brasil
+                                        </h6>
+                                    </center>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
+                            <div class="product__item">
+                                <a href="vinhos.html" class="product__item__pic set-bg">
+                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
+                                    </div>
+                                </a>
+                                <div class="product__item__text">
+                                    <center>
+                                        <h6>Branco LA Jovem – Gewurztraminer 2023 - Vinícola Luiz Argenta, Brasil
+
+
+                                        </h6>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                            <div class="product__item sale">
+                                <a href="vinhosrose.html" class="product__item__pic set-bg">
+                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">
+                                    </div>
+                                </a>
+                                <div class="product__item__text">
+
+                                    <center>
+                                        <h6>Rosé Audrey LA Jovem – Pinot Noir e Shyraz 2023 - Vinícola Luiz Argenta,
+                                            Brasil
+
+                                        </h6>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
+                            <div class="product__item">
+                                <a href="vinhosrose.html" class="product__item__pic set-bg">
+                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-6.jpg">
+                                    </div>
+                                </a>
+                                <div class="product__item__text">
+                                    <center>
+                                        <h6>Vinho Laranja Equis Moscatel Naranjo – Natural – Muscat d’ Alexadrie 2022 -
+                                            Vinícola Andes Cru, Chile
+
+
+                                        </h6>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                            <div class="product__item">
+                                <a href="vinhostinto2.html" class="product__item__pic set-bg">
+                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-5.jpg">
+                                    </div>
+                                </a>
+                                <ul class="product__hover">
+
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6>Tinto L’Alegria Cepas Viejas Arcilla - Biodinâmico – uva Bobal 2019 -
+                                                Vinícola Bruno Murciano, Espanha
+
+
+                                            </h6>
+                                        </center>
+
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
+                            <div class="product__item sale">
+                                <a href="vinhostinto.html" class="product__item__pic set-bg">
+                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-4.jpg">
+                                    </div>
+                                </a>
+                                <div class="product__item__text">
+                                    <center>
+                                        <h6>Tinto Mona Lisa – Gran Reserva Teroldego Colheita Centenária 2020 - Enos
+                                            Vinhos de Boutique, Brasil
+
+                                        </h6>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                            <div class="product__item">
+                                <a href="vinhostinto.html" class="product__item__pic set-bg">
+                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-7.jpg">
+                                    </div>
+                                </a>
+                                <div class="product__item__text">
+                                    <center>
+                                        <h6>Tinto Abraço - Gran Reserva Malbec 2018 - Enos Vinhos de Boutique, Brasil
+                                        </h6>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
+                            <div class="product__item">
+                                <a href="vinhostinto.html" class="product__item__pic set-bg">
+
+                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-8.jpg">
+
+                                    </div>
+                                </a>
+                                <div class="product__item__text">
+                                    <center>
+                                        <h6>Tinto Tolstoy Amizade – Gran Reserva Malbec 2018 – Enos Vinhos de Boutique,
+                                            Brasil
+                                        </h6>
+                                    </center>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </section>
+    <!-- Product Section End -->
+
+    <!-- Categories Section Begin -->
+    <section class="clients spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title"></br>
+                        <h2>Para obter mais informações sobre os vinhos, clique no fornecedor:</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-6">
+                    <a href="https://www.vinicolaenos.com.br/" class="client__item"><img src="img/clients/client-1.png"
+                            alt=""></a>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-4 col-6">
+                    <a href="https://www.instagram.com/ercoara/" class="client__item"><img
+                            src="img/clients/client-2.png" alt=""></a>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-4 col-6">
+                    <a href="https://www.luizargenta.com.br/site/" class="client__item"><img
+                            src="img/clients/client-3.png" alt=""></a>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-4 col-6">
+                    <a href="https://www.wine-co.com.br/" class="client__item"><img src="img/clients/client-4.png"
+                            alt=""></a>
+                </div>
+
+            </div>
+        </div>
+        </div>
+    </section>
+
+
+
+
+    <!-- Incluir o footer -->
+    {% include 'footer.html' %}
+
+    <!-- Js Plugins -->
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.nice-select.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.nicescroll.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.countdown.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.slicknav.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mixitup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/carrinho.js') }}"></script>
+
+    <!-- Font Awesome (CDN) -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciar Imagens</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Reset básico */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        line-height: 1.6;
+        padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 2.5rem;
+        color: #007bff;
+        font-weight: 600;
+      }
+
+      .produtos-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+      }
+
+      .produto-card {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .produto-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .produto-imagem {
+        position: relative;
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+      }
+
+      .produto-imagem img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px 12px 0 0;
+      }
+
+      .editar-imagem {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        padding: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .editar-imagem:hover {
+        background-color: rgba(255, 255, 255, 1);
+      }
+
+      .editar-imagem i {
+        color: #007bff;
+        font-size: 1.2rem;
+      }
+
+      .produto-info {
+        padding: 15px;
+      }
+
+      .produto-info h3 {
+        font-size: 1.4rem;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .produto-info p {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 5px;
+      }
+
+      .opcoes-edicao {
+        display: none;
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        z-index: 10;
+      }
+
+      .opcoes-edicao button {
+        display: block;
+        width: 100%;
+        padding: 8px 12px;
+        margin-bottom: 5px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .opcoes-edicao button:hover {
+        background-color: #0056b3;
+      }
+
+      .btn-voltar {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #6c757d;
+        color: #fff;
+        border-radius: 8px;
+        text-align: center;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        margin-top: 20px;
+      }
+
+      .btn-voltar:hover {
+        background-color: #5a6268;
+        transform: translateY(-2px);
+      }
+
+      .btn-voltar:active {
+        transform: translateY(0);
+      }
+
+      /* Input de arquivo oculto */
+      .file-input {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Gerenciar Imagens</h1>
+
+    <!-- Lista de Produtos -->
+    <div class="produtos-container">
+      {% for produto in produtos %}
+      <div class="produto-card">
+        <div class="produto-imagem">
+          <img
+            id="imagem-{{ produto.id }}"
+            src="{{ url_for('static', filename='img/' + produto.imagem) }}"
+            alt="{{ produto.nome }}"
+          />
+          <div class="editar-imagem" onclick="mostrarOpcoes({{ produto.id }})">
+            <i class="fas fa-edit"></i>
+          </div>
+          <div id="opcoes-{{ produto.id }}" class="opcoes-edicao">
+            <button
+              onclick="document.getElementById('file-input-{{ produto.id }}').click()"
+            >
+              Escolher Imagem
+            </button>
+            <button onclick="salvarImagem({{ produto.id }})">
+              Salvar Imagem
+            </button>
+          </div>
+
+          <!-- Input de arquivo oculto -->
+          <input
+            type="file"
+            id="file-input-{{ produto.id }}"
+            class="file-input"
+            accept="image/*"
+            onchange="visualizarImagem(event, {{ produto.id }})"
+          />
+        </div>
+        <div class="produto-info">
+          <h3>{{ produto.nome }}</h3>
+          <p>Preço: R$ {{ "%.2f"|format(produto.preco) }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Botão Voltar -->
+    <a href="{{ url_for('admin.admin_dashboard') }}" class="btn-voltar"
+      >Voltar ao Painel</a
+    >
+
+    <script>
+      function mostrarOpcoes(id) {
+        const opcoes = document.getElementById(`opcoes-${id}`);
+        opcoes.style.display =
+          opcoes.style.display === "block" ? "none" : "block";
+      }
+
+      // Exibir a imagem antes de salvar
+      function visualizarImagem(event, id) {
+        const input = event.target;
+        const imagem = document.getElementById(`imagem-${id}`);
+
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+            imagem.src = e.target.result; // Atualiza a imagem visível
+          };
+
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+
+      // Função para enviar a imagem para o servidor e atualizar a imagem
+      function salvarImagem(id) {
+        const input = document.getElementById(`file-input-${id}`);
+        const formData = new FormData();
+
+        // Verifica se o arquivo foi selecionado
+        if (input.files && input.files[0]) {
+          formData.append("imagem", input.files[0]);
+
+          // Envia a imagem para o servidor usando fetch
+          fetch(`/admin/imagens/upload/${id}`, {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                alert("Imagem salva com sucesso!");
+
+                // Atualiza a imagem visível na página com o novo caminho
+                const imagem = document.getElementById(`imagem-${id}`);
+                imagem.src = data.new_image_path; // Caminho da nova imagem
+              } else {
+                alert("Erro ao salvar a imagem.");
+              }
+            })
+            .catch((error) => {
+              console.error("Erro:", error);
+              alert("Houve um problema ao tentar salvar a imagem.");
+            });
+        } else {
+          alert("Por favor, selecione uma imagem.");
+        }
+      }
+    </script>
+  </body>
+</html>

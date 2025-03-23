@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adega Login</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style1.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/media.css') }}" />
+
+  <!-- JS & jQuery -->
+  <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="container">
+    <div class="banner">
+      <img src="/static/img/login.png" alt="Imagem de Login" class="banner-img">
+      <p class="banner-texto">
+        Seja bem vindo, acesse e aproveite todo o conteúdo,
+        <br />somos uma equipe de profissionais empenhados em <br />trazer o
+        melhor conteúdo direcionado a você, usuário.
+      </p>
+    </div>
+
+    <div class="box-login">
+      <h1>
+        Olá!<br />
+        Seja bem vindo a nossa adega.
+      </h1>
+
+      <div class="box">
+        <h2>faça o seu login agora</h2>
+
+        <!-- Mensagens de flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <!-- Formulário de login -->
+        <form method="POST" action="{{ url_for('login') }}">
+          <input type="text" name="username" id="username" placeholder="Nome de usuário" required autocomplete="off" />
+          <input type="password" name="password" id="password" placeholder="Senha" required autocomplete="off" />
+
+          <a href="{{ url_for('password') }}">
+            <p>Esqueceu a sua senha?</p>
+          </a>
+
+          <button type="submit">Login</button>
+
+          <a href="{{ url_for('account') }}">
+            <p>Criar uma conta</p>
+          </a>
+        </form>
+
+        <div class="social">
+          <img src="{{ url_for('static', filename='img/facebook.png') }}" alt="facebook" />
+          <img src="{{ url_for('static', filename='img/google.png') }}" alt="google" />
+          <img src="{{ url_for('static', filename='img/twitter.png') }}" alt="twitter" />
+          <img src="{{ url_for('static', filename='img/github.png') }}" alt="github" />
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

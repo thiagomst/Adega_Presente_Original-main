@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel Administrativo</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+      .dashboard {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 20px;
+      }
+      .card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 15px;
+        padding: 20px;
+        width: 200px;
+        text-align: center;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+      .card i {
+        font-size: 40px;
+        color: #007bff;
+      }
+      .card h3 {
+        margin-top: 10px;
+        font-size: 18px;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="text-align: center; margin-top: 20px">Painel Administrativo</h1>
+    <div class="dashboard">
+      <div
+        class="card"
+        onclick="window.location.href='{{ url_for('admin.admin_produtos') }}'"
+      >
+        <i class="fas fa-cogs"></i>
+        <h3>Gerenciar Produtos</h3>
+      </div>
+      <div
+        class="card"
+        onclick="window.location.href='{{ url_for('imagem.admin_imagens') }}'"
+      >
+        <i class="fas fa-image"></i>
+        <h3>Gerenciar Imagens</h3>
+      </div>
+      <div
+        class="card"
+        onclick="window.location.href='{{ url_for('logout') }}'"
+      >
+        <i class="fas fa-sign-out-alt"></i>
+        <h3>Sair</h3>
+      </div>
+    </div>
+  </body>
+</html>
