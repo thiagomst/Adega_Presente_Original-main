@@ -264,9 +264,10 @@ def finalizar_compra():
 def espumantes():
     return render_template('espumantes.html')
 
-@app.route('/vinhos')  # Define the missing route
-def vinhos():
-    return render_template('vinhos.html') 
+@app.route('/produtos')  # Esta deve ser sua única rota para vinhos
+def produtos():
+    return render_template('produtos.html')
+ 
 
 @app.route('/vinho_branco')
 def vinho_branco():

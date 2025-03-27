@@ -40,46 +40,47 @@
 
 
     <style>
-
         /* Posiciona o alerta no centro da navegação */
-.flash-messages {
-  position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: rgba(16, 180, 1, 0.8);
-  padding: 10px 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  color: white;
-  font-weight: bold;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  animation: fadeIn 0.5s ease-in-out;
-}
+        .flash-messages {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(16, 180, 1, 0.8);
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
 
-/* Estilo do botão para fechar */
-.flash-close {
-  background-color: #fff;
-  color: #333;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-}
+        /* Estilo do botão para fechar */
+        .flash-close {
+            background-color: #fff;
+            color: #333;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
 
-/* Efeito de fade-out */
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
+        /* Efeito de fade-out */
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
         /* Estilo básico para o popup */
         #ageCheckPopup {
             display: none;
@@ -469,7 +470,7 @@
                         <ul>
                             <li><a href="{{ url_for('index') }}">Página Inicial</a></li>
                             <li><a href="{{ url_for('sobre') }}">Sobre Nós</a></li>
-                            <li><a href="{{ url_for('vinhos') }}">Produtos</a></li>
+                            <li><a href="{{ url_for('produtos') }}">Produtos</a></li>
                             <li><a href="{{ url_for('contato') }}">Contato</a></li>
                         </ul>
                     </nav>
@@ -478,20 +479,20 @@
                 <!-- Adicionando a classe col-lg-3 para alinhar corretamente -->
                 <div class="nav-direita">
                     <a href="{{ url_for('ver_carrinho') }}" class="carrinho">
-                      🛒 Carrinho (<span id="contador-carrinho">0</span>)
+                        🛒 Carrinho (<span id="contador-carrinho">0</span>)
                     </a>
                     <a href="{{ url_for('logout') }}" class="botao-sair">Sair</a>
-                  </div>
-            
-                  <div class="flash-messages">
+                </div>
+
+                <div class="flash-messages">
                     {% with messages = get_flashed_messages(with_categories=true) %} {% if
                     messages %} {% for category, message in messages %}
                     <div class="flash {{ category }}">
-                      {{ message }}
-                      <button class="flash-close" onclick="fecharMensagem(this)">OK</button>
+                        {{ message }}
+                        <button class="flash-close" onclick="fecharMensagem(this)">OK</button>
                     </div>
                     {% endfor %} {% endif %} {% endwith %}
-                  </div>
+                </div>
             </div>
 
 
@@ -551,7 +552,7 @@
 
     <nav class="menu-categorias">
         <a href="{{ url_for('espumantes') }}" class="categoria">Espumantes</a>
-        <a href="{{ url_for('vinhos') }}" class="categoria">Vinho Branco</a>
+        <a href="{{ url_for('vinho_branco') }}" class="categoria">Vinho Branco</a>
         <a href="{{ url_for('vinho_rose') }}" class="categoria">Vinho Rose e Laranja</a>
         <a href="{{ url_for('vinho_tinto') }}" class="categoria">Vinho Tinto</a>
         <a href="{{ url_for('embalagens') }}" class="categoria">Embalagens Artesanais</a>
@@ -629,8 +630,10 @@
                     <div class="row product__filter">
                         <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                             <div class="product__item">
-                                <a href="espumantes.html" class="product__item__pic set-bg">
-                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg"></div>
+                                <a href="{{ url_for('espumantes') }}" class="product__item__pic set-bg">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/product-1.jpg') }}">
+                                    </div>
                                 </a>
                                 <div class="product__item__text">
                                     <center>
@@ -643,8 +646,9 @@
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
                             <div class="product__item">
-                                <a href="vinhos.html" class="product__item__pic set-bg">
-                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
+                                <a href="{{ url_for('vinho_branco') }}" class="product__item__pic set-bg">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/product-2.jpg') }}">
                                     </div>
                                 </a>
                                 <div class="product__item__text">
@@ -659,8 +663,9 @@
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                             <div class="product__item sale">
-                                <a href="vinhosrose.html" class="product__item__pic set-bg">
-                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">
+                                <a href="{{ url_for('vinho_rose') }}" class="product__item__pic set-bg">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/product-3.jpg') }}">
                                     </div>
                                 </a>
                                 <div class="product__item__text">
@@ -676,8 +681,9 @@
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
                             <div class="product__item">
-                                <a href="vinhosrose.html" class="product__item__pic set-bg">
-                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-6.jpg">
+                                <a href="{{ url_for('vinho_tinto') }}" class="product__item__pic set-bg">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/product-6.jpg') }}">
                                     </div>
                                 </a>
                                 <div class="product__item__text">
@@ -693,8 +699,9 @@
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                             <div class="product__item">
-                                <a href="vinhostinto2.html" class="product__item__pic set-bg">
-                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-5.jpg">
+                                <a href="{{ url_for('vinho_tinto1') }}" class="product__item__pic set-bg">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/product-5.jpg') }}">
                                     </div>
                                 </a>
                                 <ul class="product__hover">
@@ -713,8 +720,9 @@
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
                             <div class="product__item sale">
-                                <a href="vinhostinto.html" class="product__item__pic set-bg">
-                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-4.jpg">
+                                <a href="{{ url_for('vinho_tinto2') }}" class="product__item__pic set-bg">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/product-4.jpg') }}">
                                     </div>
                                 </a>
                                 <div class="product__item__text">
@@ -729,8 +737,9 @@
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                             <div class="product__item">
-                                <a href="vinhostinto.html" class="product__item__pic set-bg">
-                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-7.jpg">
+                                <a href="{{ url_for('vinho_tinto') }}" class="product__item__pic set-bg">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/product-7.jpg') }}">
                                     </div>
                                 </a>
                                 <div class="product__item__text">
@@ -743,10 +752,9 @@
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
                             <div class="product__item">
-                                <a href="vinhostinto.html" class="product__item__pic set-bg">
-
-                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-8.jpg">
-
+                                <a href="{{ url_for('vinho_tinto') }}" class="product__item__pic set-bg">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/product-8.jpg') }}">
                                     </div>
                                 </a>
                                 <div class="product__item__text">
@@ -776,20 +784,19 @@
             </div>
             <div class="row">
                 <div class="col-lg-3 col-md-4 col-sm-4 col-6">
-                    <a href="https://www.vinicolaenos.com.br/" class="client__item"><img src="img/clients/client-1.png"
-                            alt=""></a>
+                    <a href="https://www.vinicolaenos.com.br/" class="client__item"><img
+                            src="{{ url_for('static', filename='img/clients/client-1.png') }}" alt=""></a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-4 col-6">
                     <a href="https://www.instagram.com/ercoara/" class="client__item"><img
-                            src="img/clients/client-2.png" alt=""></a>
+                            src="{{ url_for('static', filename='img/clients/client-2.png') }}" alt=""></a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-4 col-6">
-                    <a href="https://www.luizargenta.com.br/site/" class="client__item"><img
-                            src="img/clients/client-3.png" alt=""></a>
+                    <img src="{{ url_for('static', filename='img/clients/client-3.png') }}" alt=""></a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-4 col-6">
-                    <a href="https://www.wine-co.com.br/" class="client__item"><img src="img/clients/client-4.png"
-                            alt=""></a>
+                    <a href="https://www.wine-co.com.br/" class="client__item"><img
+                            src="{{ url_for('static', filename='img/clients/client-4.png') }}" alt=""></a>
                 </div>
 
             </div>

@@ -152,14 +152,16 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll">
-                                                    <li><a href="espumantes.html">Espumantes </a></li>
-                                                    <li><a href="vinhos.html">Vinho Branco</a></li>
-                                                    <li><a href="vinhosrose.html">Vinho Rose e Laranja</a></li>
-                                                    <li><a href="vinhostinto.html">Vinho Tinto </a></li>
-                                                    <li class="active"><a href="embalagens.html">Embalagens Artesanais
-                                                        </a></li>
-                                                    <li><a href="novidades.html">Novidades</a></li>
+                                                    <li><a href="{{ url_for('espumantes') }}">Espumantes</a></li>
+                                                    <li><a href="{{ url_for('vinho_branco') }}">Vinho Branco</a></li>
+                                                    <li><a href="{{ url_for('vinho_rose') }}">Vinho Rose e Laranja</a>
+                                                    </li>
+                                                    <li><a href="{{ url_for('vinho_tinto') }}">Vinho Tinto</a></li>
+                                                    <li><a href="{{ url_for('embalagens') }}">Embalagens Artesanais</a>
+                                                    </li>
+                                                    <li><a href="{{ url_for('novidades') }}">Novidades</a></li>
                                                 </ul>
+
                                             </div>
                                         </div>
                                     </div>
