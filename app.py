@@ -278,11 +278,23 @@ def vinho_rose():
 
 @app.route('/vinho_tinto')
 def vinho_tinto():
-    return render_template('vinho_tinto.html')
+    return render_template('vinho_tinto.html', current_page=1)
+
+@app.route('/vinho_tinto/pagina-2')
+def vinho_tinto1():
+    return render_template('vinho_tinto1.html', current_page=2)
+
+@app.route('/vinho_tinto/pagina-3')
+def vinho_tinto2():
+    return render_template('vinho_tinto2.html', current_page=3)
 
 @app.route('/embalagens')
 def embalagens():
-    return render_template('embalagens.html')
+    return render_template('embalagens.html', current_page=1)
+
+@app.route('/embalagens2')
+def embalagens2():
+    return render_template('embalagens2.html', current_page=2)
 
 @app.route('/novidades')
 def novidades():

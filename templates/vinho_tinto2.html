@@ -16,15 +16,14 @@
         rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="css/style.css" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elegant-icons.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nice-select.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slicknav.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 
@@ -89,18 +88,19 @@
             <div class="row">
                 <div class="col-lg-3 col-md-3">
                     <div class="header__logo">
-                        <a href="./index.html"><img src="img/logo1.png" alt="Descrição da imagem" width="150"
-                                height="150"></a>
-
+                        <a href="{{ url_for('index') }}">
+                            <img src="{{ url_for('static', filename='img/logo1.png') }}" alt="Descrição da imagem"
+                                width="110" height="110">
+                        </a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <nav class="header__menu mobile-menu">
                         <ul>
-                            <li class=""><a href="./index.html">Página Inicial</a></li>
-                            <li class=""><a href="sobre.html">Sobre Nós</a></li>
-                            <li class="active"><a href="./vinhos.html">Produtos</a></li>
-                            <li class=""><a href="contato.html">Contato</a></li>
+                            <li><a href="{{ url_for('index') }}">Página Inicial</a></li>
+                            <li><a href="{{ url_for('sobre') }}">Sobre Nós</a></li>
+                            <li><a href="{{ url_for('vinhos') }}">Produtos</a></li>
+                            <li><a href="{{ url_for('contato') }}">Contato</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -118,7 +118,7 @@
                     <div class="breadcrumb__text">
                         <h4>PRODUTOS</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
+                            <a href="{{ url_for('index') }}">Home</a>
                             <span>Produtos</span>
                         </div>
                     </div>
@@ -149,12 +149,24 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll">
-                                                    <li><a href="espumantes.html">Espumantes </a></li>
-                                                    <li><a href="vinhos.html">Vinho Branco</a></li>
-                                                    <li><a href="vinhosrose.html">Vinho Rose e Laranja</a></li>
-                                                    <li class="active"><a href="vinhostinto.html">Vinho Tinto </a></li>
-                                                    <li><a href="embalagens.html">Embalagens Artesanais </a></li>
-                                                    <li><a href="novidades.html">Novidades</a></li>
+                                                    <li class="{{ 'active' if request.endpoint == 'espumantes' }}">
+                                                        <a href="{{ url_for('espumantes') }}">Espumantes</a>
+                                                    </li>
+                                                    <li class="{{ 'active' if request.endpoint == 'vinho_branco' }}">
+                                                        <a href="{{ url_for('vinho_branco') }}">Vinho Branco</a>
+                                                    </li>
+                                                    <li class="{{ 'active' if request.endpoint == 'vinho_rose' }}">
+                                                        <a href="{{ url_for('vinho_rose') }}">Vinho Rose e Laranja</a>
+                                                    </li>
+                                                    <li class="{{ 'active' if request.endpoint == 'vinho_tinto' }}">
+                                                        <a href="{{ url_for('vinho_tinto') }}">Vinho Tinto</a>
+                                                    </li>
+                                                    <li class="{{ 'active' if request.endpoint == 'embalagens' }}">
+                                                        <a href="{{ url_for('embalagens') }}">Embalagens Artesanais</a>
+                                                    </li>
+                                                    <li class="{{ 'active' if request.endpoint == 'novidades' }}">
+                                                        <a href="{{ url_for('novidades') }}">Novidades</a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -180,8 +192,14 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/tinto/product-15.jpg">
-
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/tinto/product-15.jpg') }}">
+                                    <ul class="product__hover">
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                                 <div class="product__item__text">
                                     <center>
@@ -190,7 +208,6 @@
                                         </h6>
                                         <h6>R$ 225,00</h6>
                                     </center>
-
                                 </div>
                             </div>
                         </div>
@@ -199,8 +216,13 @@
                             <div class="product__item">
                                 <div class="product__item">
                                     <div class="product__item__pic set-bg"
-                                        data-setbg="img/product/tinto/product-43.jpg">
+                                        data-setbg="{{ url_for('static', filename='img/product/tinto/product-43.jpg') }}">
                                         <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
                                     </div>
                                     <div class="product__item__text">
                                         <center>
@@ -216,8 +238,14 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/tinto/product-5.jpg">
-
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/tinto/product-5.jpg') }}">
+                                    <ul class="product__hover">
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                                 <div class="product__item__text">
                                     <center>
@@ -233,9 +261,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/tinto/product-45.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/tinto/product-45.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -252,9 +284,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/tinto/product-46.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/tinto/product-46.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -272,9 +308,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/tinto/product-47.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/tinto/product-47.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -292,9 +332,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/tinto/product-48.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/tinto/product-48.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -310,9 +354,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/tinto/product-49.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/tinto/product-49.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -328,9 +376,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/tinto/product-50.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/tinto/product-50.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -346,9 +398,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/tinto/product-51.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/tinto/product-51.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -364,9 +420,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/tinto/product-52.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/tinto/product-52.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -383,9 +443,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/tinto/product-53.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/tinto/product-53.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -401,9 +465,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/tinto/product-54.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/tinto/product-54.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -419,9 +487,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/tinto/product-55.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/tinto/product-55.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -439,9 +511,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/tinto/product-56.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/tinto/product-56.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -460,10 +536,15 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="product__pagination">
-                                <a class="" href="vinhostinto.html">1</a>
-                                <a class="" href="vinhostinto1.html">2</a>
-                                <a class="active" href="./vinhostinto2.html">3</a>
+                            <div class="col-lg-12">
+                                <div class="product__pagination">
+                                    <a class="{{ 'active' if request.path == url_for('vinho_tinto') }}"
+                                        href="{{ url_for('vinho_tinto') }}">1</a>
+                                    <a class="{{ 'active' if request.path == url_for('vinho_tinto1') }}"
+                                        href="{{ url_for('vinho_tinto1') }}">2</a>
+                                    <a class="{{ 'active' if request.path == url_for('vinho_tinto2') }}"
+                                        href="{{ url_for('vinho_tinto2') }}">3</a>
+                                </div>
                                 <!-- desbloquear de precisar
                                 <a href="#">4</a>
                                 <a href="#">5</a>
@@ -485,17 +566,17 @@
 
 
     <!-- Js Plugins -->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <script src="js/jquery.nicescroll.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/jquery.countdown.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/mixitup.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/main.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.nice-select.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.nicescroll.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.countdown.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.slicknav.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mixitup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/carrinho.js') }}"></script>
 
 </body>
 

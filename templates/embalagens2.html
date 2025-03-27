@@ -16,15 +16,16 @@
         rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="css/style.css" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elegant-icons.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nice-select.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slicknav.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+
+    <!-- CDN Externos (sem Jinja2, pois são URLs absolutas) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 
@@ -89,18 +90,20 @@
             <div class="row">
                 <div class="col-lg-3 col-md-3">
                     <div class="header__logo">
-                        <a href="./index.html"><img src="img/logo1.png" alt="Descrição da imagem" width="150"
-                                height="150"></a>
-
+                        <a href="{{ url_for('index') }}">
+                            <img src="{{ url_for('static', filename='img/logo1.png') }}" alt="Descrição da imagem"
+                                width="110" height="110">
+                        </a>
                     </div>
                 </div>
+
                 <div class="col-lg-6 col-md-6">
                     <nav class="header__menu mobile-menu">
                         <ul>
-                            <li class=""><a href="./index.html">Página Inicial</a></li>
-                            <li class=""><a href="sobre.html">Sobre Nós</a></li>
-                            <li class="active"><a href="./vinhos.html">Produtos</a></li>
-                            <li class=""><a href="contato.html">Contato</a></li>
+                            <li><a href="{{ url_for('index') }}">Página Inicial</a></li>
+                            <li><a href="{{ url_for('sobre') }}">Sobre Nós</a></li>
+                            <li><a href="{{ url_for('vinhos') }}">Produtos</a></li>
+                            <li><a href="{{ url_for('contato') }}">Contato</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -118,7 +121,7 @@
                     <div class="breadcrumb__text">
                         <h4>PRODUTOS</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
+                            <a href="{{ url_for('index') }}">Home</a>
                             <span>Produtos</span>
                         </div>
                     </div>
@@ -484,14 +487,14 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="product__pagination">
-                                <a href="embalagens.html">1</a>
-                                <a class="active" href="embalagens2.html">2</a>
-                                <!-- <a href="#">3</a>
+                                <a class="{{ 'active' if current_page == 1 }}" href="{{ url_for('embalagens') }}">1</a>
+                                <a class="{{ 'active' if current_page == 2 }}" href="{{ url_for('embalagens2') }}">2</a>
+                                <!--  <a href="#">3</a>
                                 <a href="#">4</a>
                                 <a href="#">5</a>
                                 <a href="#">6</a>
                                 <span>...</span>
-                                <a href="#">21</a>-->
+                                <a href="#">21</a> -->
                             </div>
                         </div>
                     </div>
@@ -507,16 +510,18 @@
 
 
     <!-- Js Plugins -->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <script src="js/jquery.nicescroll.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/jquery.countdown.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/mixitup.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.nice-select.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.nicescroll.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.countdown.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.slicknav.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mixitup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!-- CDN Externo (não usa url_for) -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
 </body>

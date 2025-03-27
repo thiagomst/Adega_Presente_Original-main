@@ -182,9 +182,13 @@
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
                                 <div class="product__item__pic set-bg"
-                                    data-setbg="img/product/espumantes/product-1.jpg">
+                                    data-setbg="{{ url_for('static', filename='img/product/espumantes/product-1.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                                 <div class="product__item__text">
                                     <center>
@@ -198,203 +202,236 @@
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item sale">
                                 <div class="product__item__pic set-bg"
-                                    data-setbg="img/product/espumantes/product-2.jpg">
+                                    data-setbg="{{ url_for('static', filename='img/product/espumantes/product-2.jpg') }}">
                                     <ul class="product__hover">
-
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Espumante Rosé Brut LA Jovem - Vinícola Luiz Argenta, Brasil
-
-                                        </h6>
-                                        <h6> R$ 133,50</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="img/product/espumantes/product-3.jpg">
-                                    <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6> Espumante Rosé Demi-Sec Bubble Audrey LA Jovem - Vinícola Luiz Argenta,
-                                            Brasil
 
-                                        </h6>
-                                        <h6> R$ 133,50</h6>
-                                    </center>
-                                </div>
+                            </div>
+                            <div class="product__item__text">
+                                <center>
+                                    <h6>Espumante Rosé Brut LA Jovem - Vinícola Luiz Argenta, Brasil
+
+                                    </h6>
+                                    <h6> R$ 133,50</h6>
+                                </center>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ url_for('static', filename='img/product/espumantes/product-3.jpg') }}">
+                                <ul class="product__hover">
+                                    <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                    {% for item in hover_items %}
+                                    <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <center>
+                                    <h6> Espumante Rosé Demi-Sec Bubble Audrey LA Jovem - Vinícola Luiz Argenta,
+                                        Brasil
 
-                        <!-- a partir daqui -->
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="img/product/espumantes/product-4.jpg">
-                                    <ul class="product__hover">
-
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6> Espumante Branco Brut 24 meses sob leveduras LA Clássico - Vinícola Luiz
-                                            Argenta, Brasil
-                                        </h6>
-                                        <h6> R$ 172,40 </h6>
-                                    </center>
-                                </div>
+                                    </h6>
+                                    <h6> R$ 133,50</h6>
+                                </center>
                             </div>
                         </div>
+                    </div>
 
+                    <!-- a partir daqui -->
 
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="img/product/espumantes/product-5.jpg">
-                                    <ul class="product__hover">
-
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Espumante Rosé Brut 24 meses sob leveduras LA Clássico - Vinícola Luiz
-                                            Argenta, Brasil
-                                        </h6>
-                                        <h6> R$ 172,40 </h6>
-                                    </center>
-                                </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ url_for('static', filename='img/product/espumantes/product-4.jpg') }}">
+                                <ul class="product__hover">
+                                    <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                    {% for item in hover_items %}
+                                    <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <center>
+                                    <h6> Espumante Branco Brut 24 meses sob leveduras LA Clássico - Vinícola Luiz
+                                        Argenta, Brasil
+                                    </h6>
+                                    <h6> R$ 172,40 </h6>
+                                </center>
                             </div>
                         </div>
+                    </div>
 
 
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="img/product/espumantes/product-6.jpg">
-                                    <ul class="product__hover">
-
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Espumante Branco Blanc de Noir 36 meses sob leveduras LA Cave - Vinícola
-                                            Luiz Argenta, Brasil
-                                        </h6>
-                                        <h6> R$ 290,40 </h6>
-                                    </center>
-                                </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ url_for('static', filename='img/product/espumantes/product-5.jpg') }}">
+                                <ul class="product__hover">
+                                    <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                    {% for item in hover_items %}
+                                    <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <center>
+                                    <h6>Espumante Rosé Brut 24 meses sob leveduras LA Clássico - Vinícola Luiz
+                                        Argenta, Brasil
+                                    </h6>
+                                    <h6> R$ 172,40 </h6>
+                                </center>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="img/product/espumantes/product-7.jpg">
-                                    <ul class="product__hover">
 
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Espumante Branco Brut 48 meses sob leveduras LA Cave - Vinícola Luiz
-                                            Argenta, Brasil
-
-                                        </h6>
-                                        <h6> R$ 290,40 </h6>
-                                    </center>
-                                </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ url_for('static', filename='img/product/espumantes/product-6.jpg') }}">
+                                <ul class="product__hover">
+                                    <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                    {% for item in hover_items %}
+                                    <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <center>
+                                    <h6>Espumante Branco Blanc de Noir 36 meses sob leveduras LA Cave - Vinícola
+                                        Luiz Argenta, Brasil
+                                    </h6>
+                                    <h6> R$ 290,40 </h6>
+                                </center>
                             </div>
                         </div>
+                    </div>
 
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ url_for('static', filename='img/product/espumantes/product-7.jpg') }}">
+                                <ul class="product__hover">
+                                    <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                    {% for item in hover_items %}
+                                    <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <center>
+                                    <h6>Espumante Branco Brut 48 meses sob leveduras LA Cave - Vinícola Luiz
+                                        Argenta, Brasil
 
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="img/product/espumantes/product-8.jpg">
-                                    <ul class="product__hover">
-
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Espumante Rosé de Noir 48 meses sob leveduras LA Cave - Vinícola Luiz
-                                            Argenta, Brasil
-                                        </h6>
-                                        <h6> R$ 313,80</h6>
-                                    </center>
-                                </div>
+                                    </h6>
+                                    <h6> R$ 290,40 </h6>
+                                </center>
                             </div>
                         </div>
+                    </div>
 
 
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="img/product/espumantes/product-9.jpg">
-                                    <ul class="product__hover">
-
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Espumente Rosé Pét-Nat Unha de Gato Nature - Chardonnay, Pinto Noir e Merlot
-                                            2023 - Sanabria Laboratório de Vinhos Naturais, Brasil
-
-                                        </h6>
-                                        <h6> R$ 160,00</h6>
-                                    </center>
-                                </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ url_for('static', filename='img/product/espumantes/product-8.jpg') }}">
+                                <ul class="product__hover">
+                                    <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                    {% for item in hover_items %}
+                                    <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <center>
+                                    <h6>Espumante Rosé de Noir 48 meses sob leveduras LA Cave - Vinícola Luiz
+                                        Argenta, Brasil
+                                    </h6>
+                                    <h6> R$ 313,80</h6>
+                                </center>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="img/product/espumantes/product-10.jpg">
-                                    <ul class="product__hover">
 
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Espumante Branco Pét-Nat Tina Turner Nature - Chardonnay e Pinot Noir 2022 -
-                                            Sanabria Laboratório de Vinhos Naturais, Brasil
-                                        </h6>
-                                        <h6> R$ 152,00</h6>
-                                    </center>
-                                </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ url_for('static', filename='img/product/espumantes/product-9.jpg') }}">
+                                <ul class="product__hover">
+                                    <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                    {% for item in hover_items %}
+                                    <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <center>
+                                    <h6>Espumente Rosé Pét-Nat Unha de Gato Nature - Chardonnay, Pinto Noir e Merlot
+                                        2023 - Sanabria Laboratório de Vinhos Naturais, Brasil
+
+                                    </h6>
+                                    <h6> R$ 160,00</h6>
+                                </center>
                             </div>
                         </div>
+                    </div>
 
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="img/product/espumantes/product-11.jpg">
-                                    <ul class="product__hover">
-
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Espumante Branco Faísca Brut Branco - Chardonnay e Pinot Noir 2022 -
-                                            Sanabria Laboratório de Vinhos Naturais, Brasil
-                                        </h6>
-                                        <h6> R$ 120,00</h6>
-                                    </center>
-                                </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ url_for('static', filename='img/product/espumantes/product-10.jpg') }}">
+                                <ul class="product__hover">
+                                    <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                    {% for item in hover_items %}
+                                    <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <center>
+                                    <h6>Espumante Branco Pét-Nat Tina Turner Nature - Chardonnay e Pinot Noir 2022 -
+                                        Sanabria Laboratório de Vinhos Naturais, Brasil
+                                    </h6>
+                                    <h6> R$ 152,00</h6>
+                                </center>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- fim -->
-                        <!--quando for cadstrar mais produtos, desbloquear 
+
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ url_for('static', filename='img/product/espumantes/product-11.jpg') }}">
+                                <ul class="product__hover">
+                                    <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                    {% for item in hover_items %}
+                                    <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <center>
+                                    <h6>Espumante Branco Faísca Brut Branco - Chardonnay e Pinot Noir 2022 -
+                                        Sanabria Laboratório de Vinhos Naturais, Brasil
+                                    </h6>
+                                    <h6> R$ 120,00</h6>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- fim -->
+                    <!--quando for cadstrar mais produtos, desbloquear 
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item sale">
@@ -557,9 +594,9 @@
                                 <a href="#">21</a>
 
                             -->
-                    </div>
                 </div>
             </div>
+        </div>
         </div>
         </div>
         </div>

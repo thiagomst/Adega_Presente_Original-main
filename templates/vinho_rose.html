@@ -195,9 +195,14 @@
                     <div class="row">
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/rose/product-1.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/rose/product-1.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                                 <div class="product__item__text">
                                     <center>
@@ -211,9 +216,14 @@
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item sale">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/rose/product-2.jpg">
-
-
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/rose/product-2.jpg') }}">
+                                    <ul class="product__hover">
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                                 <div class="product__item__text">
                                     <center>
@@ -228,9 +238,13 @@
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/rose/product-3.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/rose/product-3.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -245,8 +259,14 @@
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item sale">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/rose/product-4.jpg">
-
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/rose/product-4.jpg') }}">
+                                    <ul class="product__hover">
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                                 <div class="product__item__text">
                                     <center>
@@ -262,8 +282,14 @@
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item sale">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/rose/product-5.jpg">
-
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/rose/product-5.jpg') }}">
+                                    <ul class="product__hover">
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                                 <div class="product__item__text">
                                     <center>
@@ -280,9 +306,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/rose/product-6.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/rose/product-6.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -300,9 +330,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/rose/product-7.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/rose/product-7.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -319,9 +353,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/rose/product-8.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/rose/product-8.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -339,9 +377,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/rose/product-9.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/rose/product-9.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -361,9 +403,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/rose/product-10.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/rose/product-10.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -382,9 +428,13 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/rose/product-11.jpg">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="{{ url_for('static', filename='img/product/rose/product-11.jpg') }}">
                                     <ul class="product__hover">
-
+                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                        {% for item in hover_items %}
+                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
