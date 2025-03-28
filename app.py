@@ -267,6 +267,10 @@ def espumantes():
 @app.route('/produtos')  # Esta deve ser sua única rota para vinhos
 def produtos():
     return render_template('produtos.html')
+
+@app.route('/produtos/pagina-2')
+def produtos1():
+    return render_template('produtos1.html', current_page=2)
  
 
 @app.route('/vinho_branco')
