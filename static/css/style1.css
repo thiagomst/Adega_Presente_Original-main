@@ -42,6 +42,8 @@ button {
   width: 120px;
   height: 35px;
   border: none;
+  margin-left: 28%;
+  margin-bottom: 1px;
   border-radius: 5px;
   background: slateblue;
 }

@@ -15,6 +15,9 @@
   <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+  <!-- Font Awesome para ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
@@ -49,19 +52,34 @@
         {% endwith %}
 
         <!-- Formulário de login -->
-        <form method="POST" action="{{ url_for('login') }}">
-          <input type="text" name="username" id="username" placeholder="Nome de usuário" required autocomplete="off" />
-          <input type="password" name="password" id="password" placeholder="Senha" required autocomplete="off" />
+        <form method="POST" action="{{ url_for('login') }}" id="loginForm">
+          <div class="form-group">
+            <input type="text" name="user_input" id="user_input" placeholder="Nome de usuário ou e-mail" required
+              autocomplete="off" />
+            <small class="form-text">Você pode usar seu nome de usuário ou e-mail cadastrado</small>
+          </div>
 
-          <a href="{{ url_for('password') }}">
-            <p>Esqueceu a sua senha?</p>
-          </a>
+          <div class="form-group password-container">
+            <input type="password" name="password" id="password" placeholder="Senha" required autocomplete="off" />
+            <i class="fas fa-eye toggle-password" onclick="togglePassword('password')"></i>
+          </div>
 
-          <button type="submit">Login</button>
+          <div class="login-options">
+            <a href="{{ url_for('password_reset') }}" class="forgot-password">
+              <i class="fas fa-key"></i> Esqueceu a sua senha?
+            </a>
+          </div>
 
-          <a href="{{ url_for('account') }}">
-            <p>Criar uma conta</p>
-          </a>
+          <button type="submit" class="btn-login">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </button>
+
+          <div class="create-account">
+            <span>Não tem uma conta?</span>
+            <a href="{{ url_for('account') }}" class="create-account-link">
+              <i class="fas fa-user-plus"></i> Criar uma conta
+            </a>
+          </div>
         </form>
 
         <div class="social">
@@ -73,6 +91,130 @@
       </div>
     </div>
   </div>
+
+  <script>
+    // Função para mostrar/ocultar senha
+    function togglePassword(fieldId) {
+      const field = document.getElementById(fieldId);
+      const icon = field.nextElementSibling;
+
+      if (field.type === "password") {
+        field.type = "text";
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        field.type = "password";
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    }
+
+    // Validação básica do formulário
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      const userInput = document.getElementById('user_input').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!userInput) {
+        alert('Por favor, informe seu nome de usuário ou e-mail!');
+        e.preventDefault();
+      }
+
+      if (!password) {
+        alert('Por favor, informe sua senha!');
+        e.preventDefault();
+      }
+    });
+  </script>
+
+  <style>
+    /* Estilos adicionais para os novos elementos */
+    .form-group {
+      margin-bottom: 15px;
+      position: relative;
+    }
+
+    .form-text {
+      display: block;
+      font-size: 0.8em;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .password-container {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #666;
+    }
+
+    .login-options {
+      margin: 10px 0;
+      text-align: right;
+    }
+
+    .forgot-password {
+      color: #3d3d3d;
+      text-decoration: none;
+      font-size: 0.9em;
+    }
+
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 10px;
+      margin: 15px 0;
+    }
+
+    .create-account {
+      text-align: center;
+      margin-top: 0px;
+      font-size: 0.9em;
+    }
+
+    .create-account-link {
+      color: #3d3d3d;
+      text-decoration: none;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+
+    .create-account-link:hover {
+      text-decoration: underline;
+    }
+
+    .flash-messages {
+      margin-bottom: 15px;
+    }
+
+    .flash {
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .error {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+
+    .success {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .fa-key,
+    .fa-sign-in-alt,
+    .fa-user-plus {
+      margin-right: 5px;
+    }
+  </style>
 </body>
 
 </html>

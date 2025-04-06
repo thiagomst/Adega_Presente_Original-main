@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Debug Tokens</title>
+</head>
+
+<body>
+    <h1>Tokens Ativos</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Token</th>
+            <th>Expira</th>
+        </tr>
+        {% for token in tokens %}
+        <tr>
+            <td>{{ token.id }}</td>
+            <td>{{ token.email }}</td>
+            <td>{{ token.reset_token }}</td>
+            <td>{{ token.reset_token_expires }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>
