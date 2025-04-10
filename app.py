@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify, flash
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, flash, session
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from admin_routes import admin_bp
@@ -83,7 +83,7 @@ def admin_dashboard():
         flash('Acesso negado! Você precisa ser um administrador.', 'error')
         return redirect(url_for('index'))
 
-    return render_template('index.html')
+    return render_template('produtos.html')
 
 
 # Rota para logout
@@ -470,9 +470,10 @@ def finalizar_compra():
 def espumantes():
     return render_template('espumantes.html')
 
-@app.route('/produtos')  # Esta deve ser sua única rota para vinhos
+@app.route("/produtos")
 def produtos():
-    return render_template('produtos.html')
+    usuario = session.get('usuario_logado')  # Exemplo: salva isso após login
+    return render_template("produtos.html", usuario_logado=usuario)
 
 @app.route('/produtos/pagina-2')
 def produtos1():

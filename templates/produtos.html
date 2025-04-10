@@ -52,6 +52,48 @@
 </script>
 
 <body>
+
+    <style>
+        .product__hover li {
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .product__hover li a {
+            display: block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+        }
+
+        .product__hover li a i {
+            color: #333;
+            transition: all 0.3s;
+        }
+
+        .product__hover li a:hover i {
+            color: #e9a840;
+        }
+    </style>
+
+    {% for produto in produtos %}
+    <div class="produto">
+        <img src="{{ produto.imagem_url }}" alt="{{ produto.nome }}">
+        <h3>{{ produto.nome }}</h3>
+        <p>Preço: R$ {{ produto.preco }}</p>
+
+        {% if usuario.tipo == 'admin' %}
+        <!-- Ícones de edição só aparecem para admin -->
+        <button onclick="editarImagem({{ produto.id }})">🖼️</button>
+        <button onclick="editarValor({{ produto.id }})">💲</button>
+        <button onclick="salvarProduto({{ produto.id }})">💾</button>
+        {% endif %}
+    </div>
+    {% endfor %}
+
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -180,10 +222,35 @@
                                 <div class="product__item__pic set-bg"
                                     data-setbg="{{ url_for('static', filename='img/product/embalagens/product-1.jpg') }}">
                                     <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
+                                        <!-- Ícones padrão -->
+                                        <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+
+                                        <!-- Ícones de admin -->
+                                        {% if usuario and usuario['role'] == 'admin' %}
+                                        <li>
+                                            <a href="#" onclick="editarImagem('produto1')" title="Editar Imagem">
+                                                <i class="fa fa-image"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" onclick="editarValor('produto1')" title="Editar Valor">
+                                                <i class="fa fa-dollar-sign"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" onclick="salvarProduto('produto1')" title="Salvar">
+                                                <i class="fa fa-save"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" onclick="deletarProduto('produto1')" title="Deletar"
+                                                style="color: red;">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </li>
+                                        {% endif %}
                                     </ul>
                                 </div>
 

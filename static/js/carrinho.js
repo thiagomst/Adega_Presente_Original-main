@@ -211,3 +211,25 @@ async function obterCarrinho() {
     return [];
   }
 }
+
+function editarImagem(produtoId) {
+  console.log("Editar imagem do produto:", produtoId);
+  // Implemente a lógica aqui
+}
+
+function editarValor(produtoId) {
+  console.log("Editar valor do produto:", produtoId);
+  // Implemente a lógica aqui
+}
+
+function salvarProduto(produtoId) {
+  console.log("Salvar produto:", produtoId);
+  // Implemente a lógica aqui
+}
+
+function deletarProduto(produtoId) {
+  if (confirm("Tem certeza que deseja deletar este produto?")) {
+    console.log("Deletar produto:", produtoId);
+    // Implemente a lógica aqui
+  }
+}
