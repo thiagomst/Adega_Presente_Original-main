@@ -97,9 +97,9 @@ try:
 
     # Inserir vinhos de exemplo
     vinhos_exemplo = [
-        ('Vinho Tinto', 50.00, 'vinho_tinto.jpg', 'Um vinho tinto encorpado com notas de frutas vermelhas.'),
-        ('Vinho Branco', 40.00, 'vinho_branco.jpg', 'Um vinho branco leve e refrescante.'),
-        ('Vinho Rosé', 35.00, 'vinho_rose.jpg', 'Um vinho rosé suave e frutado.')
+        # ('Vinho Tinto', 50.00, 'vinho_tinto.jpg', 'Um vinho tinto encorpado com notas de frutas vermelhas.'),
+        # ('Vinho Branco', 40.00, 'vinho_branco.jpg', 'Um vinho branco leve e refrescante.'),
+        # ('Vinho Rosé', 35.00, 'vinho_rose.jpg', 'Um vinho rosé suave e frutado.')
     ]
     for vinho in vinhos_exemplo:
         c.execute("INSERT OR IGNORE INTO vinhos (nome, preco, imagem, descricao) VALUES (?, ?, ?, ?)", vinho)
@@ -118,9 +118,24 @@ try:
 
     # E alguns dados de exemplo
     produtos_exemplo = [
-        ('Caixa para 1 garrafa', 8.00, 'caixa1.jpg', 'Caixa de papelão preto', 'embalagem', 10),
-        ('Caixa para 2 garrafas', 13.00, 'caixa2.jpg', 'Caixa de papelão preto', 'embalagem', 15),
-        ('Espumante Brut', 133.50, 'espumante1.jpg', 'Espumante Branco Brut', 'espumante', 5)
+        ('Embalagem cilíndrica em papelão branco', 0, 'product-3.jpg', 'Embalagem cilíndrica em papelão branco para garrafas', 'embalagem', 0),
+        ('Caixa de papelão preto para 1 garrafa Luiz Argenta', 0, 'product-1.jpg', 'Caixa de papelão preto para 1 garrafa', 'embalagem', 0),
+        ('Caixa de papelão preto para 2 garrafas Luiz Argenta', 0, 'product-2.jpg', 'Caixa de papelão preto para 2 garrafas', 'embalagem', 0),
+        ('Embalagem cilíndrica em papelão preto', 0, 'product-4.jpg', 'Embalagem cilíndrica em papelão preto para garrafas', 'embalagem', 0),
+        ('Embalagem cilíndrica em madeira decorada', 0, 'product-5.jpg', 'Embalagem cilíndrica em madeira decorada', 'embalagem', 0),
+        ('Embalagem de couro Montana marrom, reta, com alça de couro', 0, 'product-6.jpg', 'Embalagem de couro Montana marrom com alça', 'embalagem', 0),
+        ('Embalagem em lonita com alças de couro sintético, signo Aquário', 0, 'product-7.jpg', 'Embalagem temática do signo Aquário', 'embalagem', 0),
+        ('Embalagem em lonita com alças de couro sintético, signo Áries', 0, 'product-8.jpg', 'Embalagem temática do signo Áries', 'embalagem', 0),
+        ('Embalagem em lonita com alças de couro sintético, signo Câncer', 0, 'product-9.jpg', 'Embalagem temática do signo Câncer', 'embalagem', 0),
+        ('Embalagem em lonita com alças de couro sintético, signo Capricórnio', 0, 'product-10.jpg', 'Embalagem temática do signo Capricórnio', 'embalagem', 0),
+        ('Embalagem em lonita com alças de couro sintético, signo Escorpião', 0, 'product-11.jpg', 'Embalagem temática do signo Escorpião', 'embalagem', 0),
+        ('Embalagem em lonita com alças de couro sintético, signo Gêmeos', 0, 'product-12.jpg', 'Embalagem temática do signo Gêmeos', 'embalagem', 0),
+        ('Embalagem em lonita com alças de couro sintético, signo Leão', 0, 'product-13.jpg', 'Embalagem temática do signo Leão', 'embalagem', 0),
+        ('Embalagem em lonita com alças de couro sintético, signo Libra', 0, 'product-14.jpg', 'Embalagem temática do signo Libra', 'embalagem', 0),
+        ('Embalagem em lonita com alças de couro sintético, signo Peixes', 0, 'product-15.jpg', 'Embalagem temática do signo Peixes', 'embalagem', 0),
+        ('Embalagem em lonita com alças de couro sintético, signo Sagitário', 0, 'product-16.jpg', 'Embalagem temática do signo Sagitário', 'embalagem', 0),
+        ('Embalagem em lonita com alças de couro sintético, signo Touro', 0, 'product-17.jpg', 'Embalagem temática do signo Touro', 'embalagem', 0),
+        ('Embalagem em lonita com alças de couro sintético, signo Virgem', 0, 'product-18.jpg', 'Embalagem temática do signo Virgem', 'embalagem', 0)
     ]
     for produto in produtos_exemplo:
         c.execute("""

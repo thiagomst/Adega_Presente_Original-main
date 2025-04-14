@@ -1049,9 +1049,11 @@ ol {
   color: #111111;
 }
 
-.product__item {
+product__item {
   overflow: hidden;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
+  width: 204%;
+  margin-right: 19px;
 }
 
 .product__item.sale .product__item__pic .label {
@@ -1094,9 +1096,10 @@ ol {
 -----------------------*/
 .product__item__pic {
   height: 300px;
-  width: 300px;
-  /* position: relative; */
+  width: 100%; /* <- usa o espaço da coluna */
+  position: relative;
   background-position: center center;
+  border-radius: 10px;
 }
 
 .product__item__pic .label {
