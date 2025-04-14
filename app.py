@@ -1,6 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify, flash, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, flash
+import time
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+import os
 from admin_routes import admin_bp
 from imagem_routes import imagem_bp
 from flask_mail import Mail, Message
@@ -12,6 +15,11 @@ from init_db import get_db_connection
 app = Flask(__name__)
 app.secret_key = 'sua_chave_secreta_aqui_mais_segura_e_unica'
 
+# Configurações para upload de imagens
+UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'img', 'product', 'uploads')
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 app.register_blueprint(admin_bp)
 app.register_blueprint(imagem_bp)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -22,12 +30,16 @@ app.config['MAIL_PASSWORD'] = 'zlko lorv qnyg szat'
 app.config['MAIL_DEFAULT_SENDER'] = 'thiagomonsuet@gmail.com'
 
 mail = Mail(app)
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 def get_db_connection():
     conn = sqlite3.connect('adega.db')
     conn.row_factory = sqlite3.Row
     return conn
 
-# Rota principal
 @app.route('/')
 def index():
     conn = get_db_connection()
@@ -41,6 +53,27 @@ def index():
 
     conn.close()
     return render_template('index.html', vinhos=vinhos, is_admin=is_admin)
+
+@app.route('/admin')
+def admin_dashboard():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    conn = get_db_connection()
+    user = conn.execute('SELECT * FROM usuarios WHERE id = ?', (session['user_id'],)).fetchone()
+    
+    if not user or user['role'] != 'admin':
+        conn.close()
+        flash('Acesso restrito a administradores', 'error')
+        return redirect(url_for('index'))
+    
+    produtos = conn.execute('SELECT * FROM produtos').fetchall()
+    conn.close()
+    
+    return render_template("produtos.html",
+                         produtos=produtos,
+                         usuario_logado=user,  # Mantive este nome
+                         is_admin=True)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -62,7 +95,14 @@ def login():
             if user and check_password_hash(user['password'], password):
                 session['user_id'] = user['id']
                 session['username'] = user['username']
+                session['email'] = user['email']
                 session['is_admin'] = user['role'] == 'admin'
+                session['usuario_logado'] = {
+                    'id': user['id'],
+                    'username': user['username'],
+                    'email': user['email'],
+                    'role': user['role']
+                }
 
                 flash('Login realizado com sucesso!', 'success')
                 return redirect(url_for('admin_dashboard' if session['is_admin'] else 'index'))
@@ -75,15 +115,6 @@ def login():
             conn.close()
 
     return render_template('login.html')
-
-
-@app.route('/admin')
-def admin_dashboard():
-    if 'user_id' not in session or session.get('is_admin') != 1:
-        flash('Acesso negado! Você precisa ser um administrador.', 'error')
-        return redirect(url_for('index'))
-
-    return render_template('produtos.html')
 
 
 # Rota para logout
@@ -470,10 +501,235 @@ def finalizar_compra():
 def espumantes():
     return render_template('espumantes.html')
 
-@app.route("/produtos")
+@app.route("/produtos", methods=['GET', 'POST'])
 def produtos():
-    usuario = session.get('usuario_logado')  # Exemplo: salva isso após login
-    return render_template("produtos.html", usuario_logado=usuario)
+    if 'user_id' not in session:
+        flash('Por favor, faça login para acessar esta página.', 'warning')
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    try:
+        if request.method == 'POST' and session.get('is_admin'):
+            # Processar adição de novo produto
+            nome = request.form.get('nome')
+            preco = float(request.form.get('preco'))
+            imagem = request.form.get('imagem')
+            descricao = request.form.get('descricao')
+            categoria = request.form.get('categoria')
+
+            conn.execute('''
+                INSERT INTO produtos (nome, preco, imagem, descricao, categoria)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (nome, preco, imagem, descricao, categoria))
+            conn.commit()
+            flash('Produto adicionado com sucesso!', 'success')
+            return redirect(url_for('produtos'))
+
+        # Busca todos os produtos
+        produtos = conn.execute('SELECT * FROM produtos').fetchall()
+        
+        # Busca informações do usuário logado
+        user = conn.execute('SELECT * FROM usuarios WHERE id = ?', (session['user_id'],)).fetchone()
+        
+        # Verifica se é admin
+        is_admin = user and user['role'] == 'admin'
+        
+        return render_template("produtos.html",
+                            produtos=produtos,
+                            usuario_logado=user,
+                            is_admin=is_admin)
+    except sqlite3.Error as e:
+        conn.rollback()
+        flash(f'Erro ao acessar o banco de dados: {str(e)}', 'error')
+        return redirect(url_for('index'))
+    finally:
+        conn.close()
+
+@app.route('/upload-image/<int:id>', methods=['POST'])
+def upload_image(id):
+    if 'user_id' not in session or not session.get('is_admin'):
+        return jsonify({'success': False, 'message': 'Acesso negado'}), 403
+
+    if 'image' not in request.files:
+        return jsonify({'success': False, 'message': 'Nenhum arquivo enviado'}), 400
+
+    file = request.files['image']
+    if file.filename == '':
+        return jsonify({'success': False, 'message': 'Nenhum arquivo selecionado'}), 400
+
+    if file and allowed_file(file.filename):
+        try:
+            # Garante que a pasta de upload existe
+            upload_folder = os.path.join(app.static_folder, 'img', 'product', 'uploads')
+            os.makedirs(upload_folder, exist_ok=True)
+
+            # Gera nome único para o arquivo
+            ext = os.path.splitext(file.filename)[1].lower()
+            timestamp = int(time.time())
+            filename = secure_filename(f"prod_{id}_{timestamp}{ext}")
+            filepath = os.path.join(upload_folder, filename)
+
+            # Salva o arquivo
+            file.save(filepath)
+            
+            # Caminho para o banco de dados (relativo à pasta static)
+            db_image_path = f"img/product/uploads/{filename}"
+            
+            # Atualiza o banco de dados
+            conn = get_db_connection()
+            try:
+                conn.execute('UPDATE produtos SET imagem = ? WHERE id = ?', (db_image_path, id))
+                conn.commit()
+                
+                # Verifica se a atualização foi bem-sucedida
+                updated = conn.execute('SELECT imagem FROM produtos WHERE id = ?', (id,)).fetchone()
+                if not updated or updated['imagem'] != db_image_path:
+                    raise Exception("Falha ao verificar a atualização no banco de dados")
+                
+                return jsonify({
+                    'success': True, 
+                    'imageUrl': url_for('static', filename=db_image_path),
+                    'dbImagePath': db_image_path,
+                    'productId': id
+                })
+                
+            except Exception as e:
+                conn.rollback()
+                raise e
+            finally:
+                conn.close()
+                
+        except Exception as e:
+            # Remove o arquivo se foi parcialmente salvo
+            if 'filepath' in locals() and os.path.exists(filepath):
+                os.remove(filepath)
+                
+            app.logger.error(f"Erro no upload: {str(e)}")
+            return jsonify({
+                'success': False, 
+                'message': f'Erro ao processar imagem: {str(e)}'
+            }), 500
+
+    return jsonify({
+        'success': False, 
+        'message': 'Tipo de arquivo não permitido'
+    }), 400
+
+
+@app.route('/editar_produto/<int:id>', methods=['POST'])
+def editar_produto(id):
+    if 'user_id' not in session or not session.get('is_admin'):
+        return jsonify({'success': False, 'message': 'Acesso negado'}), 403
+    
+    data = request.get_json()
+    if not data:
+        return jsonify({'success': False, 'message': 'Dados inválidos'}), 400
+    
+    conn = get_db_connection()
+    try:
+        update_fields = []
+        update_values = []
+        
+        if 'nome' in data:
+            update_fields.append('nome = ?')
+            update_values.append(data['nome'])
+        
+        if 'preco' in data:
+            update_fields.append('preco = ?')
+            update_values.append(float(data['preco']))
+        
+        if 'imagem' in data:
+            update_fields.append('imagem = ?')
+            update_values.append(data['imagem'])
+        
+        if 'descricao' in data:
+            update_fields.append('descricao = ?')
+            update_values.append(data['descricao'])
+        
+        if 'categoria' in data:
+            update_fields.append('categoria = ?')
+            update_values.append(data['categoria'])
+        
+        if not update_fields:
+            return jsonify({'success': False, 'message': 'Nada para atualizar'}), 400
+        
+        update_values.append(id)
+        query = f"UPDATE produtos SET {', '.join(update_fields)} WHERE id = ?"
+        
+        conn.execute(query, update_values)
+        conn.commit()
+        return jsonify({'success': True, 'message': 'Produto atualizado com sucesso'})
+    
+    except sqlite3.Error as e:
+        conn.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+    finally:
+        conn.close()
+
+@app.route("/adicionar_estoque/<int:produto_id>", methods=['POST'])
+def adicionar_estoque(produto_id):
+    if 'user_id' not in session:
+        return jsonify({'success': False, 'message': 'Usuário não logado'}), 401
+    
+    # Verificar se o usuário é admin
+    conn = get_db_connection()
+    user = conn.execute('SELECT * FROM usuarios WHERE id = ?', (session['user_id'],)).fetchone()
+    if not user or user['role'] != 'admin':
+        conn.close()
+        return jsonify({'success': False, 'message': 'Acesso não autorizado'}), 403
+    
+    try:
+        data = request.get_json()
+        quantidade = int(data.get('quantidade', 0))
+        
+        if quantidade <= 0:
+            return jsonify({'success': False, 'message': 'Quantidade inválida'}), 400
+        
+        # Atualizar o estoque no banco de dados
+        conn.execute('UPDATE produtos SET estoque = estoque + ? WHERE id = ?', 
+                    (quantidade, produto_id))
+        conn.commit()
+        
+        # Obter o novo valor do estoque para retornar
+        produto = conn.execute('SELECT estoque FROM produtos WHERE id = ?', 
+                             (produto_id,)).fetchone()
+        
+        return jsonify({
+            'success': True,
+            'message': f'Estoque atualizado para {produto["estoque"]} unidades'
+        })
+        
+    except sqlite3.Error as e:
+        conn.rollback()
+        return jsonify({'success': False, 'message': f'Erro no banco de dados: {str(e)}'}), 500
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'Erro: {str(e)}'}), 500
+    finally:
+        conn.close()
+
+@app.route('/excluir_produto/<int:id>', methods=['POST'])
+def excluir_produto(id):
+    if 'user_id' not in session or not session.get('is_admin'):
+        return jsonify({'success': False, 'message': 'Acesso negado'}), 403
+    
+    conn = get_db_connection()
+    try:
+        # Primeiro verifica se o produto existe
+        produto = conn.execute('SELECT * FROM produtos WHERE id = ?', (id,)).fetchone()
+        if not produto:
+            return jsonify({'success': False, 'message': 'Produto não encontrado'}), 404
+        
+        # Exclui o produto
+        conn.execute('DELETE FROM produtos WHERE id = ?', (id,))
+        conn.commit()
+        
+        return jsonify({'success': True, 'message': 'Produto excluído com sucesso'})
+    
+    except sqlite3.Error as e:
+        conn.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+    finally:
+        conn.close()
 
 @app.route('/produtos/pagina-2')
 def produtos1():

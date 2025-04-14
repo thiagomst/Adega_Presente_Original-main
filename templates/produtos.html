@@ -24,7 +24,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
 </head>
 
 <!-- Botão WhatsApp -->
@@ -54,45 +57,518 @@
 <body>
 
     <style>
-        .product__hover li {
-            display: inline-block;
-            margin: 0 5px;
+        /* Estilo base para o botão de configuração do admin */
+        .admin-actions {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 100;
         }
 
-        .product__hover li a {
-            display: block;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.8);
+        .btn-edit {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-        }
-
-        .product__hover li a i {
+            cursor: pointer;
             color: #333;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .product__hover li a:hover i {
-            color: #e9a840;
+        .btn-edit:hover,
+        .btn-edit:focus {
+            background: #fff;
+            transform: rotate(90deg) scale(1.05);
+            outline: none;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Menu de administração - Estilo base */
+        .admin-menu {
+            display: none;
+            position: absolute;
+            top: 50px;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            padding: 12px 0;
+            z-index: 200;
+            min-width: 240px;
+            overflow: visible;
+        }
+
+        .admin-menu.active {
+            display: block;
+        }
+
+        .admin-menu button {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 10px 16px;
+            margin: 2px 0;
+            text-align: left;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #333;
+            font-size: 14px;
+            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .admin-menu button:hover,
+        .admin-menu button:focus {
+            background: #f8f8f8;
+            outline: none;
+            color: #000;
+        }
+
+        .admin-menu button i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+            font-size: 15px;
+            color: #555;
+        }
+
+        /* Ícones específicos */
+        .admin-menu button:nth-child(1) i {
+            color: #4e8cff;
+        }
+
+        /* Alterar Imagem */
+        .admin-menu button:nth-child(2) i {
+            color: #ff9500;
+        }
+
+        /* Alterar Preço */
+        .admin-menu button:nth-child(3) i {
+            color: #ff3b30;
+        }
+
+        /* Remover */
+        .admin-menu button:nth-child(4) i {
+            color: #34c759;
+        }
+
+        /* Adicionar Estoque */
+
+        .admin-product-id {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+            font-family: 'SF Mono', monospace;
+            letter-spacing: 0.5px;
+        }
+
+        /* Estilos adicionais para os modais */
+        .image-upload-container {
+            text-align: center;
+        }
+
+        .current-image-preview {
+            margin-bottom: 15px;
+        }
+
+        .or-divider {
+            margin: 10px 0;
+            color: #888;
+            font-weight: bold;
+        }
+
+        .swal2-file,
+        .swal2-input {
+            margin: 5px auto;
+        }
+
+        // CSS Adicional para os Modais Modernos
+        const modernStyles=` <style>
+
+        /* Animations */
+        @keyframes fadeInScaleModern {
+            0% {
+                opacity: 0;
+                transform: scale(0.98) translateY(5px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes fadeOutScaleModern {
+            0% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(0.98) translateY(5px);
+            }
+        }
+
+        .swal2-show-animation-modern {
+            animation: fadeInScaleModern 0.3s ease-out forwards;
+        }
+
+        .swal2-hide-animation-modern {
+            animation: fadeOutScaleModern 0.3s ease-out forwards;
+        }
+
+        .swal2-backdrop-show-modern {
+            animation: swal2-backdrop-show 0.3s forwards;
+        }
+
+        .swal2-backdrop-hide-modern {
+            animation: swal2-backdrop-hide 0.3s forwards;
+        }
+
+        /* Modern Container */
+        .swal2-container-modern {
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        /* Modern Popup */
+        .swal2-popup-modern {
+            border-radius: 16px !important;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: #ffffff;
+            padding: 2rem;
+        }
+
+        /* Modern Header */
+        .swal2-header-modern {
+            padding: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Modern Title */
+        .swal2-title-modern {
+            color: #1a1a1a;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        /* Modern HTML Container */
+        .swal2-html-modern {
+            color: #555;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Modern Buttons */
+        .swal2-confirm-modern {
+            background: linear-gradient(135deg, #4361ee, #3a56d4) !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 12px !important;
+            padding: 0.75rem 2rem !important;
+            font-family: 'Inter', sans-serif !important;
+            font-weight: 500 !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2) !important;
+            margin-right: 0.5rem !important;
+        }
+
+        .swal2-confirm-modern:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 6px 16px rgba(67, 97, 238, 0.25) !important;
+        }
+
+        .swal2-confirm-modern:active {
+            transform: translateY(0) !important;
+        }
+
+        .swal2-cancel-modern {
+            background: transparent !important;
+            color: #666 !important;
+            border: 1px solid #e0e0e0 !important;
+            border-radius: 12px !important;
+            padding: 0.75rem 2rem !important;
+            font-family: 'Inter', sans-serif !important;
+            font-weight: 500 !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .swal2-cancel-modern:hover {
+            background: #f8f8f8 !important;
+            color: #333 !important;
+            border-color: #ccc !important;
+        }
+
+        .swal2-error-modern {
+            background: linear-gradient(135deg, #ff3333, #e60000) !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 12px !important;
+            padding: 0.75rem 2rem !important;
+            font-family: 'Inter', sans-serif !important;
+            font-weight: 500 !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 12px rgba(255, 51, 51, 0.2) !important;
+        }
+
+        /* Modern Inputs */
+        .swal2-file,
+        .swal2-input {
+            border-radius: 12px !important;
+            border: 1px solid #e0e0e0 !important;
+            transition: all 0.3s ease !important;
+            padding: 1rem !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+
+        .swal2-file:focus,
+        .swal2-input:focus {
+            border-color: #4361ee !important;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1) !important;
+            outline: none !important;
+        }
+
+        /* Modern Menu Admin */
+        .admin-menu {
+            display: none;
+            position: absolute;
+            top: 50px;
+            left: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 0.75rem;
+            z-index: 200;
+            min-width: 220px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInScaleModern 0.25s ease-out forwards;
+        }
+
+        .admin-menu button {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            margin: 0.125rem 0;
+            text-align: left;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #333;
+            font-size: 0.875rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-menu button:hover {
+            background: rgba(0, 0, 0, 0.03);
+            color: #4361ee;
+        }
+
+        .admin-menu button i {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .admin-menu button:hover i {
+            transform: scale(1.1);
+        }
+
+        .admin-menu button:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #4361ee, #3a56d4);
+            transition: all 0.3s ease;
+        }
+
+        .admin-menu button:hover:after {
+            width: 100%;
+        }
+
+        /* Ícones específicos com gradiente */
+        .admin-menu button:nth-child(1) i {
+            color: #4361ee;
+        }
+
+        .admin-menu button:nth-child(2) i {
+            color: #ff9500;
+        }
+
+        .admin-menu button:nth-child(3) i {
+            color: #ff3b30;
+        }
+
+        .admin-menu button:nth-child(4) i {
+            color: #34c759;
+        }
+
+        /* Botão de edição moderno */
+        .btn-edit {
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            cursor: pointer;
+            color: #333;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        .btn-edit:hover {
+            background: #fff;
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            color: #4361ee;
+        }
+
+        /* Media Queries para responsividade */
+        @media (max-width: 1200px) {
+            .admin-menu {
+                min-width: 220px;
+            }
+        }
+
+        @media (max-width: 992px) {
+
+            /* Tablet */
+            .admin-actions {
+                top: 12px;
+                left: 12px;
+            }
+
+            .btn-edit {
+                width: 30px;
+                height: 30px;
+            }
+
+            .admin-menu {
+                min-width: 200px;
+                top: 45px;
+            }
+
+            .admin-menu button {
+                padding: 9px 14px;
+                font-size: 13.5px;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            /* Tablet pequeno */
+            .admin-menu {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 85%;
+                max-width: 280px;
+                z-index: 1000;
+                border-radius: 12px;
+            }
+
+            .admin-menu button {
+                padding: 11px 16px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 576px) {
+
+            /* Mobile */
+            .admin-actions {
+                top: 8px;
+                left: 8px;
+            }
+
+            .btn-edit {
+                width: 28px;
+                height: 28px;
+                font-size: 13px;
+            }
+
+            .admin-menu {
+                min-width: 180px;
+                padding: 10px 0;
+            }
+
+            .admin-menu button {
+                padding: 9px 14px;
+                font-size: 13px;
+            }
+
+            .admin-product-id {
+                font-size: 11px;
+            }
+        }
+
+        /* Melhorias de acessibilidade */
+        .btn-edit:focus-visible,
+        .admin-menu button:focus-visible {
+            box-shadow: 0 0 0 3px rgba(77, 144, 254, 0.5);
+        }
+
+        /* Animações suaves */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .admin-menu {
+            animation: fadeIn 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-origin: top left;
+        }
+
+        /* Mobile - menu full width */
+        @media (max-width: 400px) {
+            .admin-menu {
+                width: 92%;
+                max-width: none;
+            }
         }
     </style>
-
-    {% for produto in produtos %}
-    <div class="produto">
-        <img src="{{ produto.imagem_url }}" alt="{{ produto.nome }}">
-        <h3>{{ produto.nome }}</h3>
-        <p>Preço: R$ {{ produto.preco }}</p>
-
-        {% if usuario.tipo == 'admin' %}
-        <!-- Ícones de edição só aparecem para admin -->
-        <button onclick="editarImagem({{ produto.id }})">🖼️</button>
-        <button onclick="editarValor({{ produto.id }})">💲</button>
-        <button onclick="salvarProduto({{ produto.id }})">💾</button>
-        {% endif %}
-    </div>
-    {% endfor %}
 
     <!-- Page Preloder -->
     <div id="preloder">
@@ -213,602 +689,881 @@
                 <div class="col-lg-9">
                     <!-- Seção de Embalagens Artesanais -->
                     <div class="row" id="embalagens">
-                        <div class="col-lg-12">
-                            <h4 class="section-title">Embalagens Artesanais</h4>
-                        </div>
+                        <div class=" Seção de Embalagens Artesanais " div class="row" id="embalagens">
+                            <div class="col-lg-12">
+                                <h4 class="section-title">Embalagens Artesanais</h4>
+                            </div>
 
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-1.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Ícones padrão -->
-                                        <li><a href="#"><i class="fa fa-search"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            {% for produto in produtos %}
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{% if produto.imagem %}{{ url_for('static', filename=produto.imagem) }}{% else %}{{ url_for('static', filename='img/product/embalagens/product-1.jpg') }}{% endif %}">
 
-                                        <!-- Ícones de admin -->
-                                        {% if usuario and usuario['role'] == 'admin' %}
-                                        <li>
-                                            <a href="#" onclick="editarImagem('produto1')" title="Editar Imagem">
-                                                <i class="fa fa-image"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" onclick="editarValor('produto1')" title="Editar Valor">
-                                                <i class="fa fa-dollar-sign"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" onclick="salvarProduto('produto1')" title="Salvar">
-                                                <i class="fa fa-save"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" onclick="deletarProduto('produto1')" title="Deletar"
-                                                style="color: red;">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-                                        </li>
+                                        <!-- Opções Administrativas (só aparece para admin) -->
+                                        {% if is_admin %}
+                                        <div class="admin-actions">
+                                            <button class="btn-edit" onclick="openEditModal({{ produto.id }})">
+                                                <i class="fas fa-cog"></i>
+                                            </button>
+
+                                            <!-- Menu flutuante de edição (inicialmente escondido) -->
+                                            <div class="admin-menu" id="admin-menu-{{ produto.id }}">
+                                                <button onclick="editImage({{ produto.id }})">
+                                                    <i class="fas fa-image"></i> Alterar Imagem
+                                                </button>
+                                                <button onclick="editPrice({{ produto.id }})">
+                                                    <i class="fas fa-tag"></i> Alterar Preço
+                                                </button>
+                                                <button onclick="deleteProduct({{ produto.id }})">
+                                                    <i class="fas fa-trash"></i> Remover
+                                                </button>
+                                                <button onclick="addStock({{ produto.id }})">
+                                                    <i class="fas fa-plus"></i> Adicionar Estoque
+                                                </button>
+                                            </div>
+                                        </div>
                                         {% endif %}
-                                    </ul>
-                                </div>
 
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Caixa de papelão preto para 1 garrafa Luiz Argenta</h6>
-                                        <h6>R$ 8,00</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
+                                        <!-- Ícones para usuários normais -->
+                                        {% if usuario_logado and not is_admin %}
+                                        <ul class="product__hover">
+                                            <li>
+                                                <a href="#" class="add-to-favorites" data-product-id="{{ produto.id }}">
+                                                    <i class="far fa-heart"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="add-to-cart" data-product-id="{{ produto.id }}">
+                                                    <i class="fas fa-shopping-cart"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        {% endif %}
+                                    </div>
 
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-2.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Caixa de papelão preto para 2 garrafas Luiz Argenta</h6>
-                                        <h6>R$ 13,00</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-3.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Embalagem cilíndrica em papelão branco</h6>
-                                        <h6>R$ 15,00</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Mais produtos de embalagens... -->
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-4.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Embalagem cilíndrica em papelão preto</h6>
-                                        <h6>R$ 15,00</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-5.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Embalagem cilíndrica em madeira decorada</h6>
-                                        <h6>R$ 32,00</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-6.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Embalagem de couro Montana marrom, reta, com alça de couro</h6>
-                                        <h6>R$ 40,00</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-7.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6> Embalagem em lonita com alças de couro sintético, signo Aquário</h6>
-                                        <h6>R$ 19,20</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-8.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6> Embalagem em lonita com alças de couro sintético, signo Áries</h6>
-                                        <h6>R$ 19,20</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-9.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6> Embalagem em lonita com alças de couro sintético, signo Câncer</h6>
-                                        <h6>R$ 19,20</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-10.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6> Embalagem em lonita com alças de couro sintético, signo Capricórnio</h6>
-                                        <h6>R$ 19,20</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-11.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6> Embalagem em lonita com alças de couro sintético, signo Escorpião</h6>
-                                        <h6>R$ 19,20</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-12.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6> Embalagem em lonita com alças de couro sintético, signo Gêmeos</h6>
-                                        <h6>R$ 19,20</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-13.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6> Embalagem em lonita com alças de couro sintético, signo Leão</h6>
-                                        <h6>R$ 19,20</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-14.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6> Embalagem em lonita com alças de couro sintético, signo Libra</h6>
-                                        <h6>R$ 19,20</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-15.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6> Embalagem em lonita com alças de couro sintético, signo Peixes</h6>
-                                        <h6>R$ 19,20</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-16.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6> Embalagem em lonita com alças de couro sintético, signo Sagitário</h6>
-                                        <h6>R$ 19,20</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-17.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6> Embalagem em lonita com alças de couro sintético, signo Touro</h6>
-                                        <h6>R$ 19,20</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/embalagens/product-18.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6> Embalagem em lonita com alças de couro sintético, signo Virgem</h6>
-                                        <h6>R$ 19,20</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <!-- Continuação das embalagens... -->
-                    </div>
-
-                    <!-- Seção de Espumantes -->
-                    <div class="row" id="espumantes">
-                        <div class="col-lg-12">
-                            <h4 class="section-title">Espumantes</h4>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="{{ url_for('static', filename='img/product/espumantes/product-1.jpg') }}">
-                                    <ul class="product__hover">
-                                        <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
-                                        {% for item in hover_items %}
-                                        <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Espumante Branco Brut LA Jovem - Vinícola Luiz Argenta, Brasil</h6>
-                                        <h6>R$ 133,50</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="img/product/espumantes/product-2.jpg">
-                                    <ul class="product__hover"></ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Espumante Rosé Brut LA Jovem - Vinícola Luiz Argenta, Brasil</h6>
-                                        <h6>R$ 133,50</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="img/product/espumantes/product-3.jpg">
-                                    <ul class="product__hover"></ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Espumante Rosé Demi-Sec Bubble Audrey LA Jovem - Vinícola Luiz Argenta,
-                                            Brasil</h6>
-                                        <h6>R$ 133,50</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Mais espumantes... -->
-                    </div>
-
-                    <!-- Seção de Vinhos Brancos -->
-                    <div class="row" id="brancos">
-                        <div class="col-lg-12">
-                            <h4 class="section-title">Vinhos Brancos</h4>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/branco/product-1.jpg">
-                                    <ul class="product__hover"></ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Branco Pequeños Lotes Anforas – Orgânico – Sauvignon Blanc e Semillon 2021 -
-                                            Vinícola La Florita, Argentina</h6>
-                                        <h6>R$ 319,90</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/branco/product-2.jpg">
-                                    <ul class="product__hover"></ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Branco LA Jovem – Gewurztraminer 2023 - Vinícola Luiz Argenta, Brasil</h6>
-                                        <h6>R$ 182,50</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Mais vinhos brancos... -->
-                    </div>
-
-                    <!-- Seção de Vinhos Rosé e Laranja -->
-                    <div class="row" id="roses">
-                        <div class="col-lg-12">
-                            <h4 class="section-title">Vinhos Rosé e Laranja</h4>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/rose/product-1.jpg">
-                                    <ul class="product__hover"></ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Equis orange moscatel, vinho 'laranja' natural – Vinícola Andes Cru, Chile
-                                        </h6>
-                                        <h6>R$ 229,70</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Mais vinhos rosé... -->
-                    </div>
-
-                    <!-- Seção de Vinhos Tintos -->
-                    <div class="row" id="tintos">
-                        <div class="col-lg-12">
-                            <h4 class="section-title">Vinhos Tintos</h4>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/tinto/product-1.jpg">
-                                    <ul class="product__hover"></ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Tinto Excava – Cabernet Sauvignon 2022 - Vinícola Andes Cru, Chile</h6>
-                                        <h6>R$ 202,90</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Mais vinhos tintos... -->
-                    </div>
-
-                    <!-- Seção de Novidades -->
-                    <div class="row" id="novidades">
-                        <div class="col-lg-12">
-                            <h4 class="section-title">Novidades</h4>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/novidades/product-1.jpg">
-                                    <ul class="product__hover"></ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <center>
-                                        <h6>Tinto Mona Lisa – Gran Reserva Teroldego Colheita Centenária 2020 - Enos
-                                            Vinhos de Boutique, Brasil</h6>
-                                        <h6>R$ 208,70</h6>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Mais novidades... -->
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="product__pagination">
-
-                                <div class="col-lg-12">
-                                    <div class="product__pagination">
-                                        <a class="{{ 'active' if request.path == url_for('produtos') }}"
-                                            href="{{ url_for('produtos') }}">1</a>
-                                        <a class="{{ 'active' if request.path == url_for('produtos1') }}"
-                                            href="{{ url_for('produtos1') }}">2</a>
+                                    <div class="product__item__text">
+                                        <h6>{{ produto.nome }}</h6>
+                                        <div class="product-price">R$ {{ "%.2f"|format(produto.preco) }}</div>
+                                        {% if is_admin %}
+                                        {% endif %}
                                     </div>
                                 </div>
-                                <!-- desbloquear de precisar<a href="#">3</a>
+                            </div>
+                            {% endfor %}
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-2.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6>Caixa de papelão preto para 2 garrafas Luiz Argenta</h6>
+                                            <h6>R$ 13,00</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-3.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6>Embalagem cilíndrica em papelão branco</h6>
+                                            <h6>R$ 15,00</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mais produtos de embalagens... -->
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-4.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6>Embalagem cilíndrica em papelão preto</h6>
+                                            <h6>R$ 15,00</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-5.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6>Embalagem cilíndrica em madeira decorada</h6>
+                                            <h6>R$ 32,00</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-6.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6>Embalagem de couro Montana marrom, reta, com alça de couro</h6>
+                                            <h6>R$ 40,00</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-7.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6> Embalagem em lonita com alças de couro sintético, signo Aquário</h6>
+                                            <h6>R$ 19,20</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-8.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6> Embalagem em lonita com alças de couro sintético, signo Áries</h6>
+                                            <h6>R$ 19,20</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-9.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6> Embalagem em lonita com alças de couro sintético, signo Câncer</h6>
+                                            <h6>R$ 19,20</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-10.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6> Embalagem em lonita com alças de couro sintético, signo Capricórnio
+                                            </h6>
+                                            <h6>R$ 19,20</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-11.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6> Embalagem em lonita com alças de couro sintético, signo Escorpião</h6>
+                                            <h6>R$ 19,20</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-12.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6> Embalagem em lonita com alças de couro sintético, signo Gêmeos</h6>
+                                            <h6>R$ 19,20</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-13.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6> Embalagem em lonita com alças de couro sintético, signo Leão</h6>
+                                            <h6>R$ 19,20</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-14.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6> Embalagem em lonita com alças de couro sintético, signo Libra</h6>
+                                            <h6>R$ 19,20</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-15.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6> Embalagem em lonita com alças de couro sintético, signo Peixes</h6>
+                                            <h6>R$ 19,20</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-16.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6> Embalagem em lonita com alças de couro sintético, signo Sagitário</h6>
+                                            <h6>R$ 19,20</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-17.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6> Embalagem em lonita com alças de couro sintético, signo Touro</h6>
+                                            <h6>R$ 19,20</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/embalagens/product-18.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6> Embalagem em lonita com alças de couro sintético, signo Virgem</h6>
+                                            <h6>R$ 19,20</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <!-- Continuação das embalagens... -->
+                        </div>
+
+                        <!-- Seção de Espumantes -->
+                        <div class="row" id="espumantes">
+                            <div class="col-lg-12">
+                                <h4 class="section-title">Espumantes</h4>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="{{ url_for('static', filename='img/product/espumantes/product-1.jpg') }}">
+                                        <ul class="product__hover">
+                                            <!-- Se você precisar de conteúdo dinâmico dentro da ul, pode adicionar mais tags Jinja aqui -->
+                                            {% for item in hover_items %}
+                                            <li><a href="{{ item.link }}"><img src="{{ item.icon }}" alt=""></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6>Espumante Branco Brut LA Jovem - Vinícola Luiz Argenta, Brasil</h6>
+                                            <h6>R$ 133,50</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="img/product/espumantes/product-2.jpg">
+                                        <ul class="product__hover"></ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6>Espumante Rosé Brut LA Jovem - Vinícola Luiz Argenta, Brasil</h6>
+                                            <h6>R$ 133,50</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="img/product/espumantes/product-3.jpg">
+                                        <ul class="product__hover"></ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6>Espumante Rosé Demi-Sec Bubble Audrey LA Jovem - Vinícola Luiz Argenta,
+                                                Brasil</h6>
+                                            <h6>R$ 133,50</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mais espumantes... -->
+                        </div>
+
+                        <!-- Seção de Vinhos Brancos -->
+                        <div class="row" id="brancos">
+                            <div class="col-lg-12">
+                                <h4 class="section-title">Vinhos Brancos</h4>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="img/product/branco/product-1.jpg">
+                                        <ul class="product__hover"></ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6>Branco Pequeños Lotes Anforas – Orgânico – Sauvignon Blanc e Semillon
+                                                2021 -
+                                                Vinícola La Florita, Argentina</h6>
+                                            <h6>R$ 319,90</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="img/product/branco/product-2.jpg">
+                                        <ul class="product__hover"></ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6>Branco LA Jovem – Gewurztraminer 2023 - Vinícola Luiz Argenta, Brasil
+                                            </h6>
+                                            <h6>R$ 182,50</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mais vinhos brancos... -->
+                        </div>
+
+                        <!-- Seção de Vinhos Rosé e Laranja -->
+                        <div class="row" id="roses">
+                            <div class="col-lg-12">
+                                <h4 class="section-title">Vinhos Rosé e Laranja</h4>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg" data-setbg="img/product/rose/product-1.jpg">
+                                        <ul class="product__hover"></ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6>Equis orange moscatel, vinho 'laranja' natural – Vinícola Andes Cru,
+                                                Chile
+                                            </h6>
+                                            <h6>R$ 229,70</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mais vinhos rosé... -->
+                        </div>
+
+                        <!-- Seção de Vinhos Tintos -->
+                        <div class="row" id="tintos">
+                            <div class="col-lg-12">
+                                <h4 class="section-title">Vinhos Tintos</h4>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg" data-setbg="img/product/tinto/product-1.jpg">
+                                        <ul class="product__hover"></ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6>Tinto Excava – Cabernet Sauvignon 2022 - Vinícola Andes Cru, Chile</h6>
+                                            <h6>R$ 202,90</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mais vinhos tintos... -->
+                        </div>
+
+                        <!-- Seção de Novidades -->
+                        <div class="row" id="novidades">
+                            <div class="col-lg-12">
+                                <h4 class="section-title">Novidades</h4>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="img/product/novidades/product-1.jpg">
+                                        <ul class="product__hover"></ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <center>
+                                            <h6>Tinto Mona Lisa – Gran Reserva Teroldego Colheita Centenária 2020 - Enos
+                                                Vinhos de Boutique, Brasil</h6>
+                                            <h6>R$ 208,70</h6>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mais novidades... -->
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="product__pagination">
+
+                                    <div class="col-lg-12">
+                                        <div class="product__pagination">
+                                            <a class="{{ 'active' if request.path == url_for('produtos') }}"
+                                                href="{{ url_for('produtos') }}">1</a>
+                                            <a class="{{ 'active' if request.path == url_for('produtos1') }}"
+                                                href="{{ url_for('produtos1') }}">2</a>
+                                        </div>
+                                    </div>
+                                    <!-- desbloquear de precisar<a href="#">3</a>
                                 <a href="#">4</a>
                                 <a href="#">5</a>
                                 <a href="#">6</a>
                                 <span>...</span>
                                 <a href="#">21</a>-->
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </section>
     <!-- Shop Section End -->
 
     <!-- Footer Section Begin -->
     {% include 'footer.html' %}
     <!-- Footer Section End -->
+
+    <script>
+        // Mostrar/ocultar menu admin
+        function openEditModal(productId) {
+            const menu = document.getElementById(`admin-menu-${productId}`);
+            const allMenus = document.querySelectorAll('.admin-menu');
+
+            // Fecha todos os outros menus
+            allMenus.forEach(m => {
+                if (m.id !== `admin-menu-${productId}`) m.style.display = 'none';
+            });
+
+            // Alterna o menu atual
+            if (menu.style.display === 'block') {
+                menu.style.display = 'none';
+            } else {
+                menu.style.display = 'block';
+            }
+        }
+
+        // Fechar menus quando clicar fora
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.admin-actions')) {
+                document.querySelectorAll('.admin-menu').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+            }
+        });
+
+        // Função para editar imagem
+        // Função para editar imagem - Versão Modernizada
+        function editImage(productId) {
+            const imgElement = document.querySelector(`[data-setbg*="product-${productId}"]`);
+            const currentImage = imgElement.getAttribute('data-setbg');
+
+            Swal.fire({
+                title: '<span style="font-size: 1.5rem; font-weight: 600; color: #1a1a1a; font-family: \'Inter\', sans-serif">Alterar Imagem</span>',
+                html: `
+<div style="font-family: 'Inter', sans-serif; max-width: 100%; color: #333;">
+<div style="margin-bottom: 1.5rem; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);">
+<img id="current-image" src="${currentImage}" alt="Imagem Atual"
+style="width: 100%; max-height: 280px; object-fit: contain; border-radius: 12px;">
+</div>
+
+<div style="text-align: center; color: #999; font-size: 0.8rem; text-transform: uppercase; margin: 1rem 0; position: relative;">
+<span style="background: #fff; padding: 0 12px; position: relative; z-index: 1;">ou</span>
+<div style="position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: #e0e0e0; z-index: 0;"></div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 1rem;">
+<!-- Upload por arquivo -->
+<label for="image-upload" style="cursor: pointer; border: 2px dashed #6c63ff; border-radius: 12px; background: #fdfdfd; padding: 1.5rem; text-align: center; transition: all 0.3s ease;">
+<i class="fas fa-cloud-upload-alt" style="font-size: 1.75rem; color: #6c63ff; margin-bottom: 0.5rem;"></i>
+<p style="margin: 0; font-size: 0.9rem; color: #666;">Clique ou arraste uma imagem aqui</p>
+<input type="file" id="image-upload" accept="image/*" style="display: none;">
+</label>
+
+<!-- Ou colar URL -->
+<input type="text" id="image-url" placeholder="Ou cole a URL da imagem"
+style="width: 100%; padding: 1rem; border: 1px solid #e0e0e0; border-radius: 12px; font-size: 0.95rem; background: #fafafa; outline: none; transition: border 0.2s ease;">
+</div>
+</div>
+`,
+                showCancelButton: true,
+                confirmButtonText: 'Salvar Alterações',
+                cancelButtonText: 'Cancelar',
+                preConfirm: () => {
+                    const fileInput = document.getElementById('image-upload');
+                    const urlInput = document.getElementById('image-url');
+
+                    if (fileInput.files.length > 0) {
+                        const formData = new FormData();
+                        formData.append('image', fileInput.files[0]);
+
+                        return fetch(`/upload-image/${productId}`, {
+                            method: 'POST',
+                            body: formData
+                        })
+                            .then(response => {
+                                if (!response.ok) throw new Error('Erro no servidor');
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (!data.success) throw new Error(data.message);
+                                return data.dbImagePath; // Usa o caminho relativo do banco
+                            });
+                    } else if (urlInput.value) {
+                        return urlInput.value;
+                    } else {
+                        Swal.showValidationMessage('Por favor, selecione uma imagem ou forneça uma URL');
+                        return false;
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed && result.value) {
+                    // Prepara o valor para enviar ao servidor
+                    const dbImagePath = result.value.startsWith('http') ?
+                        result.value.split('/static/')[1] :
+                        result.value;
+
+                    fetch(`/editar_produto/${productId}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ imagem: dbImagePath })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Atualiza a exibição na página
+                                const displayUrl = result.value.startsWith('http') ?
+                                    result.value :
+                                    `/static/${result.value}`;
+
+                                imgElement.setAttribute('data-setbg', displayUrl);
+                                imgElement.style.backgroundImage = `url(${displayUrl})`;
+
+                                Swal.fire({
+                                    title: '<span style="font-size: 1.25rem; font-weight: 600; color: #1a1a1a; font-family: \'Inter\', sans-serif">Sucesso!</span>',
+                                    html: '<span style="font-family: \'Inter\', sans-serif; color: #555;">Imagem atualizada com sucesso</span>',
+                                    icon: 'success',
+                                    timer: 2000
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: '<span style="font-size: 1.25rem; font-weight: 600; color: #1a1a1a; font-family: \'Inter\', sans-serif">Erro!</span>',
+                                    html: `<span style="font-family: 'Inter', sans-serif; color: #555;">${data.message || 'Erro ao atualizar imagem'}</span>`,
+                                    icon: 'error'
+                                });
+                            }
+                        });
+                }
+            });
+        }
+
+        // Função para editar preço
+        function editPrice(productId) {
+            const currentPrice = document.querySelector(`.product__item:has(#admin-menu-${productId}) .product-price`).textContent.replace('R$ ', '');
+
+            Swal.fire({
+                title: 'Alterar Preço',
+                input: 'number',
+                inputValue: currentPrice,
+                inputAttributes: {
+                    step: "0.01",
+                    min: "0"
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Salvar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: (value) => {
+                    if (!value || isNaN(value) || parseFloat(value) <= 0) {
+                        return 'Por favor, insira um valor válido maior que zero';
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const newPrice = parseFloat(result.value).toFixed(2);
+
+                    fetch(`/editar_produto/${productId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ preco: newPrice })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Atualizar o preço na página sem recarregar
+                                document.querySelector(`.product__item:has(#admin-menu-${productId}) .product-price`).textContent = `R$ ${newPrice}`;
+                                Swal.fire('Sucesso!', 'Preço atualizado com sucesso.', 'success');
+                            } else {
+                                Swal.fire('Erro!', data.message || 'Erro ao atualizar preço', 'error');
+                            }
+                        });
+                }
+            });
+        }
+
+        // Função para deletar produto
+        function deleteProduct(productId) {
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: "Você não poderá reverter isso!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sim, excluir!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/excluir_produto/${productId}`, {
+                        method: 'POST'
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Remover o produto da página sem recarregar
+                                document.querySelector(`.product__item:has(#admin-menu-${productId})`).closest('.col-lg-4').remove();
+
+                                Swal.fire(
+                                    'Excluído!',
+                                    'O produto foi removido com sucesso.',
+                                    'success'
+                                );
+                            } else {
+                                Swal.fire(
+                                    'Erro!',
+                                    data.message || 'Ocorreu um erro ao excluir o produto.',
+                                    'error'
+                                );
+                            }
+                        });
+                }
+            });
+        }
+
+        // Função para adicionar estoque
+        function addStock(productId) {
+            Swal.fire({
+                title: 'Adicionar Estoque',
+                input: 'number',
+                inputPlaceholder: 'Quantidade a adicionar',
+                inputAttributes: {
+                    min: '1',
+                    step: '1'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Adicionar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: (value) => {
+                    if (!value || isNaN(value) || parseInt(value) <= 0) {
+                        return 'Por favor, insira um número válido maior que zero';
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const quantity = parseInt(result.value);
+
+                    fetch(`/adicionar_estoque/${productId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ quantidade: quantity })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire('Sucesso!', `Estoque atualizado: ${data.message}`, 'success');
+                            } else {
+                                Swal.fire('Erro!', data.message || 'Erro ao atualizar estoque', 'error');
+                            }
+                        });
+                }
+            });
+        }
+    </script>
 
     <!-- Js Plugins -->
     <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
@@ -823,8 +1578,10 @@
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/carrinho.js') }}"></script>
 
+
     <!-- Font Awesome (CDN) -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/your-own-kit.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
 </body>
 
 </html>

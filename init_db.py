@@ -8,6 +8,23 @@ def get_db_connection():
     conn.execute("PRAGMA foreign_keys = ON")  # Ativa chaves estrangeiras
     return conn
 
+def verificar_esquema():
+    conn = get_db_connection()
+    try:
+        # Verifica se a coluna estoque existe
+        colunas = conn.execute("PRAGMA table_info(produtos)").fetchall()
+        colunas_existentes = [col[1] for col in colunas]
+        
+        if 'estoque' not in colunas_existentes:
+            conn.execute('ALTER TABLE produtos ADD COLUMN estoque INTEGER DEFAULT 0')
+            conn.commit()
+            print("Coluna 'estoque' adicionada à tabela produtos")
+            
+    except sqlite3.Error as e:
+        print(f"Erro ao verificar esquema: {e}")
+    finally:
+        conn.close()
+
 try:
     conn = get_db_connection()
     c = conn.cursor()
@@ -63,6 +80,21 @@ try:
         )
     ''')
 
+    c.execute('''
+    CREATE TABLE IF NOT EXISTS produtos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nome TEXT NOT NULL,
+        preco REAL NOT NULL,
+        imagem TEXT NOT NULL,
+        descricao TEXT,
+        categoria TEXT,
+        estoque INTEGER DEFAULT 0
+    )
+''')    
+
+    # Verificar e atualizar esquema se necessário
+    verificar_esquema()
+
     # Inserir vinhos de exemplo
     vinhos_exemplo = [
         ('Vinho Tinto', 50.00, 'vinho_tinto.jpg', 'Um vinho tinto encorpado com notas de frutas vermelhas.'),
@@ -83,6 +115,19 @@ try:
             INSERT OR IGNORE INTO usuarios (username, email, password, role) 
             VALUES (?, ?, ?, ?)
         ''', user)
+
+    # E alguns dados de exemplo
+    produtos_exemplo = [
+        ('Caixa para 1 garrafa', 8.00, 'caixa1.jpg', 'Caixa de papelão preto', 'embalagem', 10),
+        ('Caixa para 2 garrafas', 13.00, 'caixa2.jpg', 'Caixa de papelão preto', 'embalagem', 15),
+        ('Espumante Brut', 133.50, 'espumante1.jpg', 'Espumante Branco Brut', 'espumante', 5)
+    ]
+    for produto in produtos_exemplo:
+        c.execute("""
+            INSERT OR IGNORE INTO produtos 
+            (nome, preco, imagem, descricao, categoria, estoque) 
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, produto)
 
     conn.commit()
     print("Banco de dados configurado com sucesso!")
