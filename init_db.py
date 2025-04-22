@@ -25,12 +25,28 @@ def verificar_esquema():
     finally:
         conn.close()
 
+def verificar_coluna_usuarios():
+    conn = get_db_connection()
+    try:
+        colunas = conn.execute("PRAGMA table_info(usuarios)").fetchall()
+        colunas_existentes = [col[1] for col in colunas]
+        
+        if 'username' not in colunas_existentes:
+            conn.execute("ALTER TABLE usuarios ADD COLUMN username TEXT UNIQUE")
+            conn.commit()
+            print("Coluna 'username' adicionada à tabela usuarios.")
+    except sqlite3.Error as e:
+        print(f"Erro ao verificar coluna 'username': {e}")
+    finally:
+        conn.close()
+
+
 try:
     conn = get_db_connection()
     c = conn.cursor()
 
     # Tabela de usuários (DEVE vir antes de 'pedidos' por causa da FK)
-    c.execute('''
+    c.execute(''' 
         CREATE TABLE IF NOT EXISTS usuarios (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE,
@@ -44,18 +60,19 @@ try:
     ''')
 
     # Tabela de vinhos
-    c.execute('''
+    c.execute(''' 
         CREATE TABLE IF NOT EXISTS vinhos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT NOT NULL,
             preco REAL NOT NULL,
             imagem TEXT NOT NULL,
+            categoria TEXT NOT NULL,
             descricao TEXT
         )
     ''')
 
     # Tabela de pedidos
-    c.execute('''
+    c.execute(''' 
         CREATE TABLE IF NOT EXISTS pedidos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
@@ -68,7 +85,7 @@ try:
     ''')
 
     # Tabela de itens_pedido
-    c.execute('''
+    c.execute(''' 
         CREATE TABLE IF NOT EXISTS itens_pedido (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             pedido_id INTEGER NOT NULL,
@@ -80,29 +97,52 @@ try:
         )
     ''')
 
-    c.execute('''
-    CREATE TABLE IF NOT EXISTS produtos (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome TEXT NOT NULL,
-        preco REAL NOT NULL,
-        imagem TEXT NOT NULL,
-        descricao TEXT,
-        categoria TEXT,
-        estoque INTEGER DEFAULT 0
-    )
-''')    
+    # Tabela de produtos
+    c.execute(''' 
+        CREATE TABLE IF NOT EXISTS produtos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            preco REAL NOT NULL,
+            imagem TEXT NOT NULL,
+            descricao TEXT,
+            categoria TEXT,
+            estoque INTEGER DEFAULT 0
+        )
+    ''')
 
     # Verificar e atualizar esquema se necessário
     verificar_esquema()
 
     # Inserir vinhos de exemplo
     vinhos_exemplo = [
-        # ('Vinho Tinto', 50.00, 'vinho_tinto.jpg', 'Um vinho tinto encorpado com notas de frutas vermelhas.'),
-        # ('Vinho Branco', 40.00, 'vinho_branco.jpg', 'Um vinho branco leve e refrescante.'),
-        # ('Vinho Rosé', 35.00, 'vinho_rose.jpg', 'Um vinho rosé suave e frutado.')
+        # Vinhos Tinto
+        ('Vinho Tinto Reserva', 89.90, 'product-1.jpg', 'tinto', 'Vinho tinto encorpado com notas de frutas vermelhas e taninos suaves.'),
+        ('Vinho Tinto Cabernet Sauvignon', 119.90, 'product-7.jpg', 'tinto', 'Vinho tinto intenso com aromas de cassis e especiarias.'),
+        ('Vinho Tinto Malbec', 95.50, 'product-8.jpg', 'tinto', 'Vinho argentino encorpado com toques de ameixa e chocolate.'),
+        ('Vinho Tinto Syrah', 79.90, 'product-9.jpg', 'tinto', 'Vinho tinto com taninos elegantes e notas de pimenta negra.'),
+        
+        # Vinhos Branco
+        ('Vinho Branco Seco', 59.90, 'product-2.jpg', 'branco', 'Vinho branco fresco com acidez equilibrada e notas cítricas.'),
+        ('Vinho Branco Chardonnay', 89.90, 'product-10.jpg', 'branco', 'Vinho branco encorpado com nuances de baunilha e frutas tropicais.'),
+        ('Vinho Branco Sauvignon Blanc', 65.90, 'product-11.jpg', 'branco', 'Vinho branco leve com aromas de maracujá e ervas frescas.'),
+        ('Vinho Branco Riesling', 72.90, 'product-12.jpg', 'branco', 'Vinho branco aromático com toques de pêssego e mel.'),
+        
+        # Vinhos Rosé
+        ('Vinho Rosé Premium', 69.90, 'product-3.jpg', 'rose', 'Vinho rosé elegante com notas de morango e florais.'),
+        ('Vinho Rosé Provence', 85.90, 'product-13.jpg', 'rose', 'Rosé francês delicado com frescor e minerabilidade.'),
+        ('Vinho Rosé Brasileiro', 49.90, 'product-14.jpg', 'rose', 'Rosé frutado e refrescante, ideal para o verão.'),
+        ('Vinho Rosé Seco', 55.90, 'product-15.jpg', 'rose', 'Rosé com acidez vibrante e final persistente.'),
+        
+        # Espumantes
+        ('Espumante Brut', 129.90, 'product-16.jpg', 'espumante', 'Espumante seco com bolhas finas e notas de pão torrado.'),
+        ('Espumante Moscatel', 89.90, 'product-17.jpg', 'espumante', 'Espumante doce e aromático, perfeito para sobremesas.'),
+        ('Espumante Rosé', 99.90, 'product-18.jpg', 'espumante', 'Espumante rosé frutado com toques de framboesa.'),
+        ('Prosecco', 109.90, 'product-19.jpg', 'espumante', 'Espumante italiano leve e fresco, ideal para brindes.'),
+        ('Champagne Brut', 299.90, 'product-20.jpg', 'espumante', 'Champagne francês premium com complexidade e elegância.')
     ]
+
     for vinho in vinhos_exemplo:
-        c.execute("INSERT OR IGNORE INTO vinhos (nome, preco, imagem, descricao) VALUES (?, ?, ?, ?)", vinho)
+        c.execute("INSERT OR IGNORE INTO vinhos (nome, preco, imagem, categoria, descricao) VALUES (?, ?, ?, ?, ?)", vinho)
 
     # Inserir usuários de exemplo (COM EMAIL)
     usuarios_exemplo = [
@@ -116,7 +156,7 @@ try:
             VALUES (?, ?, ?, ?)
         ''', user)
 
-    # E alguns dados de exemplo
+    # Inserir produtos de exemplo
     produtos_exemplo = [
         ('Embalagem cilíndrica em papelão branco', 0, 'product-3.jpg', 'Embalagem cilíndrica em papelão branco para garrafas', 'embalagem', 0),
         ('Caixa de papelão preto para 1 garrafa Luiz Argenta', 0, 'product-1.jpg', 'Caixa de papelão preto para 1 garrafa', 'embalagem', 0),

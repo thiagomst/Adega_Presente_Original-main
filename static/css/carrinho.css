@@ -1,5 +1,4 @@
-/* Estilos gerais */
-body {
+/* Estilos gerais body {
   font-family: Arial, sans-serif;
   background-color: #672e69;
   margin: 0;
@@ -10,14 +9,14 @@ body {
   background-color: #672e69;
 }
 
-/* Cabeçalho */
+/* Cabeçalho 
 h1 {
   text-align: center;
   color: #cac6c6;
   margin-top: 80px;
 }
 
-/* Container do carrinho */
+/* Container do carrinho 
 .carrinho-container {
   max-width: 800px;
   margin: 20px auto;
@@ -32,7 +31,7 @@ h1 {
   transform: scale(1.02);
 }
 
-/* Lista de itens do carrinho */
+/* Lista de itens do carrinho 
 .carrinho-lista {
   list-style: none;
   padding: 0;
@@ -55,7 +54,7 @@ h1 {
   border-bottom: none;
 }
 
-/* Imagem do produto */
+/* Imagem do produto 
 .carrinho-item img {
   width: 80px;
   height: 80px;
@@ -65,7 +64,7 @@ h1 {
   border: 1px solid #ddd;
 }
 
-/* Detalhes do produto */
+/* Detalhes do produto 
 .carrinho-item-detalhes {
   flex-grow: 1;
 }
@@ -83,14 +82,14 @@ h1 {
   margin: 5px 0;
 }
 
-/* Botões de ação */
+/* Botões de ação 
 .carrinho-item-acoes {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* Botões de quantidade */
+/* Botões de quantidade 
 .botao-quantidade {
   background-color: #f0f0f0;
   border: 1px solid #ccc;
@@ -110,14 +109,14 @@ h1 {
   color: #333;
 }
 
-/* Quantidade do produto */
+/* Quantidade do produto 
 .quantidade {
   font-size: 16px;
   margin: 0 8px;
   font-weight: bold;
 }
 
-/* Botão de remover */
+/* Botão de remover 
 .botao-remover {
   background-color: #ff4d4d;
   border: none;
@@ -136,7 +135,7 @@ h1 {
   color: #fff;
 }
 
-/* Total do carrinho */
+/* Total do carrinho 
 .carrinho-total {
   text-align: right;
   margin-top: 20px;
@@ -150,7 +149,7 @@ h1 {
   color: #3483fa;
 }
 
-/* Botão de finalizar compra */
+/* Botão de finalizar compra 
 .botao-finalizar {
   display: block;
   width: 100%;
@@ -173,7 +172,7 @@ h1 {
   transform: scale(1.05);
 }
 
-/* Link de continuar comprando */
+/* Link de continuar comprando 
 .continuar-comprando {
   display: block;
   text-align: center;
@@ -198,10 +197,10 @@ body {
   padding: 0;
 } */
 
-/* Navegação */
+/* Navegação 
 nav {
   display: flex;
-  justify-content: space-between; /* Alinha os itens à esquerda e à direita */
+  justify-content: space-between; /* Alinha os itens à esquerda e à direita 
   align-items: center;
   background-color: #007bff;
   padding: 10px 20px;
@@ -215,7 +214,7 @@ nav {
   display: flex;
   align-items: center;
   gap: 15px;
-  margin-right: 20px; /* Ajuste conforme necessário */
+  margin-right: 20px; /* Ajuste conforme necessário 
 }
 
 .menu {
@@ -237,15 +236,15 @@ nav {
   font-weight: bold;
 }
 
-/* Container para o carrinho e o botão "Sair" */
+/* Container para o carrinho e o botão "Sair" 
 .nav-direita {
   display: flex;
   align-items: center;
   gap: 15px;
-  margin-left: auto; /* Empurra o container para o canto direito */
+  margin-left: auto; /* Empurra o container para o canto direito 
 }
 
-/* Estilo do carrinho e botão "Sair" */
+ Estilo do carrinho e botão "Sair" 
 .carrinho,
 .botao-sair {
   text-decoration: none;
@@ -271,8 +270,8 @@ nav {
   background: rgba(255, 255, 255, 0.2);
   padding: 6px 12px;
   border-radius: 10px;
-  margin-left: auto; /* Traz o botão para mais perto */
-  max-width: 120px; /* Evita que o botão fique grande demais */
+  margin-left: auto; 
+  max-width: 120px; 
 }
 
 #contador-carrinho {
@@ -280,14 +279,14 @@ nav {
   color: yellow;
 }
 
-/* Estilo do conteúdo */
+ Estilo do conteúdo
 .conteudo {
   margin-top: 80px;
   text-align: center;
   padding: 20px;
 }
 
-/* Rodapé */
+/* Rodapé 
 footer {
   text-align: center;
   padding: 10px;
@@ -298,7 +297,7 @@ footer {
   width: 100%;
 }
 
-/* Responsividade */
+/* Responsividade 
 @media (max-width: 600px) {
   .carrinho-container {
     width: 95%;
@@ -321,4 +320,4 @@ footer {
   .botao-finalizar {
     width: 90%;
   }
-}
+} */

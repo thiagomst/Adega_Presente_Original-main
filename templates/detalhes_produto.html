@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elegant-icons.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nice-select.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slicknav.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Inclua jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Inclua Owl Carousel CSS -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+    <!-- Inclua Owl Carousel JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <title>{{ produto.nome }} - ADEGA PRESENTE</title>
+</head>
+
+<body>
+    <!--Início da seção de cabeçalho-->
+    <header class="header">
+        </div>
+        </div>
+        <div class="col-lg-6 col-md-5 text-right">
+
+        </div>
+        </div>
+        </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                        <a href="{{ url_for('index') }}">
+                            <img src="{{ url_for('static', filename='img/logo1.png') }}" alt="Descrição da imagem"
+                                width="110" height="110">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li><a href="{{ url_for('index') }}">Página Inicial</a></li>
+                            <li><a href="{{ url_for('sobre') }}">Sobre Nós</a></li>
+                            <li><a href="{{ url_for('produtos') }}">Produtos</a></li>
+                            <li><a href="{{ url_for('contato') }}">Contato</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- Adicionando a classe col-lg-3 para alinhar corretamente -->
+                <div class="nav-direita">
+                    <a href="{{ url_for('ver_carrinho') }}" class="carrinho">
+                        <i class="fas fa-shopping-cart"></i> Carrinho (<span id="contador-carrinho">0</span>)
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="botao-sair">Sair</a>
+                </div>
+
+                <div class="flash-messages">
+                    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+                    messages %} {% for category, message in messages %}
+                    <div class="flash {{ category }}">
+                        {{ message }}
+                        <button class="flash-close" onclick="fecharMensagem(this)">OK</button>
+                    </div>
+                    {% endfor %} {% endif %} {% endwith %}
+                </div>
+            </div>
+
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
+
+        </div>
+
+    </header>
+
+
+    <!-- Conteúdo da página de detalhes -->
+    <div class="product-details-container">
+        <div class="product-images">
+            <img src="{{ url_for('static', filename='img/product/' + produto.imagem) }}" alt="{{ produto.nome }}">
+        </div>
+        <div class="product-info">
+            <h1>{{ produto.nome }}</h1>
+            <h2>{{ produto.tipo }}</h2>
+
+            <div class="product-description">
+                <p>{{ produto.descricao }}</p>
+            </div>
+
+            <div class="product-meta">
+                <div class="meta-column">
+                    <h3><i class="fas fa-info-circle"></i> DETALHES</h3>
+                    <p><i class="fas fa-industry"></i> <strong>Produtor:</strong> {{ produto.produtor }}</p>
+                    <p><i class="fas fa-map-marker-alt"></i> <strong>Região:</strong> {{ produto.regiao }}</p>
+                    <p><i class="fas fa-wine-bottle"></i> <strong>Uva:</strong> {{ produto.uva }}</p>
+                    <p><i class="fas fa-wine-glass-alt"></i> <strong>Teor Alcoólico:</strong> {{ produto.teor_alcoolico
+                        }}</p>
+                </div>
+
+                <div class="meta-column">
+                    <h3><i class="fas fa-star"></i> PONTUAÇÕES</h3>
+                    <p>{{ produto.pontuacao }}</p>
+                    <h3><i class="fas fa-utensils"></i> HARMONIZAÇÃO</h3>
+                    <p>{{ produto.harmonizacao }}</p>
+                </div>
+            </div>
+
+            <div class="product-pricing">
+                <h2>R$ {{ produto.preco }}</h2>
+                <p>Em até 8x de R$ {{ produto.preco_parcelado }} s/ juros</p>
+                <p class="pix-price"><i class="fas fa-qrcode"></i> R$ {{ produto.preco_pix }} no PIX</p>
+
+                <div class="quantity-selector">
+                    <label for="quantity"><i class="fas fa-calculator"></i> Qtd:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" value="1"
+                        onchange="validarQuantidade(this)">
+                </div>
+
+                <div class="action-buttons">
+                    <button class="add-to-cart" onclick="adicionarAoCarrinho({{ produto.id }})">
+                        <i class="fas fa-shopping-cart"></i> COMPRAR
+                    </button>
+                    <a href="https://wa.me/556196127475?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20o%20produto:%0A%0A*{{ produto.nome|urlencode }}*%0A*Código:*%20{{ produto.id }}%0A*Preço:*%20R$%20{{ produto.preco }}%0A%0APode%20me%20ajudar?"
+                        class="whatsapp-button" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Comprar pelo WhatsApp
+                    </a>
+                </div>
+
+                <div class="shipping-calculator">
+                    <h3><i class="fas fa-truck"></i> CONSULTAR VALOR DO FRETE</h3>
+                    <div class="shipping-input">
+                        <i class="fas fa-map-pin"></i>
+                        <input type="text" placeholder="Digite o CEP">
+                        <button><i class="fas fa-check"></i> OK</button>
+                    </div>
+                </div>
+
+                <div class="price-alert">
+                    <input type="checkbox" id="price-alert">
+                    <label for="price-alert"><i class="fas fa-bell"></i> Receber notificações de baixa de preço</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    {% include 'footer.html' %}
+
+    <!-- Estilos específicos para esta página -->
+    <style>
+        .add-to-cart {
+            transition: all 0.3s ease;
+        }
+
+        .shipping-input button {
+            transition: background-color 0.3s;
+        }
+
+        .shipping-input button:hover {
+            background-color: #8a161a;
+        }
+
+        .flash-messages {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        .flash {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-width: 300px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .flash.success {
+            background-color: #28a745;
+        }
+
+        .flash.error {
+            background-color: #dc3545;
+        }
+
+        .flash.warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .flash-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+
+        .product-details-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            gap: 40px;
+        }
+
+        .product-images {
+            flex: 1;
+        }
+
+        .product-images img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-meta {
+            display: flex;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .meta-column {
+            flex: 1;
+        }
+
+        .product-pricing {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .pix-price {
+            color: #aa1c21;
+            font-weight: bold;
+        }
+
+        .quantity-selector {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .add-to-cart,
+        .whatsapp-button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-to-cart {
+            background-color: #aa1c21;
+            color: white;
+        }
+
+        .whatsapp-button {
+            background-color: #25D366;
+            color: white;
+            text-decoration: none;
+        }
+
+        .shipping-calculator {
+            margin: 20px 0;
+        }
+
+        .shipping-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .shipping-input input {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            flex-grow: 1;
+        }
+
+        .shipping-input button {
+            padding: 8px 15px;
+            background-color: #aa1c21;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .price-alert {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        i {
+            color: #aa1c21;
+        }
+
+        @media (max-width: 768px) {
+            .product-details-container {
+                flex-direction: column;
+            }
+
+            .product-meta {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+
+    <script>
+        // Função para adicionar ao carrinho
+        async function adicionarAoCarrinho(produtoId) {
+            const quantidade = parseInt(document.getElementById('quantity').value) || 1;
+
+            try {
+                const response = await fetch(`/adicionar/${produtoId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ quantidade: quantidade })
+                });
+
+                const data = await response.json();
+
+                if (data.status === "success") {
+                    // Atualiza o contador do carrinho
+                    document.getElementById('contador-carrinho').textContent = data.total_itens;
+
+                    // Feedback visual
+                    const botao = document.querySelector('.add-to-cart');
+                    botao.innerHTML = '<i class="fas fa-check"></i> Adicionado!';
+                    botao.style.backgroundColor = '#28a745';
+
+                    // Volta ao normal após 2 segundos
+                    setTimeout(() => {
+                        botao.innerHTML = '<i class="fas fa-shopping-cart"></i> COMPRAR';
+                        botao.style.backgroundColor = '#aa1c21';
+                    }, 2000);
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error("Erro:", error);
+                alert("Erro ao adicionar ao carrinho");
+            }
+        }
+
+        // Atualizar contador do carrinho ao carregar a página
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/carrinho/contador')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('contador-carrinho').textContent = data.total_itens;
+                });
+        });
+
+        // Função para calcular frete
+        async function calcularFrete() {
+            const cep = document.querySelector('.shipping-input input').value;
+
+            if (!cep || cep.length !== 8) {
+                alert('Por favor, insira um CEP válido com 8 dígitos');
+                return;
+            }
+
+            try {
+                const response = await fetch('/calcular_frete', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ cep: cep })
+                });
+
+                const data = await response.json();
+
+                if (data.status === "success") {
+                    alert(`Frete calculado: R$ ${data.frete.toFixed(2)}`);
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error("Erro:", error);
+                alert("Erro ao calcular frete");
+            }
+        }
+
+        // Adicionar evento ao botão de calcular frete
+        document.querySelector('.shipping-input button').addEventListener('click', calcularFrete);
+    </script>
+</body>
+
+</html>

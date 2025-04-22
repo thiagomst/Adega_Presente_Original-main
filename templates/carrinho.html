@@ -17,6 +17,259 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <style>
+    /* carrinho img */
+    .carrinho-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 8px;
+      margin-right: 20px;
+      background: #f8f8f8;
+      padding: 5px;
+      border: 1px solid #eee;
+    }
+
+    /* Estilo para quando a imagem não carrega */
+    .carrinho-item img[src*="placeholder.jpg"] {
+      background: #f0f0f0;
+      padding: 15px;
+    }
+
+    /* Estilo base do container do carrinho */
+    .carrinho-container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Título da página */
+    h1 {
+      text-align: center;
+      color: #5e0b15;
+      margin: 30px 0;
+      font-weight: 700;
+      font-size: 2.2rem;
+    }
+
+    /* Lista de itens do carrinho */
+    .carrinho-lista {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* Item individual do carrinho */
+    .carrinho-item {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: all 0.3s ease;
+    }
+
+    .carrinho-item:hover {
+      background-color: #fafafa;
+    }
+
+    /* Imagem do produto no carrinho */
+    .carrinho-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 8px;
+      margin-right: 20px;
+    }
+
+    /* Detalhes do produto (nome e preço) */
+    .carrinho-item-detalhes {
+      flex-grow: 1;
+    }
+
+    .carrinho-item-nome {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      margin: 0 0 5px 0;
+    }
+
+    .carrinho-item-preco {
+      font-size: 16px;
+      color: #5e0b15;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    /* Controles de quantidade e remoção */
+    .carrinho-item-acoes {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .botao-quantidade {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid #ddd;
+      background: white;
+      color: #5e0b15;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .botao-quantidade:hover {
+      background: #5e0b15;
+      color: white;
+      border-color: #5e0b15;
+    }
+
+    .quantidade {
+      min-width: 20px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .botao-remover {
+      background: none;
+      border: none;
+      color: #ff4d4d;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s ease;
+      padding: 8px;
+      border-radius: 50%;
+    }
+
+    .botao-remover:hover {
+      background: #ffeeee;
+      transform: scale(1.1);
+    }
+
+    /* Seção de total e botões */
+    .carrinho-total {
+      text-align: right;
+      font-size: 20px;
+      font-weight: 700;
+      color: #5e0b15;
+      margin: 30px 0 20px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .botao-finalizar {
+      width: 100%;
+      padding: 15px;
+      background: #5e0b15;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 15px;
+    }
+
+    .botao-finalizar:hover {
+      background: #3a070d;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(94, 11, 21, 0.2);
+    }
+
+    .continuar-comprando {
+      display: block;
+      text-align: center;
+      color: #5e0b15;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      padding: 10px;
+    }
+
+    .continuar-comprando:hover {
+      color: #3a070d;
+      text-decoration: underline;
+    }
+
+    /* Estilo para o cálculo de frete */
+    .cep-container {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      max-width: 400px;
+    }
+
+    .cep-container label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .cep-field {
+      display: flex;
+      gap: 10px;
+    }
+
+    .cep-field input {
+      flex-grow: 1;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .cep-field button {
+      padding: 10px 15px;
+      background: #5e0b15;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .cep-field button:hover {
+      background: #3a070d;
+    }
+
+    #frete-container {
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    #valor-frete {
+      color: #5e0b15;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .carrinho-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .carrinho-item img {
+        margin-bottom: 15px;
+      }
+
+      .carrinho-item-acoes {
+        margin-top: 15px;
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+  </style>
 </head>
 
 <body class="bg">
@@ -42,7 +295,7 @@
             <ul>
               <li><a href="{{ url_for('index') }}">Página Inicial</a></li>
               <li><a href="{{ url_for('sobre') }}">Sobre Nós</a></li>
-              <li><a href="{{ url_for('vinhos') }}">Produtos</a></li>
+              <li><a href="{{ url_for('produtos') }}">Produtos</a></li>
               <li><a href="{{ url_for('contato') }}">Contato</a></li>
             </ul>
           </nav>
@@ -83,28 +336,28 @@
   <div class="carrinho-container">
     <ul class="carrinho-lista">
       {% for item in carrinho %}
-      <li class="carrinho-item" data-id="{{ item['id'] }}" data-preco="{{ item['preco'] }}">
+      <li class="carrinho-item" data-id="{{ item.id }}" data-preco="{{ item.preco }}">
         <!-- Imagem do produto -->
-        <img src="{{ url_for('static', filename='img/garrafas-de-vinho-porto.jpg') }}" alt="{{ item['nome'] }}" />
+        <img src="{{ url_for('static', filename='img/product/' + item.categoria + '/' + item.imagem) }}"
+          alt="{{ item.nome }}" class="product-image" loading="lazy"
+          onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/placeholder.jpg') }}'" />
+
         <div class="carrinho-item-detalhes">
-          <p class="carrinho-item-nome">{{ item['nome'] }}</p>
+          <p class="carrinho-item-nome">{{ item.nome }}</p>
           <p class="carrinho-item-preco">
-            R$ {{ "%.2f"|format(item['preco']) }}
+            R$ {{ "%.2f"|format(item.preco) }}
           </p>
         </div>
+
         <div class="carrinho-item-acoes">
-          <!-- Botão de diminuir quantidade -->
-          <button class="botao-quantidade" onclick="diminuirQuantidade({{ item['id'] }})">
+          <button class="botao-quantidade" onclick="diminuirQuantidade({{ item.id }})">
             <i class="fas fa-minus"></i>
           </button>
-          <!-- Quantidade do produto -->
-          <span class="quantidade" id="quantidade-{{ item['id'] }}">{{ item['quantidade'] }}</span>
-          <!-- Botão de aumentar quantidade -->
-          <button class="botao-quantidade" onclick="aumentarQuantidade({{ item['id'] }})">
+          <span class="quantidade" id="quantidade-{{ item.id }}">{{ item.quantidade }}</span>
+          <button class="botao-quantidade" onclick="aumentarQuantidade({{ item.id }})">
             <i class="fas fa-plus"></i>
           </button>
-          <!-- Ícone de lixeira para remover -->
-          <button class="botao-remover" onclick="removerItem({{ item['id'] }})">
+          <button class="botao-remover" onclick="removerItem({{ item.id }})">
             <i class="fas fa-trash"></i>
           </button>
         </div>

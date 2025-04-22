@@ -10,7 +10,7 @@ from flask_mail import Mail, Message
 import secrets
 from datetime import datetime, timedelta
 import re
-from init_db import get_db_connection 
+from init_db import verificar_esquema, get_db_connection 
 
 app = Flask(__name__)
 app.secret_key = 'sua_chave_secreta_aqui_mais_segura_e_unica'
@@ -43,14 +43,15 @@ def get_db_connection():
 @app.route('/')
 def index():
     conn = get_db_connection()
-    vinhos = conn.execute('SELECT * FROM vinhos').fetchall()
-
+    # Adicionando categoria na consulta
+    vinhos = conn.execute('SELECT id, nome, preco, imagem, categoria, descricao FROM vinhos').fetchall()
     is_admin = False
+    
     if 'user_id' in session:
         user = conn.execute('SELECT * FROM usuarios WHERE id = ?', (session['user_id'],)).fetchone()
         if user and user['role'] == 'admin':
             is_admin = True
-
+    
     conn.close()
     return render_template('index.html', vinhos=vinhos, is_admin=is_admin)
 
@@ -74,6 +75,29 @@ def admin_dashboard():
                          produtos=produtos,
                          usuario_logado=user,  # Mantive este nome
                          is_admin=True)
+
+# Rota para detalhes do produto
+@app.route('/produto/<int:produto_id>')
+def detalhes_produto(produto_id):
+    # Aqui você buscaria o produto do banco de dados
+    # Estou usando dados mockados como exemplo
+    produto = {
+        'id': produto_id,
+        'nome': 'Vinho Finca La Anita Malbec 2021',
+        'tipo': 'Tinto',
+        'descricao': 'O Vinho Finca La Anita Malbec apresenta uma cor vermelho rubi intensa e brilhante...',
+        'produtor': 'Finca La Anita',
+        'regiao': 'Mendoza',
+        'uva': 'Malbec',
+        'teor_alcoolico': '14,5%',
+        'pontuacao': '93 pontos Guia Descorchados',
+        'harmonizacao': 'Carnes vermelhas, queijos e massas',
+        'preco': '172,00',
+        'preco_parcelado': '57,33',
+        'preco_pix': '166,84',
+        'imagem': 'product-1.jpg'  # Nome do arquivo de imagem
+    }
+    return render_template('detalhes_produto.html', produto=produto)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -303,61 +327,70 @@ def reset_password(token):
     return render_template('reset_password.html', token=token)
 
 
-# Rota para adicionar itens ao carrinho
 @app.route('/adicionar/<int:vinho_id>', methods=['POST'])
 def adicionar_ao_carrinho(vinho_id):
     if 'carrinho' not in session:
         session['carrinho'] = []
 
-    # Busca o vinho no banco de dados
     conn = get_db_connection()
-    vinho = conn.execute('SELECT * FROM vinhos WHERE id = ?', (vinho_id,)).fetchone()
+    vinho = conn.execute('SELECT id FROM vinhos WHERE id = ?', (vinho_id,)).fetchone()
     conn.close()
 
-    if vinho:
-        # Verifica se o item já está no carrinho
-        item_existente = next((item for item in session['carrinho'] if item['id'] == vinho_id), None)
-
-        if item_existente:
-            item_existente['quantidade'] += 1  # Aumenta a quantidade
-        else:
-            session['carrinho'].append({
-                'id': vinho['id'],
-                'nome': vinho['nome'],
-                'preco': float(vinho['preco']),
-                'quantidade': 1
-            })
-
-        session.modified = True
-
-        # Retorna o número total de itens no carrinho
-        total_itens = sum(item['quantidade'] for item in session['carrinho'])
-        return jsonify({'status': 'success', 'total_itens': total_itens})
-    else:
+    if not vinho:
         return jsonify({'status': 'error', 'message': 'Vinho não encontrado'}), 404
+
+    # Verifica se o item já está no carrinho
+    item_existente = next((item for item in session['carrinho'] if item['id'] == vinho_id), None)
+
+    if item_existente:
+        item_existente['quantidade'] += 1
+    else:
+        session['carrinho'].append({
+            'id': vinho_id,
+            'quantidade': 1
+        })
+
+    session.modified = True
+    total_itens = sum(item['quantidade'] for item in session['carrinho'])
+    return jsonify({'status': 'success', 'total_itens': total_itens})
 
 @app.route('/carrinho')
 def ver_carrinho():
-    if 'user_id' not in session:  # Verifica se o usuário não está logado
-        flash('Você precisa fazer login para acessar esta página.', 'error')
-        return redirect(url_for('login'))  # Redireciona para a página de login
-
-    # Inicializa o carrinho como uma lista vazia se não existir
-    if 'carrinho' not in session or not isinstance(session['carrinho'], list):
+    # Inicializa o carrinho se não existir
+    if 'carrinho' not in session:
         session['carrinho'] = []
-
-    # Calcula o total do carrinho
-    carrinho = []
+    
+    # Prepara lista de itens com informações completas
+    carrinho_completo = []
     total = 0
-
+    
+    conn = get_db_connection()
+    
     for item in session['carrinho']:
-        if isinstance(item, dict):
-            carrinho.append(item)
-            total += item['preco'] * item['quantidade']
-        else:
-            print(f"Erro: item inválido no carrinho -> {item}")
-
-    return render_template('carrinho.html', carrinho=carrinho, total=total)
+        try:
+            # Busca informações completas do vinho no banco
+            vinho = conn.execute(
+                'SELECT id, nome, preco, categoria, imagem FROM vinhos WHERE id = ?',
+                (item['id'],)
+            ).fetchone()
+            
+            if vinho:
+                vinho_dict = dict(vinho)
+                item_completo = {
+                    'id': vinho_dict['id'],
+                    'nome': vinho_dict['nome'],
+                    'preco': float(vinho_dict['preco']),
+                    'quantidade': item['quantidade'],
+                    'categoria': vinho_dict['categoria'],
+                    'imagem': vinho_dict['imagem']
+                }
+                carrinho_completo.append(item_completo)
+                total += item_completo['preco'] * item_completo['quantidade']
+        except Exception as e:
+            print(f"Erro ao processar item do carrinho: {e}")
+    
+    conn.close()
+    return render_template('carrinho.html', carrinho=carrinho_completo, total=total)
 
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
@@ -503,14 +536,15 @@ def espumantes():
 
 @app.route("/produtos", methods=['GET', 'POST'])
 def produtos():
-    if 'user_id' not in session:
-        flash('Por favor, faça login para acessar esta página.', 'warning')
-        return redirect(url_for('login'))
-
     conn = get_db_connection()
     try:
-        if request.method == 'POST' and session.get('is_admin'):
-            # Processar adição de novo produto
+        if request.method == 'POST':
+            # Verifica se é admin e está logado para adicionar produtos
+            if 'user_id' not in session or not session.get('is_admin'):
+                flash('Acesso não autorizado.', 'error')
+                return redirect(url_for('produtos'))
+                
+            # Processar adição de novo produto (apenas para admin)
             nome = request.form.get('nome')
             preco = float(request.form.get('preco'))
             imagem = request.form.get('imagem')
@@ -525,14 +559,15 @@ def produtos():
             flash('Produto adicionado com sucesso!', 'success')
             return redirect(url_for('produtos'))
 
-        # Busca todos os produtos
+        # Busca todos os produtos (acesso livre)
         produtos = conn.execute('SELECT * FROM produtos').fetchall()
         
-        # Busca informações do usuário logado
-        user = conn.execute('SELECT * FROM usuarios WHERE id = ?', (session['user_id'],)).fetchone()
-        
-        # Verifica se é admin
-        is_admin = user and user['role'] == 'admin'
+        # Busca informações do usuário logado (se estiver logado)
+        user = None
+        is_admin = False
+        if 'user_id' in session:
+            user = conn.execute('SELECT * FROM usuarios WHERE id = ?', (session['user_id'],)).fetchone()
+            is_admin = user and user['role'] == 'admin'
         
         return render_template("produtos.html",
                             produtos=produtos,
@@ -787,4 +822,6 @@ def vinhos_rose():
 
 
 if __name__ == '__main__':
+    from init_db import verificar_esquema
+    verificar_esquema()
     app.run(debug=True)

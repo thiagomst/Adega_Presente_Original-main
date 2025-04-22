@@ -2340,7 +2340,8 @@ product__item {
   gap: 12px;
 }
 
-.carrinho,
+/* CARRINHO */
+/* .carrinho,
 .botao-sair {
   text-decoration: none;
   font-size: 16px;
@@ -2377,16 +2378,16 @@ product__item {
 #contador-carrinho {
   font-weight: bold;
   color: yellow;
-  margin-left: 5px; /* Adiciona um espaço entre o texto e o número */
+  margin-left: 5px; /* Adiciona um espaço entre o texto e o número 
 }
 
-/* Estilos do contador do carrinho */
+/* Estilos do contador do carrinho 
 #contador-carrinho {
   font-weight: bold;
   color: yellow;
 }
 
-/* Container do carrinho */
+/* Container do carrinho 
 .carrinho-container {
   max-width: 800px;
   margin: 20px auto;
@@ -2401,7 +2402,7 @@ product__item {
   transform: scale(1.02);
 }
 
-/* Lista de itens do carrinho */
+/* Lista de itens do carrinho 
 .carrinho-lista {
   list-style: none;
   padding: 0;
@@ -2424,7 +2425,7 @@ product__item {
   border-bottom: none;
 }
 
-/* Imagem do produto */
+/* Imagem do produto 
 .carrinho-item img {
   width: 80px;
   height: 80px;
@@ -2434,7 +2435,7 @@ product__item {
   border: 1px solid #ddd;
 }
 
-/* Detalhes do produto */
+/* Detalhes do produto 
 .carrinho-item-detalhes {
   flex-grow: 1;
 }
@@ -2452,14 +2453,14 @@ product__item {
   margin: 5px 0;
 }
 
-/* Botões de ação */
+/* Botões de ação 
 .carrinho-item-acoes {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* Botões de quantidade */
+/* Botões de quantidade 
 .botao-quantidade {
   background-color: #f0f0f0;
   border: 1px solid #ccc;
@@ -2479,14 +2480,14 @@ product__item {
   color: #333;
 }
 
-/* Quantidade do produto */
+/* Quantidade do produto 
 .quantidade {
   font-size: 16px;
   margin: 0 8px;
   font-weight: bold;
 }
 
-/* Botão de remover */
+/* Botão de remover 
 .botao-remover {
   background-color: #ff4d4d;
   border: none;
@@ -2505,7 +2506,7 @@ product__item {
   color: #fff;
 }
 
-/* Total do carrinho */
+/* Total do carrinho 
 .carrinho-total {
   text-align: right;
   margin-top: 20px;
@@ -2519,26 +2520,26 @@ product__item {
   color: #3483fa;
 }
 
-/* Estilo do container do CEP */
+/* Estilo do container do CEP 
 .cep-container {
   margin: 20px 0;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 400px; /* Limita a largura para melhorar a leitura */
+  max-width: 400px; /* Limita a largura para melhorar a leitura 
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Estilo do grupo de entrada (label + campo + botão) */
+/* Estilo do grupo de entrada (label + campo + botão) 
 .cep-input-group {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-/* Estilo do label */
+/* Estilo do label 
 .cep-container label {
   font-size: 16px;
   font-weight: 600;
@@ -2546,14 +2547,14 @@ product__item {
   margin-bottom: 10px;
 }
 
-/* Estilo do campo de entrada e botão */
+/* Estilo do campo de entrada e botão 
 .cep-field {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* Estilo do input do CEP */
+/* Estilo do input do CEP 
 .cep-container input {
   flex: 1;
   padding: 10px;
@@ -2568,7 +2569,7 @@ product__item {
   border-color: #007bff;
 }
 
-/* Estilo do botão de calcular frete */
+/* Estilo do botão de calcular frete 
 .cep-container button {
   padding: 10px 20px;
   background-color: #007bff;
@@ -2592,13 +2593,13 @@ product__item {
   font-size: 16px;
 }
 
-/* Estilo do resultado do frete */
+/* Estilo do resultado do frete 
 #frete-container {
   margin-top: 15px;
   padding: 10px;
   background-color: #e9f5ff;
   border-radius: 8px;
-  display: none; /* Inicialmente oculto */
+  display: none; /* Inicialmente oculto 
   align-items: center;
   gap: 10px;
   font-size: 16px;
@@ -2610,7 +2611,7 @@ product__item {
   color: #007bff;
 }
 
-/* Responsividade para telas menores */
+/* Responsividade para telas menores 
 @media (max-width: 480px) {
   .cep-field {
     flex-direction: column;
@@ -2629,8 +2630,9 @@ product__item {
   display: flex;
   align-items: center;
   gap: 15px;
-  margin-right: 20px; /* Ajuste conforme necessário */
+  margin-right: 20px; /* Ajuste conforme necessário 
 }
+*/
 
 .menu {
   list-style: none;
@@ -2738,7 +2740,9 @@ product__item {
   line-height: 25px;
   overflow: hidden;
 }
+*/
 
+/* FIM CARRINHO */
 /*---------------------
   Testimonial
 -----------------------*/
