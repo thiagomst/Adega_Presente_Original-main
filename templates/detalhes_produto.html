@@ -30,63 +30,9 @@
 </head>
 
 <body>
-    <!--Início da seção de cabeçalho-->
-    <header class="header">
-        </div>
-        </div>
-        <div class="col-lg-6 col-md-5 text-right">
-
-        </div>
-        </div>
-        </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-3">
-                    <div class="header__logo">
-                        <a href="{{ url_for('index') }}">
-                            <img src="{{ url_for('static', filename='img/logo1.png') }}" alt="Descrição da imagem"
-                                width="110" height="110">
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-lg-6 col-md-6">
-                    <nav class="header__menu mobile-menu">
-                        <ul>
-                            <li><a href="{{ url_for('index') }}">Página Inicial</a></li>
-                            <li><a href="{{ url_for('sobre') }}">Sobre Nós</a></li>
-                            <li><a href="{{ url_for('produtos') }}">Produtos</a></li>
-                            <li><a href="{{ url_for('contato') }}">Contato</a></li>
-                        </ul>
-                    </nav>
-                </div>
-
-                <!-- Adicionando a classe col-lg-3 para alinhar corretamente -->
-                <div class="nav-direita">
-                    <a href="{{ url_for('ver_carrinho') }}" class="carrinho">
-                        <i class="fas fa-shopping-cart"></i> Carrinho (<span id="contador-carrinho">0</span>)
-                    </a>
-                    <a href="{{ url_for('logout') }}" class="botao-sair">Sair</a>
-                </div>
-
-                <div class="flash-messages">
-                    {% with messages = get_flashed_messages(with_categories=true) %} {% if
-                    messages %} {% for category, message in messages %}
-                    <div class="flash {{ category }}">
-                        {{ message }}
-                        <button class="flash-close" onclick="fecharMensagem(this)">OK</button>
-                    </div>
-                    {% endfor %} {% endif %} {% endwith %}
-                </div>
-            </div>
-
-            <div class="canvas__open"><i class="fa fa-bars"></i></div>
-
-        </div>
-
-    </header>
-
+    <!-- Incluir o headerr -->
+    {% include 'header.html' %}
+    <!-- Header  End -->
 
     <!-- Conteúdo da página de detalhes -->
     <div class="product-details-container">

@@ -77,33 +77,8 @@
     </div>
     <!--  fim do Menu  -->
 
-    <!--Início da seção de cabeçalho-->
-    <header class="header">
-
-        </div>
-        </div>
-        </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="header__logo">
-                    <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo1.png') }}"
-                            alt="Descrição da imagem" width="150" height="150"></a>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <nav class="header__menu mobile-menu">
-                        <ul>
-                            <li><a href="{{ url_for('index') }}">Página Inicial</a></li>
-                            <li><a href="{{ url_for('sobre') }}">Sobre Nós</a></li>
-                            <li><a href="{{ url_for('produtos') }}">Produtos</a></li>
-                            <li><a href="{{ url_for('contato') }}">Contato</a></li>
-                        </ul>
-                    </nav>
-                </div>
-
-                <div class="canvas__open"><i class="fa fa-bars"></i></div>
-            </div>
-    </header>
+    <!-- Incluir o headerr -->
+    {% include 'header.html' %}
     <!-- Header  End -->
 
     <p>

@@ -4,6 +4,7 @@ import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import os
+from difflib import get_close_matches
 from admin_routes import admin_bp
 from imagem_routes import imagem_bp
 from flask_mail import Mail, Message
@@ -530,6 +531,87 @@ def finalizar_compra():
     session.modified = True
     return render_template('finalizar.html')
 
+# Mapeamento de categorias para templates
+CATEGORIAS_PAGINAS = {
+    'tinto': 'vinho_tinto.html',
+    'branco': 'vinho_branco.html',
+    'rose': 'vinho_rose.html',
+    'espumante': 'espumantes.html',
+    'embalagem': 'embalagens.html',
+    'produto': 'produtos.html',
+    'presente': 'presentes.html'
+}
+
+@app.route('/buscar', methods=['GET'])
+def buscar():
+    termo = request.args.get('q', '').strip().lower()
+    
+    # Verifica correspondência exata com as categorias
+    if termo in CATEGORIAS_PAGINAS:
+        return redirect(url_for('exibir_categoria', categoria=termo))
+    
+    # Busca por aproximação
+    correspondencias = get_close_matches(termo, CATEGORIAS_PAGINAS.keys(), n=1, cutoff=0.6)
+    if correspondencias:
+        categoria_corrigida = correspondencias[0]
+        return redirect(url_for('exibir_categoria', categoria=categoria_corrigida))
+    
+    # Busca no banco
+    conn = get_db_connection()
+    produtos = conn.execute('''
+        SELECT DISTINCT categoria FROM produtos 
+        WHERE categoria LIKE ? OR nome LIKE ?
+    ''', (f'%{termo}%', f'%{termo}%')).fetchall()
+
+    vinhos = conn.execute('''
+        SELECT DISTINCT categoria FROM vinhos 
+        WHERE categoria LIKE ? OR nome LIKE ?
+    ''', (f'%{termo}%', f'%{termo}%')).fetchall()
+    conn.close()
+
+    categorias_encontradas = {p['categoria'] for p in produtos} | {v['categoria'] for v in vinhos}
+
+    if len(categorias_encontradas) == 1:
+        categoria = categorias_encontradas.pop()
+        if categoria in CATEGORIAS_PAGINAS:
+            return redirect(url_for('exibir_categoria', categoria=categoria))
+    
+    elif categorias_encontradas:
+        correspondencias = get_close_matches(termo, categorias_encontradas, n=1, cutoff=0.5)
+        if correspondencias:
+            categoria = correspondencias[0]
+            if categoria in CATEGORIAS_PAGINAS:
+                return redirect(url_for('exibir_categoria', categoria=categoria))
+    
+    return render_template('index.html',
+                           mensagem=f"Nenhum resultado encontrado para '{termo}'",
+                           sugestoes=list(CATEGORIAS_PAGINAS.keys()))
+
+# Rota dinâmica por categoria (URLs como /tinto, /branco, etc)
+@app.route('/<categoria>')
+def exibir_categoria(categoria):
+    if categoria not in CATEGORIAS_PAGINAS:
+        return render_template('index.html', mensagem="Página não encontrada")
+    
+    nome_template = CATEGORIAS_PAGINAS[categoria]
+    
+    conn = get_db_connection()
+    produtos = conn.execute('SELECT * FROM produtos WHERE categoria = ?', (categoria,)).fetchall()
+    vinhos = conn.execute('SELECT * FROM vinhos WHERE categoria = ?', (categoria,)).fetchall()
+    conn.close()
+
+    return render_template(nome_template, produtos=produtos, vinhos=vinhos)
+
+@app.route('/sugestoes')
+def sugestoes():
+    termo = request.args.get('q', '').strip().lower()
+    if not termo:
+        return jsonify([])
+
+    sugestoes = [categoria for categoria in CATEGORIAS_PAGINAS.keys() if termo in categoria]
+    return jsonify(sugestoes)
+
+
 @app.route('/espumantes')
 def espumantes():
     return render_template('espumantes.html')
@@ -818,6 +900,10 @@ def contato():
 @app.route('/vinho_rose')
 def vinhos_rose():
     return render_template('vinho_rose.html')
+
+@app.route('/presentes')
+def presentes():
+    return render_template('presentes.html')
 
 
 
