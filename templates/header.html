@@ -1,0 +1,177 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}" type="text/css">
+<script src="{{ url_for('static', filename='js/header.js') }}"></script>
+
+
+<header class="header">
+    <div class="header__overlay"></div>
+    <div class="header__container">
+        <div class="header__container__row header__container__row--top">
+            <div class="header__container__row__logo">
+                <a href="{{ url_for('index') }}">
+                    <img src="{{ url_for('static', filename='img/logo1.png') }}" alt="Logo da Adega Presente">
+                </a>
+            </div>
+
+            <div class="header__container__row__search">
+                <form class="header__search-form" action="{{ url_for('buscar') }}" method="get">
+                    <input type="text" name="q" class="header__search-input" placeholder="Buscar produtos...">
+                    <button type="submit" class="header__search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+
+
+            <div class="header__container__row__divider"></div>
+
+            <div class="header__container__row__click">
+                <div class="header__container__row__click__user">
+                    <a href="{{ url_for('login') }}" class="header__user-link">
+                        <i class="fas fa-user"></i>
+                    </a>
+                </div>
+
+                <div class="header__container__row__click__actions">
+                    <a href="{{ url_for('ver_carrinho') }}" class="header__container__row__actions__cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="contador-carrinho">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="header__container__row header__container__row--bottom">
+            <div class="header__container__row__menu">
+                <nav class="header__container__row__menu__nav">
+                    <ul class="header__container__row__menu__list">
+                        <li class="header__container__row__menu__list__dropdown">
+                            <a href="{{ url_for('produtos') }}">Vinhos</a>
+                            <div class="header__container__row__menu__list__dropdown_itens">
+                                <ul>
+                                    <li><a href="{{ url_for('espumantes') }}">Espumantes</a></li>
+                                    <li><a href="{{ url_for('vinho_branco') }}">Vinhos Brancos</a></li>
+                                    <li><a href="{{ url_for('vinho_rose') }}">Vinhos Rose e Laranja</a></li>
+                                    <li><a href="{{ url_for('vinho_tinto') }}">Vinhos Tinto</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="header__container__row__menu__list__dropdown">
+                            <a href="">Kits</a>
+                            <div class="header__container__row__menu__list__dropdown_itens">
+                                <a href="">Kit de vinhos</a>
+                                <a href="">Kit de espumantes</a>
+                            </div>
+                        </li>
+
+                        <li class="header__container__row__menu__list__dropdown">
+                            <a href="">Embalagens e Acessórios</a>
+                            <div class="header__container__row__menu__list__dropdown_itens">
+                                <a href="">Embalagens de vinhos</a>
+                                <a href="">Acessórios de espumantes</a>
+                            </div>
+                        </li>
+
+                        <li class="header__container__row__menu__list__dropdown">
+                            <a href="{{ url_for('novidades') }}">Novidades</a>
+                            <div class="header__container__row__menu__list__dropdown_itens ">
+                                <a href="">Novidades de vinhos</a>
+                                <a href="">Novidades de espumantes</a>
+                            </div>
+                        </li>
+
+                        <li class="header__container__row__menu__list__dropdown">
+                            <a href="">Sobre Nós</a>
+                            <div class="header__container__row__menu__list__dropdown_itens">
+                                <a href="">Sobre Nós</a>
+                            </div>
+                        </li>
+
+                        <li class="header__container__row__menu__list__dropdown">
+                            <a href="{{ url_for('contato') }}">Contato</a>
+                            <div class="header__container__row__menu__list__dropdown_itens">
+                                <a href="">Contato</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div class="header__container__row__messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="header__container__row__messages__flash {{ category }}">
+                {{ message }}
+                <button class="header__container__messages__close" onclick="fecharMensagem(this)">OK</button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class="header__container__row__mobile-toggle">
+            <i class="header__container__row__mobile-toggle__icon fa fa-bars"></i>
+        </div>
+    </div>
+
+    <div class="header__container__row__mobile-menu">
+        <div class="header__container__row__mobile-menu__social">
+            <a class="header__social-icon" href="https://wa.me/556196127475" target="_blank">
+                <img src="{{ url_for('static', filename='img/footer/whatsapp.png') }}" alt="whatsapp">
+            </a>
+            <a class="header__social-icon" href="https://www.facebook.com/profile.php?id=61559981980043"
+                target="_blank">
+                <img src="{{ url_for('static', filename='img/footer/facebook.png') }}" alt="facebook">
+            </a>
+            <a class="header__social-icon" href="https://www.instagram.com/adegapresente/" target="_blank">
+                <img src="{{ url_for('static', filename='img/footer/instagram.png') }}" alt="instagram">
+            </a>
+            <a class="header__social-icon" href="https://www.tiktok.com/@adegapresente" target="_blank">
+                <img src="{{ url_for('static', filename='img/footer/tiktok.png') }}" alt="tiktok">
+            </a>
+        </div>
+        <nav class="header__container__row__mobile-menu_list">
+            <ul class="header__container__row__mobile-menu_list_itens">
+                <li class="header__container__row__mobile-menu_list_dropdown">
+                    <a href="{{ url_for('produtos') }}"
+                        class="header__container__row__mobile-menu_list_toggle">Vinhos</a>
+                    <ul class="header__container__row__mobile-menu_list_subitens">
+                        <li><a href="{{ url_for('espumantes') }}">Espumantes</a></li>
+                        <li><a href="{{ url_for('vinho_branco') }}">Vinhos Brancos</a></li>
+                        <li><a href="{{ url_for('vinho_rose') }}">Vinhos Rose e Laranja</a></li>
+                        <li><a href="{{ url_for('vinho_tinto') }}">Vinhos Tinto</a></li>
+                    </ul>
+                </li>
+                <li class="header__container__row__mobile-menu_list_dropdown">
+                    <a href="#" class="header__container__row__mobile-menu_list_toggle">Kits</a>
+                    <ul class="header__container__row__mobile-menu_list_subitens">
+                        <li><a href="">Kit de vinhos</a></li>
+                        <li><a href="">Kit de espumantes</a></li>
+                    </ul>
+                </li>
+                <li class="header__container__row__mobile-menu_list_dropdown">
+                    <a href="#" class="header__container__row__mobile-menu_list_toggle">Embalagens e Acessórios</a>
+                    <ul class="header__container__row__mobile-menu_list_subitens">
+                        <li><a href="">Embalagens de vinhos</a></li>
+                        <li><a href="">Acessórios de espumantes</a></li>
+                    </ul>
+                </li>
+                <li class="header__container__row__mobile-menu_list_dropdown">
+                    <a href="{{ url_for('novidades') }}"
+                        class="header__container__row__mobile-menu_list_toggle">Novidades</a>
+                    <ul class="header__container__row__mobile-menu_list_subitens">
+                        <li><a href="">Novidades de vinhos</a></li>
+                        <li><a href="">Novidades de espumantes</a></li>
+                    </ul>
+                </li>
+                <li><a href="">Sobre Nós</a></li>
+                <li><a href="">Contato</a></li>
+            </ul>
+        </nav>
+
+    </div>
+</header>
+<!-- Header  End -->
