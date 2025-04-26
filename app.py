@@ -539,7 +539,9 @@ CATEGORIAS_PAGINAS = {
     'espumante': 'espumantes.html',
     'embalagem': 'embalagens.html',
     'produto': 'produtos.html',
-    'presente': 'presentes.html'
+    'presente': 'presentes.html',
+    'sobre': 'sobre.html',
+    'contato': 'contato.html'
 }
 
 @app.route('/buscar', methods=['GET'])

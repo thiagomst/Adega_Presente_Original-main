@@ -133,7 +133,7 @@
         });
     
         // Funções para os botões personalizados
-        $('.custom-prev').on('click', function() {
+        $('.pt src="https://kit.fontawesome.com/your-own-kit.js').on('click', function() {
             heroSlider.trigger('prev.owl.carousel'); // Mover para o slide anterior
         });
     

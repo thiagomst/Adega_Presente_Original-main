@@ -84,14 +84,14 @@
                         <li class="header__container__row__menu__list__dropdown">
                             <a href="">Sobre Nós</a>
                             <div class="header__container__row__menu__list__dropdown_itens">
-                                <a href="">Sobre Nós</a>
+                                <a href="{{ url_for('sobre') }}">Sobre Nós</a>
                             </div>
                         </li>
 
                         <li class="header__container__row__menu__list__dropdown">
-                            <a href="{{ url_for('contato') }}">Contato</a>
+                            <a href="">Contato</a>
                             <div class="header__container__row__menu__list__dropdown_itens">
-                                <a href="">Contato</a>
+                                <a href="{{ url_for('contato') }}">Contato</a>
                             </div>
                         </li>
                     </ul>
@@ -160,8 +160,8 @@
                     </ul>
                 </li>
                 <li class="header__container__row__mobile-menu_list_dropdown">
-                    <a href="{{ url_for('novidades') }}"
-                        class="header__container__row__mobile-menu_list_toggle">Novidades</a>
+                    <a href="{{ url_for('novidades') }}"" class="
+                        header__container__row__mobile-menu_list_toggle">Novidades</a>
                     <ul class="header__container__row__mobile-menu_list_subitens">
                         <li><a href="">Novidades de vinhos</a></li>
                         <li><a href="">Novidades de espumantes</a></li>
@@ -171,7 +171,12 @@
                 <li><a href="">Contato</a></li>
             </ul>
         </nav>
-
+        <div class="header__container__row__mobile-menu__actions">
+            <a href="{{ url_for('ver_carrinho') }}" class="header__container__row__mobile-menu__actions__cart">
+                🛒 Carrinho (<span id="contador-carrinho">0</span>)
+            </a>
+            <a href="{{ url_for('logout') }}" class="header__container__row__mobile-menu__actions__logout">Sair</a>
+        </div>
     </div>
 </header>
 <!-- Header  End -->

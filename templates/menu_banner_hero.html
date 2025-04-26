@@ -1,0 +1,94 @@
+<!-- slide -->
+
+<div class="hero__slider owl-carousel">
+    {% for imagem in imagens %}
+    <div class="slide">
+        <img src="{{ url_for('serve_image', filename='img/hero/' + imagem) }}" alt="Banner">
+    </div>
+    {% endfor %}
+</div>
+
+
+
+
+<!-- Botões personalizados -->
+<button class="custom-prev"><i class="fas fa-chevron-left"></i></button>
+<button class="custom-next"><i class="fas fa-chevron-right"></i></button>
+
+
+<script src="script.js"></script>
+<!--slide fim -->
+
+</br>
+
+<!-- Faixa vermelha com política de desconto -->
+<div class="discount-banner">
+    <h2>Desconto Presente Progressivo</h2>
+    <p>Descontos cumulativos para todos os rótulos disponíveis, exceto aqueles em promoção.</br></p>
+    <h5>
+        <ul style="color: white;">
+            <li>✔ 1 (uma) garrafa, preço do site;</li>
+            <li>✔ Até 2 (duas) garrafas, 5% desconto ou cashback de 10% na próxima compra;</li>
+            <li>✔ 3 (três) ou mais garrafas, 10% de desconto ou cashback de 15% na próxima compra.</li>
+        </ul>
+    </h5>
+</div>
+</div>
+</br>
+</br>
+<h3>
+    <center><b>Saiba mais sobre produtos e preços clicando abaixo:</b></a></center>
+</h3>
+
+<nav class="menu-categorias">
+    <a href="{{ url_for('espumantes') }}" class="categoria">Espumantes</a>
+    <a href="{{ url_for('vinho_branco') }}" class="categoria">Vinho Branco</a>
+    <a href="{{ url_for('vinho_rose') }}" class="categoria">Vinho Rose e Laranja</a>
+    <a href="{{ url_for('vinho_tinto') }}" class="categoria">Vinho Tinto</a>
+    <a href="{{ url_for('embalagens') }}" class="categoria">Embalagens Artesanais</a>
+    <a href="{{ url_for('novidades') }}" class="categoria">Novidades</a>
+</nav>
+
+
+    <!-- Banner Section Begin 
+    <section class="banner spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 offset-lg-4">
+                    <div class="banner__item">
+                        <div class="banner__item__pic">
+                            <img src="img/banner/banner-1.jpg" alt="">
+                        </div>
+                        <div class="banner__item__text">
+                            <h5><b>Abraço Malbec Gran Reserva 2018</b>
+                            </h5>
+                            <a href="https://api.whatsapp.com/send/?phone=556196127475&text&type=phone_number&app_absent=0">Comprar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="banner__item banner__item--middle">
+                        <div class="banner__item__pic">
+                            <img src="img/banner/banner-2.jpg" alt="">
+                        </div>
+                        <div class="banner__item__text">
+                            <h5><b>Luiz Argenta Gewurztraminer </b></h5>
+                            <a href="https://api.whatsapp.com/send/?phone=556196127475&text&type=phone_number&app_absent=0">Comprar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="banner__item banner__item--last">
+                        <div class="banner__item__pic">
+                            <img src="img/banner/banner-3.jpg" alt="">
+                        </div>
+                        <div class="banner__item__text">
+                            <h5><b> Rosé Brasileiro Syrah Canindé Ercoara</b></h5>
+                            <a href="https://api.whatsapp.com/send/?phone=556196127475&text&type=phone_number&app_absent=0">Comprar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    Banner Section End --> 

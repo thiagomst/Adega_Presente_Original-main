@@ -1,0 +1,49 @@
+    <!-- POPUP maior de 18 anos -->
+    <div id="ageCheckPopup" style="display: none;">
+        <div id="ageCheckContent">
+            <h4>ADEGA PRESENTE</h4>
+            <h6>Celebre cada momento!</h6>
+            <h4>Você tem mais de 18 anos?</h4>
+            <div id="ageCheckButtons">
+                <button id="ageYes">SIM</button>
+                <button id="ageNo">NÃO</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para mostrar o popup
+        function showAgeCheckPopup() {
+            document.getElementById('ageCheckPopup').style.display = 'flex';
+        }
+
+        // Função para esconder o popup e redirecionar
+        function handleAgeConfirmation(isAdult) {
+            var popup = document.getElementById('ageCheckPopup');
+            if (isAdult) {
+                popup.style.display = 'none';
+                // Armazena a confirmação no sessionStorage
+                sessionStorage.setItem('ageConfirmed', 'true');
+            } else {
+                // Redireciona ou realiza outra ação caso o usuário não seja maior de idade
+                window.location.href = '#'; // Mude para a URL que você deseja
+            }
+        }
+
+        // Evento de clique nos botões
+        document.getElementById('ageYes').addEventListener('click', function () {
+            handleAgeConfirmation(true);
+        });
+
+        document.getElementById('ageNo').addEventListener('click', function () {
+            handleAgeConfirmation(false);
+        });
+
+        // Mostra o popup quando a página carrega
+        window.onload = function () {
+            // Verifica se o usuário já confirmou a idade
+            if (!sessionStorage.getItem('ageConfirmed')) {
+                showAgeCheckPopup();
+            }
+        };
+    </script>
