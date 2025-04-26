@@ -1,78 +1,91 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}" type="text/css">
+
 <!-- templates/footer.html Finalizado-->
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="footer__about">
-                    <div class="footer__logo">
-                        <a href="#">
-                            <img src="{{ url_for('static', filename='img/footer-logo.png') }}" alt="Logo">
+<body>
+    <section class="footer">
+
+        <section class="footer_section1"></div>
+            <div class="footer_section1_div1">
+                <div class="footer_section1_div1_box1">
+                    <div class="footer_section1_div1_box1_information">
+                        <a class="footer_section1_div1_box1_information_logo"href="#">
+                            <img class="footer_section1_div1_box1_information_logo_img" src="{{ url_for('static', filename='img/footer-logo.png') }}" alt="Logo">
                         </a>
-                        <br>
-                        <p>CNPJ: 17.269.787/0001-94</p>
-                    </div>
-                    <p>Olá!!! Seja muito bem-vind@!!! Foi de nossa alegria em celebrar a vida que nasceu a ideia de
+                        <p class="footer_section1_div1_box1_information_cnpj">CNPJ: 17.269.787/0001-94</p>
+                    
+                        <p class="footer_section1_div1_box1_information_about">Olá!!! Seja muito bem-vind@!!! Foi de nossa alegria em celebrar a vida que nasceu a ideia de
                         oferecer uma opção para tornar o ato de ‘presentear’ um momento inesquecível.</p>
+                    </div>
                     <a href="#">
-                        <img src="{{ url_for('static', filename='img/payment.png') }}" alt="Métodos de Pagamento">
+                        <img  class="footer_section1_div1_box1_information_pagamentos" src="{{ url_for('static', filename='img/payment.png') }}" alt="Métodos de Pagamento">
                     </a>
+ 
                 </div>
             </div>
-            <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
-                <div class="footer__widget">
-                    <h6>Produtos</h6>
-                    <ul>
-                        <li><a href="{{ url_for('espumantes') }}">Espumantes</a></li>
-                        <li><a href="{{ url_for('vinho_branco') }}">Vinho Branco</a></li>
-                        <li><a href="{{ url_for('vinho_rose') }}">Vinho Rose e Laranja</a></li>
-                        <li><a href="{{ url_for('vinho_tinto') }}">Vinho Tinto</a></li>
-                        <li><a href="{{ url_for('embalagens') }}">Embalagens</a></li>
-                        <li><a href="{{ url_for('novidades') }}">Novidades</a></li>
-                    </ul>
+            <div class="footer_section1_div2">
+                <div class="footer_section1_div2_products">
+                    <h6 class="footer_section1_div2_products_title">Produtos</h6>
+                    <div class="footer_section1_div2_products_list">
+                        <li><a class="footer_section1_div2_products_list_legend" href="{{ url_for('espumantes') }}">Espumantes</a></li>
+                        <li><a class="footer_section1_div2_products_list_legend" href="{{ url_for('vinho_branco') }}">Vinho Branco</a></li>
+                        <li><a class="footer_section1_div2_products_list_legend" href="{{ url_for('vinho_rose') }}">Vinho Rose e Laranja</a></li>
+                        <li><a class="footer_section1_div2_products_list_legend" href="{{ url_for('vinho_tinto') }}">Vinho Tinto</a></li>
+                        <li><a class="footer_section1_div2_products_list_legend" href="{{ url_for('embalagens') }}">Embalagens</a></li>
+                        <li><a class="footer_section1_div2_products_list_legend" href="{{ url_for('novidades') }}">Novidades</a></li>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-3 col-sm-6">
-                <div class="footer__widget">
-                    <h6>Adega</h6>
-                    <ul>
-                        <li><a href="{{ url_for('sobre') }}">Sobre Nós</a></li>
-                        <li><a href="https://drive.google.com/drive/folders/14PDcnfqLvOx29E7UX5KuvZYn4GIrLh24"
-                                target="_blank">Catálogos de Preços</a></li>
-                        <li><a href="https://linktr.ee/adegapresente" target="_blank">Catálogos de Produtos</a></li>
-                        <li><a href="https://api.whatsapp.com/send/?phone=556196127475&text&type=phone_number&app_absent=0"
-                                target="_blank">Comprar Agora</a></li>
-                        <li><a href="https://www.instagram.com/p/C54Gw1kO5C6/?img_index=1" target="_blank">Entrega</a>
-                        </li>
-                        <li><a href="{{ url_for('contato') }}">Contato</a></li>
-                    </ul>
+            <div class="footer_section1_div3">
+                <div class="footer_section1_div3_information">   
+                    <h6 class="footer_section1_div3_information_title">Adega</h6>
+                        <ul class="footer_section1_div3_information_list">
+                            <li><a class="footer_section1_div3_information_list_legend" href="{{ url_for('sobre') }}">Sobre Nós</a></li>
+                            <li><a class="footer_section1_div3_information_list_legend" href="https://drive.google.com/drive/folders/14PDcnfqLvOx29E7UX5KuvZYn4GIrLh24"
+                                    target="_blank">Catálogos de Preços</a></li>
+                            <li><a class="footer_section1_div3_information_list_legend" href="https://linktr.ee/adegapresente" target="_blank">Catálogos de Produtos</a></li>
+                            <li><a class="footer_section1_div3_information_list_legend" href="https://api.whatsapp.com/send/?phone=556196127475&text&type=phone_number&app_absent=0"
+                                    target="_blank">Comprar Agora</a></li>
+                            <li><a class="footer_section1_div3_information_list_legend" href="https://www.instagram.com/p/C54Gw1kO5C6/?img_index=1" target="_blank">Entrega</a>
+                            </li>
+                            <li><a class="footer_section1_div3_information_list_legend" href="{{ url_for('contato') }}">Contato</a></li>
+                        </ul>
+                </div> 
+            </div>
+            <div class="footer_section1_div4">
+                <div class="footer_section1_div4_images">
+                    <a class="footer_section1_div4_images_logo" href="https://wa.me/556196127475" target="_blank" class="social-icon" >
+                        <img class="footer_section1_div4_images_logo_img" src="{{ url_for('static', filename='img/footer/whatsapp.png') }}" alt="whatsapp"> </a>
+
+                    <a class="footer_section1_div4_images_logo" href="https://www.facebook.com/profile.php?id=61559981980043" target="_blank">
+                        <img class="footer_section1_div4_images_logo_img" src="{{ url_for('static', filename='img/footer/facebook.png') }}" alt="facebook"> </a>
+
+                    <a class="footer_section1_div4_images_logo" href="https://www.instagram.com/adegapresente/" target="_blank" class="social-icon">
+                        <img class="footer_section1_div4_images_logo_img" src="{{ url_for('static', filename='img/footer/instagram.png') }}" alt="instagram"> </a>
+
+                    <a class="footer_section1_div4_images_logo" href="https://www.tiktok.com/@adegapresente" target="_blank" class="social-icon">
+                        <img class="footer_section1_div4_images_logo_img" src="{{ url_for('static', filename='img/footer/tiktok.png') }}" alt="tiktok"> </a>
+                </div>
+
+                <p class="footer_section1_div4_images_text">É proibida a venda de bebidas alcoólicas para menores de 18 anos. Beber menos é beber melhor.
+                </p>
+            </div>
+        </section>
+
+        <section class="footer_section2"></div>
+            <div class="footer_section2_div1">
+                <div class="footer_section2_div1_box1">
+                    <hr class="footer_section2_div1_box1_line">
+                    <div class="footer_section2_div1_box1_copyright">
+                        <p class=footer_section2_div1_box1_copyright_texto> Copyright ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>
+                            Todos os direitos reservados
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-3 col-sm-6">
-                <div class="footer__widget">
-                    <a href="https://wa.me/556196127475" target="_blank" class="social-icon"><i
-                            class="fab fa-whatsapp"></i></a>
-                    <a href="https://www.facebook.com/profile.php?id=61559981980043" target="_blank"
-                        class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.instagram.com/adegapresente/" target="_blank" class="social-icon"><i
-                            class="fab fa-instagram"></i></a>
-                    <a href="https://www.tiktok.com/@adegapresente" target="_blank" class="social-icon"><i
-                            class="fab fa-tiktok"></i></a>
-                    <p><br>É proibida a venda de bebidas alcoólicas para menores de 18 anos. Beber menos é beber melhor.
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="footer__copyright__text">
-                    <p>Copyright ©
-                        <script>
-                            document.write(new Date().getFullYear());
-                        </script>
-                        Todos os direitos reservados
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
+        </section>
+
+    </section>
+</body>

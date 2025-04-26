@@ -273,65 +273,11 @@
 </head>
 
 <body class="bg">
-  <header class="header">
+  <!-- Incluir o headerr -->
+  {% include 'header.html' %}
+  <!-- Header  End -->
 
-    </div>
-    </div>
-    </div>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-3 col-md-3">
-          <div class="header__logo">
-            <a href="{{ url_for('index') }}">
-              <img src="{{ url_for('static', filename='img/logo1.png') }}" alt="Descrição da imagem" width="110"
-                height="110">
-            </a>
-          </div>
-        </div>
-
-        <div class="col-lg-6 col-md-6">
-          <nav class="header__menu mobile-menu">
-            <ul>
-              <li><a href="{{ url_for('index') }}">Página Inicial</a></li>
-              <li><a href="{{ url_for('sobre') }}">Sobre Nós</a></li>
-              <li><a href="{{ url_for('produtos') }}">Produtos</a></li>
-              <li><a href="{{ url_for('contato') }}">Contato</a></li>
-            </ul>
-          </nav>
-        </div>
-
-        <!-- Adicionando a classe col-lg-3 para alinhar corretamente -->
-        <div class="col-lg-3 col-md-3">
-          <div class="nav-direita">
-            <a href="{{ url_for('ver_carrinho') }}" class="carrinho">
-              🛒 Carrinho (<span id="contador-carrinho">0</span>)
-            </a>
-            <a href="{{ url_for('logout') }}" class="botao-sair">Sair</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Campo de CEP e botão para calcular frete -->
-      <div class="cep-container">
-        <label for="cep">Calcular Frete:</label>
-        <div class="cep-field">
-          <input type="text" id="cep" name="cep" placeholder="Digite seu CEP" maxlength="8" />
-          <button onclick="calcularFrete()">
-            <i class="fas fa-truck"></i> Calcular
-          </button>
-        </div>
-        <div id="frete-container">
-          <span>Frete:</span>
-          <span id="valor-frete">R$ 0.00</span>
-        </div>
-      </div>
-
-      <div class="canvas__open"><i class="fa fa-bars"></i></div>
-    </div>
-  </header>
-
-  <h1>Meus Produtos</h1>
+  <h1>Minhas Compras</h1>
 
   <div class="carrinho-container">
     <ul class="carrinho-lista">
