@@ -3,10 +3,11 @@
 {% block title %} ADEGA PRESENTE {% endblock %}
 
 {% block content %}
-<body>
-    
 
-{% include 'menu_banner_hero.html   ' %}    
+<body>
+
+
+    {% include 'menu_banner_hero.html ' %}
 
 
     <!-- Product Section Begin -->
@@ -281,7 +282,6 @@
 
     <!-- Font Awesome (CDN) -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script src="{{ url_for('static', filename='js/carrinho.js') }}"></script>
 
 </body>
 {% endblock %}

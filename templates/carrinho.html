@@ -331,12 +331,27 @@
       Total: <span id="total-carrinho">R$ {{ total | round(2) }}</span>
     </div>
 
-    <button class="botao-finalizar">Finalizar Compra</button>
+    <a href="{{ url_for('pagamento') }}" class="botao-finalizar">Finalizar Compra</a>
     <a href="{{ url_for('index') }}" class="continuar-comprando">Continuar Comprando</a>
   </div>
 
   <!-- JavaScript para manipular a quantidade e remover itens -->
   <script>
+
+    document.getElementById('btn-finalizar').addEventListener('click', function () {
+      // Redireciona para a página de pagamento
+      window.location.href = "{{ url_for('pagamento') }}";
+    });
+
+
+    document.getElementById('btn-finalizar').addEventListener('click', function () {
+      {% if carrinho and carrinho | length > 0 %}
+      window.location.href = "{{ url_for('pagamento') }}";
+      {% else %}
+      alert('Seu carrinho está vazio!');
+      {% endif %}
+    });
+
     // Função para enviar uma requisição ao backend
     async function enviarRequisicao(url, dados) {
       try {
@@ -457,13 +472,8 @@
     } else {
       contadorCarrinho.textContent = 0;
     }
-      }
+  }
 
-    // Chame a função ao carregar a página
-    window.onload = function () {
-      atualizarContadorCarrinho();
-      atualizarTotal();
-    };
   </script>
 
   <!-- Incluir o footer -->

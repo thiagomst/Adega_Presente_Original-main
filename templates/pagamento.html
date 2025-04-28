@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Compra</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .dados-entrega {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .dados-entrega label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        .dados-entrega input,
+        .dados-entrega select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* pagamento */
+
+        /* Estilos Gerais para a Página de Pagamento */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        /* Seções do Checkout */
+        .checkout-section {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .titulo-secao {
+            font-size: 1.5rem;
+            color: #5e0b15;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            font-weight: 700;
+        }
+
+        /* Estilo para os Produtos no Resumo */
+        .produto {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .produto img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-right: 20px;
+            background: #f8f8f8;
+            padding: 5px;
+            border: 1px solid #eee;
+        }
+
+        .produto-info {
+            flex-grow: 1;
+        }
+
+        .produto-info div {
+            margin-bottom: 5px;
+        }
+
+        .preco {
+            font-weight: 700;
+            color: #5e0b15;
+        }
+
+        /* Seção de Frete e Total */
+        .frete,
+        .total {
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .total {
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-bottom: none;
+            margin-top: 10px;
+        }
+
+        /* Formulário de Pagamento */
+        .dados-entrega {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+
+        .dados-entrega label {
+            display: block;
+            margin: 15px 0 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .dados-entrega input,
+        .dados-entrega select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border 0.3s ease;
+        }
+
+        .dados-entrega input:focus,
+        .dados-entrega select:focus {
+            border-color: #5e0b15;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(94, 11, 21, 0.1);
+        }
+
+        /* Métodos de Pagamento */
+        .metodo-pagamento {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f9f9f9;
+            border: 1px solid #eee;
+        }
+
+        .opcao-pagamento {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .opcao-pagamento input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .opcao-pagamento label {
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .opcao-pagamento i {
+            font-size: 1.2rem;
+            color: #5e0b15;
+        }
+
+        .detalhes-pix {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e8f5e9;
+            border-radius: 5px;
+            color: #2e7d32;
+        }
+
+        .detalhes-cartao {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .detalhes-cartao>div {
+            margin-bottom: 15px;
+        }
+
+        .input-cartao {
+            letter-spacing: 1px;
+        }
+
+        /* Botão de Finalizar Compra */
+        .btn-confirmar {
+            width: 100%;
+            padding: 16px;
+            background: #5e0b15;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-confirmar:hover {
+            background: #3a070d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(94, 11, 21, 0.2);
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 15px;
+            }
+
+            .checkout-section {
+                padding: 20px;
+            }
+
+            .produto {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .produto img {
+                margin-bottom: 15px;
+                margin-right: 0;
+            }
+        }
+
+        /* Efeitos de Transição */
+        .metodo-pagamento,
+        .dados-entrega {
+            transition: all 0.3s ease;
+        }
+
+        .metodo-pagamento:hover {
+            border-color: #d4d4d4;
+        }
+
+        /* Estilo para quando o método de pagamento está selecionado */
+        input[type="radio"]:checked+label {
+            color: #5e0b15;
+        }
+
+        input[type="radio"]:checked~.detalhes-cartao {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Resumo do Pedido -->
+        <div class="checkout-section resumo-pedido">
+            <div class="titulo-secao">Resumo do pedido</div>
+
+            {% for item in carrinho %}
+            <div class="produto">
+                <img src="{{ item.imagem }}" alt="{{ item.nome }}">
+                <div class="produto-info">
+                    <div>{{ item.nome }}</div>
+                    <div>Quantidade: {{ item.quantidade }}</div>
+                    <div class="preco">R$ {{ "%.2f"|format(item.preco) }}</div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="frete">
+                <div>Frete: <strong>Grátis</strong></div>
+            </div>
+
+            <div class="total">
+                <div>Total: <span class="preco">R$ {{ "%.2f"|format(total) }}</span></div>
+            </div>
+        </div>
+
+        <!-- Formulário de Pagamento -->
+        <div class="checkout-section pagamento">
+            <form action="{{ url_for('pagamento') }}" method="POST">
+                <!-- Dados de Entrega -->
+                <div class="dados-entrega">
+                    <div class="titulo-secao">Endereço de Entrega</div>
+                    <label>Endereço Completo</label>
+                    <input type="text" name="endereco" required placeholder="Rua, Número, Bairro">
+
+                    <label>CEP</label>
+                    <input type="text" name="cep" required placeholder="00000-000">
+
+                    <label>Complemento</label>
+                    <input type="text" name="complemento" placeholder="Apto, Bloco, etc.">
+                </div>
+
+                <!-- Métodos de Pagamento -->
+                <div class="titulo-secao">Forma de Pagamento</div>
+
+                <div class="metodo-pagamento">
+                    <div class="opcao-pagamento">
+                        <input type="radio" name="metodo_pagamento" id="pix" value="pix" checked>
+                        <label for="pix"><i class="fas fa-qrcode"></i> PIX (5% de desconto)</label>
+                    </div>
+                    <div class="detalhes-pix">
+                        <p>Pague com PIX e ganhe <strong>5% de desconto</strong>!</p>
+                        <p>Total com desconto: <strong>R$ {{ "%.2f"|format(total * 0.95) }}</strong></p>
+                    </div>
+                </div>
+
+                <div class="metodo-pagamento">
+                    <div class="opcao-pagamento">
+                        <input type="radio" name="metodo_pagamento" id="cartao" value="cartao">
+                        <label for="cartao"><i class="far fa-credit-card"></i> Cartão de crédito/débito</label>
+                    </div>
+                    <div class="detalhes-cartao">
+                        <div>
+                            <label>Número do cartão</label>
+                            <input type="text" placeholder="0000 0000 0000 0000" class="input-cartao">
+                        </div>
+                        <div>
+                            <label>Nome (como no cartão)</label>
+                            <input type="text" placeholder="Nome Completo">
+                        </div>
+                        <div>
+                            <label>Validade</label>
+                            <input type="text" placeholder="MM/AA">
+                        </div>
+                        <div>
+                            <label>CVV</label>
+                            <input type="text" placeholder="123">
+                        </div>
+                        <div>
+                            <label>Parcelamento</label>
+                            <select>
+                                <option>1x de R$ {{ "%.2f"|format(total) }}</option>
+                                <option>2x de R$ {{ "%.2f"|format(total/2) }}</option>
+                                <option>3x de R$ {{ "%.2f"|format(total/3) }}</option>
+                                <option>12x de R$ {{ "%.2f"|format(total/12) }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-confirmar">Finalizar Compra</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar/ocultar detalhes do cartão
+        document.querySelectorAll('input[name="metodo_pagamento"]').forEach(radio => {
+            radio.addEventListener('change', function () {
+                document.querySelector('.detalhes-cartao').style.display =
+                    this.id === 'cartao' ? 'block' : 'none';
+            });
+        });
+    </script>
+</body>
+
+</html>

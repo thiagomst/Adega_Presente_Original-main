@@ -355,6 +355,29 @@ def adicionar_ao_carrinho(vinho_id):
     total_itens = sum(item['quantidade'] for item in session['carrinho'])
     return jsonify({'status': 'success', 'total_itens': total_itens})
 
+def get_carrinho():
+    return session.get('carrinho', [])
+
+def salvar_pedido(user_id, endereco, metodo_pagamento, carrinho, total, status='pendente'):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        'INSERT INTO pedidos (user_id, endereco, metodo_pagamento, status, total) VALUES (?, ?, ?, ?, ?)',
+        (user_id, endereco, metodo_pagamento, status, total)
+    )
+    pedido_id = cursor.lastrowid
+
+    for item in carrinho:
+        cursor.execute(
+            'INSERT INTO itens_pedido (pedido_id, vinho_id, quantidade, preco_unitario) VALUES (?, ?, ?, ?)',
+            (pedido_id, item['id'], item['quantidade'], item['preco'])
+        )
+
+    conn.commit()
+    conn.close()
+    return pedido_id
+
 @app.route('/carrinho')
 def ver_carrinho():
     # Inicializa o carrinho se não existir
@@ -524,12 +547,99 @@ def debug_tokens():
     
     return render_template('debug_tokens.html', tokens=tokens)
 
-# Rota para finalizar a compra
-@app.route('/finalizar')
-def finalizar_compra():
-    session.pop('carrinho', None)
-    session.modified = True
-    return render_template('finalizar.html')
+# Rota para a página de pagamento (checkout)
+@app.route('/pagamento', methods=['GET', 'POST'])
+def pagamento():
+    # Verificação de login
+    if 'user_id' not in session:
+        flash('Você precisa fazer login para finalizar a compra.', 'warning')
+        return redirect(url_for('login'))
+
+    # Verificação do carrinho
+    if 'carrinho' not in session or not session['carrinho']:
+        flash('Seu carrinho está vazio!', 'error')
+        return redirect(url_for('ver_carrinho'))
+
+    # Obter informações completas dos itens do carrinho (como feito na rota /carrinho)
+    carrinho_completo = []
+    total = 0
+    conn = get_db_connection()
+    
+    for item in session['carrinho']:
+        try:
+            vinho = conn.execute(
+                'SELECT id, nome, preco, categoria, imagem FROM vinhos WHERE id = ?',
+                (item['id'],)
+            ).fetchone()
+            
+            if vinho:
+                vinho_dict = dict(vinho)
+                item_completo = {
+                    'id': vinho_dict['id'],
+                    'nome': vinho_dict['nome'],
+                    'preco': float(vinho_dict['preco']),
+                    'quantidade': item['quantidade'],
+                    'categoria': vinho_dict['categoria'],
+                    'imagem': vinho_dict['imagem']
+                }
+                carrinho_completo.append(item_completo)
+                total += item_completo['preco'] * item_completo['quantidade']
+        except Exception as e:
+            print(f"Erro ao processar item do carrinho: {e}")
+    
+    conn.close()
+
+    if request.method == 'POST':
+        try:
+            conn = get_db_connection()
+            
+            # Processamento do pagamento
+            endereco = request.form.get('endereco')
+            metodo_pagamento = request.form.get('metodo_pagamento')
+            
+            # Inserir pedido no banco
+            cursor = conn.execute(
+                'INSERT INTO pedidos (user_id, endereco, metodo_pagamento, status, total) VALUES (?, ?, ?, ?, ?)',
+                (session['user_id'], endereco, metodo_pagamento, 'processando', total)
+            )
+            pedido_id = cursor.lastrowid
+            
+            # Inserir itens do pedido
+            for item in session['carrinho']:
+                conn.execute(
+                    'INSERT INTO pedido_itens (pedido_id, produto_id, quantidade, preco_unitario) VALUES (?, ?, ?, ?)',
+                    (pedido_id, item['id'], item['quantidade'], item['preco'])
+                )
+            
+            conn.commit()
+            
+            # Limpar carrinho e redirecionar
+            session.pop('carrinho', None)
+            session.modified = True
+            
+            flash('Pagamento realizado com sucesso!', 'success')
+            return redirect(url_for('pedido_sucesso', pedido_id=pedido_id))
+
+        except Exception as e:
+            print(f"Erro no pagamento: {str(e)}")
+            conn.rollback()
+            flash('Erro ao processar seu pagamento. Tente novamente.', 'error')
+            return redirect(url_for('pagamento'))
+        
+        finally:
+            conn.close()
+
+    # GET request - mostrar página de pagamento
+    return render_template('pagamento.html', 
+                     carrinho=carrinho_completo,  # Usar a versão com preços
+                     total=total,
+                     frete=0.00)
+
+# Rota de sucesso após pagamento
+@app.route('/pedido/sucesso/<int:pedido_id>')
+def pedido_sucesso(pedido_id):
+    return render_template('sucesso.html', pedido_id=pedido_id)
+
 
 # Mapeamento de categorias para templates
 CATEGORIAS_PAGINAS = {
