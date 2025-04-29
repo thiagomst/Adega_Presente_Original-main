@@ -131,7 +131,7 @@
         .dados-entrega input,
         .dados-entrega select {
             width: 100%;
-            padding: 12px 15px;
+            padding: 12px 0px;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 14px;
@@ -276,6 +276,21 @@
                 transform: translateY(0);
             }
         }
+
+        /* Loading para busca de CEP */
+        .loading {
+            display: none;
+            color: #5e0b15;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .error-message {
+            color: #d32f2f;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
     </style>
 </head>
 
@@ -287,7 +302,9 @@
 
             {% for item in carrinho %}
             <div class="produto">
-                <img src="{{ item.imagem }}" alt="{{ item.nome }}">
+                <img src="{{ url_for('static', filename='img/product/' + item.categoria + '/' + item.imagem) }}"
+                    alt="{{ item.nome }}"
+                    onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/default-product.png') }}'">
                 <div class="produto-info">
                     <div>{{ item.nome }}</div>
                     <div>Quantidade: {{ item.quantidade }}</div>
@@ -312,13 +329,28 @@
                 <div class="dados-entrega">
                     <div class="titulo-secao">Endereço de Entrega</div>
                     <label>Endereço Completo</label>
-                    <input type="text" name="endereco" required placeholder="Rua, Número, Bairro">
+                    <input type="text" name="endereco" id="endereco" required placeholder="Rua, Número, Bairro">
+
+                    <label>Número</label>
+                    <input type="text" name="numero" id="numero" required placeholder="Número da residência">
 
                     <label>CEP</label>
-                    <input type="text" name="cep" required placeholder="00000-000">
+                    <input type="text" name="cep" id="cep" required placeholder="00000-000" maxlength="9"
+                        onkeyup="formatarCEP(this)">
+                    <div id="loading-cep" class="loading">Buscando endereço...</div>
+                    <div id="error-cep" class="error-message"></div>
 
                     <label>Complemento</label>
-                    <input type="text" name="complemento" placeholder="Apto, Bloco, etc.">
+                    <input type="text" name="complemento" id="complemento" placeholder="Apto, Bloco, etc.">
+
+                    <label>Bairro</label>
+                    <input type="text" name="bairro" id="bairro" required>
+
+                    <label>Cidade</label>
+                    <input type="text" name="cidade" id="cidade" required>
+
+                    <label>Estado</label>
+                    <input type="text" name="estado" id="estado" required>
                 </div>
 
                 <!-- Métodos de Pagamento -->
@@ -381,6 +413,72 @@
                 document.querySelector('.detalhes-cartao').style.display =
                     this.id === 'cartao' ? 'block' : 'none';
             });
+        });
+
+        // Formatar CEP (adiciona o traço automaticamente)
+        function formatarCEP(input) {
+            // Remove tudo o que não é dígito
+            let cep = input.value.replace(/\D/g, "");
+
+            // Adiciona o traço na posição correta
+            if (cep.length > 5) {
+                cep = cep.substring(0, 5) + "-" + cep.substring(5, 8);
+            }
+
+            // Atualiza o valor do campo
+            input.value = cep;
+
+            // Quando o CEP estiver completo (8 dígitos + traço), busca o endereço
+            if (cep.length === 9) {
+                buscarEnderecoPorCEP(cep);
+            }
+        }
+
+        // Buscar endereço via API ViaCEP
+        function buscarEnderecoPorCEP(cep) {
+            const loadingElement = document.getElementById('loading-cep');
+            const errorElement = document.getElementById('error-cep');
+
+            // Mostra o loading e esconde mensagens de erro anteriores
+            loadingElement.style.display = 'block';
+            errorElement.style.display = 'none';
+            errorElement.textContent = '';
+
+            // Faz a requisição para a API ViaCEP
+            fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                .then(response => response.json())
+                .then(data => {
+                    loadingElement.style.display = 'none';
+
+                    if (data.erro) {
+                        errorElement.textContent = 'CEP não encontrado. Por favor, verifique e tente novamente.';
+                        errorElement.style.display = 'block';
+                        return;
+                    }
+
+                    // Preenche os campos com os dados retornados
+                    document.getElementById('endereco').value = data.logradouro;
+                    document.getElementById('bairro').value = data.bairro;
+                    document.getElementById('cidade').value = data.localidade;
+                    document.getElementById('estado').value = data.uf;
+
+                    // Foca no campo de número para o usuário completar
+                    document.getElementById('numero').focus();
+                })
+                .catch(error => {
+                    loadingElement.style.display = 'none';
+                    errorElement.textContent = 'Erro ao buscar o CEP. Por favor, tente novamente.';
+                    errorElement.style.display = 'block';
+                    console.error('Erro ao buscar CEP:', error);
+                });
+        }
+
+        // Adiciona evento para buscar CEP quando o campo perder o foco (caso o usuário não tenha digitado o CEP completo)
+        document.getElementById('cep').addEventListener('blur', function () {
+            const cep = this.value.replace(/\D/g, "");
+            if (cep.length === 8) {
+                buscarEnderecoPorCEP(this.value);
+            }
         });
     </script>
 </body>

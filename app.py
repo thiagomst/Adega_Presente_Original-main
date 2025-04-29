@@ -526,11 +526,24 @@ def atualizar_quantidade(item_id):
 @app.route('/remover_item/<int:item_id>', methods=['POST'])
 def remover_item(item_id):
     if 'carrinho' in session and isinstance(session['carrinho'], list):
-        session['carrinho'] = [item for item in session['carrinho'] if isinstance(item, dict) and item.get('id') != item_id]
+        # Remove o item
+        session['carrinho'] = [
+            item for item in session['carrinho']
+            if isinstance(item, dict) and item.get('id') != item_id
+        ]
         session.modified = True
-        return jsonify({'status': 'success', 'message': 'Item removido com sucesso!'})
+
+        # Recalcular o novo total
+        novo_total = sum(item['preco'] * item.get('quantidade', 1) for item in session['carrinho'])
+
+        return jsonify({
+            'status': 'success',
+            'message': 'Item removido com sucesso!',
+            'novo_total': round(novo_total, 2)
+        })
     else:
         return jsonify({'status': 'error', 'message': 'Carrinho não encontrado.'}), 404
+
     
 @app.route('/debug_tokens')
 def debug_tokens():

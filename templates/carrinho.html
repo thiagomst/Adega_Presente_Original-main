@@ -335,24 +335,12 @@
     <a href="{{ url_for('index') }}" class="continuar-comprando">Continuar Comprando</a>
   </div>
 
-  <!-- JavaScript para manipular a quantidade e remover itens -->
   <script>
-
-    document.getElementById('btn-finalizar').addEventListener('click', function () {
-      // Redireciona para a página de pagamento
-      window.location.href = "{{ url_for('pagamento') }}";
+    document.addEventListener('DOMContentLoaded', function () {
+      atualizarContadorCarrinho();
+      atualizarTotal();
     });
 
-
-    document.getElementById('btn-finalizar').addEventListener('click', function () {
-      {% if carrinho and carrinho | length > 0 %}
-      window.location.href = "{{ url_for('pagamento') }}";
-      {% else %}
-      alert('Seu carrinho está vazio!');
-      {% endif %}
-    });
-
-    // Função para enviar uma requisição ao backend
     async function enviarRequisicao(url, dados) {
       try {
         const resposta = await fetch(url, {
@@ -369,112 +357,107 @@
       }
     }
 
-    // Função para recalcular o total
     function atualizarTotal() {
       const itens = document.querySelectorAll(".carrinho-item");
       let total = 0;
 
       itens.forEach((item) => {
         const preco = parseFloat(item.getAttribute("data-preco"));
-        const quantidade = parseInt(
-          item.querySelector(".quantidade").textContent
-        );
+        const quantidade = parseInt(item.querySelector(".quantidade").textContent);
         total += preco * quantidade;
       });
 
-      // Atualiza o total na página
-      const totalElemento = document.getElementById("total-carrinho");
-      totalElemento.textContent = `R$ ${total.toFixed(2).replace(".", ",")}`;
+      document.getElementById("total-carrinho").textContent = `R$ ${total.toFixed(2).replace(".", ",")}`;
     }
 
-    // Função para diminuir a quantidade
+    function atualizarContadorCarrinho() {
+      const itens = document.querySelectorAll(".carrinho-item");
+      let totalItens = 0;
+
+      itens.forEach(item => {
+        const quantidade = parseInt(item.querySelector(".quantidade").textContent);
+        totalItens += quantidade;
+      });
+
+      const contadorCarrinho = document.getElementById('contador-carrinho');
+      contadorCarrinho.textContent = totalItens;
+
+      sessionStorage.setItem('contadorCarrinho', totalItens);
+    }
+
     async function diminuirQuantidade(itemId) {
-      const quantidadeElemento = document.getElementById(
-        `quantidade-${itemId}`
-      );
+      const quantidadeElemento = document.getElementById(`quantidade-${itemId}`);
       let quantidade = parseInt(quantidadeElemento.textContent);
       if (quantidade > 1) {
         quantidade--;
         quantidadeElemento.textContent = quantidade;
 
-        // Atualiza a quantidade no backend
-        const resposta = await enviarRequisicao(
-          `/atualizar_quantidade/${itemId}`,
-          { quantidade: quantidade }
-        );
-        if (resposta.status === "success") {
-          console.log(resposta.message);
-        } else {
+        const resposta = await enviarRequisicao(`/atualizar_quantidade/${itemId}`, { quantidade });
+        if (resposta.status !== "success") {
           console.error(resposta.message);
         }
 
-        atualizarTotal(); // Recalcula o total
+        atualizarTotal();
+        atualizarContadorCarrinho();
       }
     }
 
-    // Função para aumentar a quantidade
     async function aumentarQuantidade(itemId) {
-      const quantidadeElemento = document.getElementById(
-        `quantidade-${itemId}`
-      );
+      const quantidadeElemento = document.getElementById(`quantidade-${itemId}`);
       let quantidade = parseInt(quantidadeElemento.textContent);
       quantidade++;
       quantidadeElemento.textContent = quantidade;
 
-      // Atualiza a quantidade no backend
-      const resposta = await enviarRequisicao(
-        `/atualizar_quantidade/${itemId}`,
-        { quantidade: quantidade }
-      );
-      if (resposta.status === "success") {
-        console.log(resposta.message);
-      } else {
+      const resposta = await enviarRequisicao(`/atualizar_quantidade/${itemId}`, { quantidade });
+      if (resposta.status !== "success") {
         console.error(resposta.message);
       }
 
-      atualizarTotal(); // Recalcula o total
+      atualizarTotal();
+      atualizarContadorCarrinho();
     }
 
-    // Função para remover um item
     async function removerItem(itemId) {
       if (confirm("Tem certeza que deseja remover este item?")) {
-        const resposta = await enviarRequisicao(
-          `/remover_item/${itemId}`,
-          {}
-        );
-
+        const resposta = await enviarRequisicao(`/remover_item/${itemId}`, {});
         if (resposta.status === "success") {
-          const itemElemento = document.querySelector(
-            `[data-id="${itemId}"]`
-          );
+          const itemElemento = document.querySelector(`[data-id="${itemId}"]`);
           if (itemElemento) {
-            itemElemento.remove(); // Remove o item da lista
+            itemElemento.remove();
           }
-          atualizarTotal(); // Recalcula o total
+
+          // Atualiza o total
+          atualizarTotal();
+
+          // Atualiza o contador com base na resposta do backend
+          const contadorElemento = document.getElementById("contador-carrinho");
+          if (resposta.total_itens !== undefined) {
+            if (resposta.total_itens === 0) {
+              contadorElemento.textContent = "";
+              sessionStorage.removeItem('contadorCarrinho');
+            } else {
+              contadorElemento.textContent = resposta.total_itens;
+              sessionStorage.setItem('contadorCarrinho', resposta.total_itens);
+            }
+          }
+
           alert("Item removido com sucesso!");
         } else {
           alert(resposta.message);
         }
-
-        atualizarContadorCarrinho(); // Atualiza o contador de itens
       }
     }
 
-    // Função para atualizar o contador do carrinho
-    function atualizarContadorCarrinho() {
-      const carrinho = {{ carrinho | tojson | safe
-    }};  // Use a variável do template
-    const contadorCarrinho = document.getElementById('contador-carrinho');
 
-    if (carrinho && Array.isArray(carrinho)) {
-      const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
-      contadorCarrinho.textContent = totalItens;
-    } else {
-      contadorCarrinho.textContent = 0;
-    }
-  }
-
+    document.getElementById('btn-finalizar').addEventListener('click', function () {
+      {% if carrinho and carrinho | length > 0 %}
+      window.location.href = "{{ url_for('pagamento') }}";
+      {% else %}
+      alert('Seu carrinho está vazio!');
+      {% endif %}
+    });
   </script>
+
 
   <!-- Incluir o footer -->
   {% include 'footer.html' %}

@@ -63,4 +63,40 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   overlay.addEventListener("click", closeMenu);
+
+  // Função para fechar mensagens flash
+  function fecharMensagem(element) {
+    element.classList.add("fade-out");
+    setTimeout(() => {
+      element.remove();
+    }, 500);
+  }
+
+  // Fazer mensagens flash desaparecerem automaticamente após 5 segundos
+  const flashMessages = document.querySelectorAll(
+    ".header__container__row__messages__flash"
+  );
+  flashMessages.forEach((message) => {
+    setTimeout(() => {
+      fecharMensagem(message);
+    }, 5000);
+  });
+
+  // Adicionar evento de clique ao botão de fechar
+  document
+    .querySelectorAll(".header__container__messages__close")
+    .forEach((button) => {
+      button.addEventListener("click", function () {
+        fecharMensagem(this.parentElement);
+      });
+    });
+});
+
+// Contador do carrinho
+document.addEventListener("DOMContentLoaded", function () {
+  const contador = sessionStorage.getItem("contadorCarrinho");
+  const contadorElemento = document.getElementById("contador-carrinho");
+  if (contador && contadorElemento) {
+    contadorElemento.textContent = contador;
+  }
 });

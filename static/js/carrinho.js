@@ -91,24 +91,30 @@ async function removerItem(itemId) {
     const resposta = await enviarRequisicao(`/remover_item/${itemId}`, {});
 
     if (resposta.status === "success") {
-      // Remover o item da interface
       const itemElemento = document.querySelector(`[data-id="${itemId}"]`);
       if (itemElemento) {
-        itemElemento.remove(); // Remove o item da lista
+        itemElemento.remove();
       }
-      atualizarTotal(); // Recalcula o total
+
+      // Atualiza o total com o valor vindo do back-end
+      if (resposta.novo_total !== undefined) {
+        document.getElementById(
+          "total-carrinho"
+        ).textContent = `R$ ${parseFloat(resposta.novo_total)
+          .toFixed(2)
+          .replace(".", ",")}`;
+      } else {
+        atualizarTotal(); // fallback, se não vier o total
+      }
+
+      // Atualiza o contador de itens com o valor do backend
+      if (resposta.total_itens !== undefined) {
+        document.getElementById("contador-carrinho").innerText =
+          resposta.total_itens;
+        localStorage.setItem("contadorCarrinho", resposta.total_itens);
+      }
+
       alert("Item removido com sucesso!");
-
-      // Atualiza o contador de itens
-      const carrinho = await obterCarrinho(); // Obtém o carrinho atualizado
-      const totalItens = carrinho.reduce(
-        (total, item) => total + item.quantidade,
-        0
-      );
-      document.getElementById("contador-carrinho").innerText = totalItens;
-
-      // Atualiza o localStorage
-      localStorage.setItem("contadorCarrinho", totalItens);
     } else {
       alert(resposta.message);
     }

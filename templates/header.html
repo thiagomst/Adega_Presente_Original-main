@@ -35,8 +35,16 @@
                 <div class="header__container__row__click__actions">
                     <a href="{{ url_for('ver_carrinho') }}" class="header__container__row__actions__cart">
                         <i class="fas fa-shopping-cart"></i>
-                        <span id="contador-carrinho">0</span>
+                        <span id="contador-carrinho">
+                            {{ carrinho|sum(attribute='quantidade') if carrinho else 0 }}
+                        </span>
                     </a>
+                    {% if session.get('user_id') %}
+                    <a href="{{ url_for('logout') }}" class="header__container__actions__logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Sair
+                    </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -120,17 +128,17 @@
     <div class="header__container__row__mobile-menu">
         <div class="header__container__row__mobile-menu__social">
             <a class="header__social-icon" href="https://wa.me/556196127475" target="_blank">
-                <img src="{{ url_for('static', filename='img/footer/whatsapp.png') }}" alt="whatsapp">
+                <img src="{{ url_for('static', filename='img/whatsapp.png') }}" alt="whatsapp">
             </a>
             <a class="header__social-icon" href="https://www.facebook.com/profile.php?id=61559981980043"
                 target="_blank">
-                <img src="{{ url_for('static', filename='img/footer/facebook.png') }}" alt="facebook">
+                <img src="{{ url_for('static', filename='img/facebook.png') }}" alt="facebook">
             </a>
             <a class="header__social-icon" href="https://www.instagram.com/adegapresente/" target="_blank">
-                <img src="{{ url_for('static', filename='img/footer/instagram.png') }}" alt="instagram">
+                <img src="{{ url_for('static', filename='img/instagram.png') }}" alt="instagram">
             </a>
             <a class="header__social-icon" href="https://www.tiktok.com/@adegapresente" target="_blank">
-                <img src="{{ url_for('static', filename='img/footer/tiktok.png') }}" alt="tiktok">
+                <img src="{{ url_for('static', filename='img/tiktok.png') }}" alt="tiktok">
             </a>
         </div>
         <nav class="header__container__row__mobile-menu_list">
@@ -175,7 +183,14 @@
             <a href="{{ url_for('ver_carrinho') }}" class="header__container__row__mobile-menu__actions__cart">
                 🛒 Carrinho (<span id="contador-carrinho">0</span>)
             </a>
+            {% if session.get('user_id') %}
             <a href="{{ url_for('logout') }}" class="header__container__row__mobile-menu__actions__logout">Sair</a>
+            {% else %}
+            <a href="{{ url_for('login') }}" class="header__container__row__mobile-menu__actions__login">
+                <i class="fas fa-user"></i>
+                Entrar
+            </a>
+            {% endif %}
         </div>
     </div>
 </header>
